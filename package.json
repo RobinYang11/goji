@@ -1,5 +1,5 @@
 {
-  "name": "goji",
+  "name": "goji_ui",
   "version": "1.0.1",
   "description": "react goji react modal compnents ",
   "main": "dist/cjs/index.js",
