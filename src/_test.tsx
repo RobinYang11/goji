@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import ReactDom from 'react-dom'
 import Modal from './components/modal/modal';
-import Upload from './components/upload';
+import Upload from './components/upload/upload';
 import Tab from './components/tab/tab';
 import d8 from './8d'
 
