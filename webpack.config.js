@@ -7,16 +7,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 
 const config = {
-	entry: "./src/_test.tsx", 
+	entry: "./src/_test.tsx",
 	mode: process.env.NODE_ENV === "development" ? "development" : "production",
 	output: {
-		filename: "[name].js", 
+		filename: "[name].js",
 		publicPath: process.env.NODE_ENV === "development" ? "/" : "/static",
 
 		path: path.resolve(__dirname, "./test")
 	},
 	resolve: {
-		extensions: ['.js','.tsx', '.jsx'],
+		extensions: ['.js', '.tsx', '.jsx'],
 		fallback: {
 			'react/jsx-runtime': 'react/jsx-runtime.js',
 			'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
@@ -42,9 +42,19 @@ const config = {
 		},
 		host: "127.0.0.1",
 		hot: true, //热更新
-		open:true,
+		open: true,
 		compress: true, // 静态资源 开启gzip 压缩
 		port: 3004, // devserver 启动端口
+		proxy: {
+			"/api": {
+				target: 'http://127.0.0.1:8001',
+				// changeOrigin: true,
+				secure: true,
+				pathRewrite: {
+					'/api': ''
+				}
+			}
+		}
 	},
 
 	module: {

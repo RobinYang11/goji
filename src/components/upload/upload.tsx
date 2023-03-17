@@ -1,18 +1,61 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styles from './upload.module.less';
 
 interface IUploadProps {
-	url: string;
-	name: string,
-	onClick(): void
+	uploadUrl: string;
+	children: React.ReactNode;
+	onComplete?(data: unknown): void;
 }
 
 export default function Upload(props: IUploadProps) {
-	const { onClick, url, name } = props
-	return <div
-		title={name}
-		onClick={onClick}
-		className={styles.upload}>
-		{name}
-	</div>
+
+	const { children, uploadUrl, onComplete } = props
+	const inputRef = useRef<any>();
+	const uploadFile = (files: FileList) => {
+		const promiese = []
+		for (let i = 0; i < files.length; i++) {
+			const p = new Promise((resolve, reject) => {
+				const xhr = new XMLHttpRequest();
+				const formData = new FormData();
+				formData.append('file', files[0])
+				xhr.open('POST', uploadUrl)
+				xhr.send(formData)
+				xhr.onerror = err => {
+					reject(err)
+				}
+				xhr.onload = () => {
+					let result;
+					try {
+						result = JSON.parse(xhr.response)
+					} catch (e) {
+						result = xhr.response;
+					}
+					resolve(result)
+				}
+			});
+			promiese.push(p)
+		}
+		Promise.all(promiese).then(res => {
+			onComplete?.(res)
+		})
+	}
+
+	return <span
+		onClick={() => {
+			inputRef.current.click();
+		}}
+		className={styles.upload}
+	>
+		{children}
+		<input
+			multiple
+			onChange={e => {
+				if (e.target.files) {
+					uploadFile(e.target.files)
+				}
+			}}
+			ref={inputRef}
+			type="file"
+		/>
+	</span>
 }
