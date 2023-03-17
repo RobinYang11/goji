@@ -5,19 +5,21 @@ interface IUploadProps {
 	uploadUrl: string;
 	children: React.ReactNode;
 	onComplete?(data: unknown): void;
+	beforeUpload?(): void
 }
 
 export default function Upload(props: IUploadProps) {
 
 	const { children, uploadUrl, onComplete } = props
 	const inputRef = useRef<any>();
+
 	const uploadFile = (files: FileList) => {
 		const promiese = []
 		for (let i = 0; i < files.length; i++) {
-			const p = new Promise((resolve, reject) => {
+			promiese.push(new Promise((resolve, reject) => {
 				const xhr = new XMLHttpRequest();
 				const formData = new FormData();
-				formData.append('file', files[0])
+				formData.append('file', files[i])
 				xhr.open('POST', uploadUrl)
 				xhr.send(formData)
 				xhr.onerror = err => {
@@ -32,9 +34,9 @@ export default function Upload(props: IUploadProps) {
 					}
 					resolve(result)
 				}
-			});
-			promiese.push(p)
+			}))
 		}
+
 		Promise.all(promiese).then(res => {
 			onComplete?.(res)
 		})
