@@ -1,20 +1,53 @@
-import React, { useRef } from 'react'
+import React, { ReactNode, useMemo, useRef, useState } from 'react'
 import styles from './upload.module.less';
+import { file2uploadFile } from './utils';
 
-interface IUploadProps {
+export interface UploadFile {
+	lastModified: number;
+	name: string;
+	size: number;
+	type: string;
+	response?: unknown
+	originFileObj: File,
+}
+
+export interface IUploadProps {
 	uploadUrl: string;
 	children: React.ReactNode;
-	onComplete?(data: unknown): void;
-	beforeUpload?(): void
+	onComplete?(data: Array<unknown>): void;
+	beforeUpload?(files: FileList): Promise<unknown>
+	customList?(list: Array<unknown>): ReactNode
+	valueFilter?(file: UploadFile): unknown
 }
 
 export default function Upload(props: IUploadProps) {
 
-	const { children, uploadUrl, onComplete } = props
+	const {
+		beforeUpload,
+		children,
+		uploadUrl,
+		onComplete,
+		customList,
+		valueFilter
+	} = props;
+
 	const inputRef = useRef<any>();
+	let [_files, setFiles] = useState<Array<unknown>>([]);
 
 	const uploadFile = (files: FileList) => {
-		const promiese = []
+		beforeUpload?.(files)
+			.then((f) => {
+				doUpload(files)
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	};
+
+	const doUpload = (files: FileList) => {
+
+		const promiese: Array<Promise<unknown>> = [];
+
 		for (let i = 0; i < files.length; i++) {
 			promiese.push(new Promise((resolve, reject) => {
 				const xhr = new XMLHttpRequest();
@@ -26,29 +59,49 @@ export default function Upload(props: IUploadProps) {
 					reject(err)
 				}
 				xhr.onload = () => {
-					let result;
+					let resp: unknown;
 					try {
-						result = JSON.parse(xhr.response)
+						resp = JSON.parse(xhr.response);
 					} catch (e) {
-						result = xhr.response;
+						resp = xhr.response;
 					}
-					resolve(result)
+
+					const res = file2uploadFile(files[i])
+					const uplaodFile = Object.assign({
+						response: resp
+					}, res)
+
+					resolve(uplaodFile)
+					// resolve(valueFilter?.(abc) || resp)
 				}
 			}))
 		}
 
 		Promise.all(promiese).then(res => {
-			onComplete?.(res)
+			_files = _files.concat(res)
+			setFiles([..._files])
+			onComplete?.(_files)
 		})
 	}
 
-	return <span
-		onClick={() => {
-			inputRef.current.click();
-		}}
-		className={styles.upload}
-	>
-		{children}
+	const list = useMemo(() => {
+		if (customList) return customList(_files);
+		return _files.map((i: any, index) => {
+			console.log("Abc",i)
+			return <li className={styles.fileItem}>
+				{i.type}
+				<img src={i} style={{ width: "100px" }} />
+				<span
+					onClick={() => {
+						_files?.splice(index, 1)
+						setFiles([..._files])
+					}}
+					className={styles.deleteItem}>delete</span>
+			</li>
+		})
+	}, [_files])
+
+	return <span className={styles.upload}	>
 		<input
 			multiple
 			onChange={e => {
@@ -59,5 +112,17 @@ export default function Upload(props: IUploadProps) {
 			ref={inputRef}
 			type="file"
 		/>
+		<ul className={styles.fileList}>
+			<li>
+				<span
+					onClick={() => {
+						inputRef.current.click();
+					}}
+				>
+					{children}
+				</span>
+			</li>
+			{list}
+		</ul>
 	</span>
 }

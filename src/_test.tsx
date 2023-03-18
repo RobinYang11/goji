@@ -43,15 +43,29 @@ function App() {
 				<input type="text" />
 			</div>
 		</Modal>
+
 		<Upload
 			uploadUrl='/api/video-service/upload'
+			beforeUpload={(f) => {
+				for (var i = 0; i < f.length; i++) {
+					console.log(f[i].name)
+				}
+				return new Promise((r, j) => {
+					setTimeout(() => {
+						r(f)
+					}, 1000);
+				})
+			}}
+			valueFilter={({ response }) => {
+				return (response as Record<string, Object>).url
+			}}
 			onComplete={(res: any[]) => {
-				console.log(res[0].url)
+				console.log(res)
 			}}
 		>
 			请选择文件
 		</Upload>
-	</div>
+	</div >
 }
 
 ReactDom.render(<App />, document.getElementById("app"))

@@ -1,10 +1,29 @@
 .upload {
 	position: relative;
 	cursor: pointer;
+	display: inline-block;
 
 	input {
 		position: absolute;
 		opacity: 0;
 		width: 200px;
+	}
+
+	.fileList {
+
+		margin: 0;
+		padding-left: 0;
+
+		li {
+			list-style: none;
+		}
+
+		.fileItem{
+			position: relative;
+			
+			.deleteItem{
+				position:absolute
+			}
+		}
 	}
 }
