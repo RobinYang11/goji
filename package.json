@@ -1,6 +1,6 @@
 {
   "name": "goji_ui",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "react goji react modal compnents ",
   "main": "dist/cjs/index.js",
   "modue": "dist/esm/index.js",
@@ -25,7 +25,6 @@
     "url": "https://github.com/RobinYang11/goji.git"
   },
   "peerDependencies": {
-    "framer-motion": "^9.0.2",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
@@ -70,6 +69,7 @@
     "webpack-dev-server": "^4.12.0"
   },
   "dependencies": {
+    "framer-motion": "^8.5.5",
     "@types/uuid": "^9.0.1",
     "uuid": "^9.0.0"
   }

@@ -31,16 +31,17 @@ export default function Tab(props: TabProps) {
 	const [currentTab, setCurrentTab] = useState(0);
 
 	return <div className={`${styles.tab} ${className}`}>
-		<motion.ul className={styles.title} >
+		<motion.ul aria-invalid className={styles.title} >
 			{items?.map((tab, index) => {
 				return <motion.li
+					aria-label="tab"
 					onClick={() => { setCurrentTab(index) }}
 					key={tab.key}>
 					{tab.title}
 				</motion.li>
 			})}
 		</motion.ul>
-		<motion.div {...motionConfig} className={styles.body}>
+		<motion.div aria-label="tab-content" {...motionConfig} className={styles.body}>
 			{items?.[currentTab].children}
 		</motion.div>
 	</div>
