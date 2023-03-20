@@ -53,6 +53,9 @@ export default [
 					stylus: null,
 					less: { javascriptEnabled: true }
 				},
+				namedExports(name) {
+					return name.replace(/-/g, '_')
+				}
 				// extract: true
 			}),
 			terser(),
