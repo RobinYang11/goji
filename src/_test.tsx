@@ -22,7 +22,7 @@ function App() {
 				children: <div>tab2</div>
 			}
 		]} />
-		{/* <h1>test</h1>
+		<h1>test</h1>
 		<button
 			onClick={() => {
 				setVisible(true)
@@ -31,6 +31,9 @@ function App() {
 			show modal
 		</button>
 		<Tab
+			// extSelector={'[aria-label="tab-content"]'}
+			extSelector={'[aria-label="tab"'}
+			extension={<div className="ext">这是扩展的内容</div>}
 			items={[
 				{
 					title: "tab1",
@@ -78,7 +81,7 @@ function App() {
 			}}
 		>
 			请选择文件
-		</Upload> */}
+		</Upload>
 	</div >
 }
 

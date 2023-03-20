@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import styles from './tab.module.less';
 import { BaseProps } from '../base_props';
 import { createPortal } from 'react-dom';
+import goji from '../../_dom';
 
 type TabItem = {
 	title: ReactNode;
@@ -33,27 +34,7 @@ export default function Tab(props: TabProps) {
 	} = props;
 
 	const [currentTab, setCurrentTab] = useState(0);
-
-	const [portalContainer, setPortalContainer] = useState<HTMLElement>()
-	const rootRef = useRef<HTMLDivElement | null>(null)
-
-	useEffect(() => {
-
-		if (!rootRef) return;
-		if (!extension) return;
-		if (!extSelector) {
-			throw new Error("'extSelector' not provide!");
-		}
-
-		const container: unknown = rootRef.current?.querySelector(extSelector)
-		if (container) {
-			setPortalContainer(container as HTMLElement);
-		}
-
-	}, [rootRef.current])
-
-	return <div ref={rootRef} className={`${styles.tab} ${className}`}>
-		{portalContainer ? createPortal(extension, portalContainer as HTMLElement) : null}
+	return <goji.div className={`${styles.tab} ${className}`}>
 		<motion.ul aria-label="tab" className={styles.title} >
 			{items?.map((tab, index) => {
 				return <motion.li
@@ -67,5 +48,5 @@ export default function Tab(props: TabProps) {
 		<motion.div aria-label="tab-content" {...motionConfig} className={styles.tabContent}>
 			{items?.[currentTab].children}
 		</motion.div>
-	</div>
+	</goji.div>
 }
