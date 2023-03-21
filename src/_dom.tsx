@@ -1,7 +1,7 @@
 
 import React, { useRef } from 'react';
 import { BaseProps } from './components';
-import useExtension from './components/hooks';
+import useExtension from './hooks';
 
 const goji: any = {}
 

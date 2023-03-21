@@ -12,9 +12,6 @@ export interface TabProps extends BaseProps {
     items: Array<TabItem>;
     motionConfig?: any;
     className?: string;
-    tabContentVisible?: boolean;
-    onTabChange?(tab: TabItem): void;
-    hiddenStyle?: any;
 }
-export default function Tab(props: TabProps): JSX.Element;
+export default function _Tab(props: TabProps): JSX.Element;
 export {};

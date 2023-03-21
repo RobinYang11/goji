@@ -51,19 +51,31 @@ type ModalProps = {
 };
 declare function Modal(props: ModalProps): JSX.Element | null;
 
+interface BaseProps {
+    extension?: ReactNode;
+    extSelector?: string;
+    style?: any;
+    className?: string;
+    id?: string;
+    children?: ReactNode;
+}
+
 type TabItem = {
     title: ReactNode;
     key: string;
     children: ReactNode;
     disabled?: boolean;
 };
-type TabProps = {
+interface TabProps extends BaseProps {
     defaultActiveKey?: string;
     children?: ReactNode;
     items: Array<TabItem>;
     motionConfig?: any;
     className?: string;
-};
+    tabContentVisible?: boolean;
+    onTabChange?(tab: TabItem): void;
+    hiddenStyle?: any;
+}
 declare function Tab(props: TabProps): JSX.Element;
 
 interface FlexProps {
@@ -92,4 +104,4 @@ interface ITableProps {
 }
 declare function Table(props: ITableProps): JSX.Element;
 
-export { Flex, FlexItem, Modal, Tab, Table, Upload };
+export { BaseProps, Flex, FlexItem, Modal, Tab, Table, Upload };

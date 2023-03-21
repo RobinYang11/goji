@@ -9,19 +9,26 @@ import * as GOJI from 'goji_ui'
 
 function App() {
 	const [visible, setVisible] = useState(false)
+	const [ev, setEv] = useState(false)
 	return <div>
-		<GOJI.Tab items={[
-			{
-				title: "tab1",
-				key: "tab1",
-				children: <div>test</div>
-			},
-			{
-				title: "tab2",
-				key: "tab2",
-				children: <div>tab2</div>
-			}
-		]} />
+		{/* <GOJI.Tab
+			extSelector={'.tab'}
+			extension={<div>这是扩展的内容</div>}
+			items={[
+				{
+					title: "tab1",
+					key: "tab1",
+					children: <div>test</div>
+				},
+				{
+					title: "tab2",
+					key: "tab2",
+					children: <div>tab2</div>
+				}
+			]}
+		/> */}
+
+
 		<h1>test</h1>
 		<button
 			onClick={() => {
@@ -31,14 +38,21 @@ function App() {
 			show modal
 		</button>
 		<Tab
-			// extSelector={'[aria-label="tab-content"]'}
-			extSelector={'[aria-label="tab"'}
-			extension={<div className="ext">这是扩展的内容</div>}
+			onTabChange={()=>{
+				setEv(true)
+			}}
+			hiddenStyle={{
+				height:'0px',
+				overflow:'hidden'
+			}}
+			tabContentVisible={ev}
+			extSelector={'[aria-label="tab"]'}
+			extension={<div onClick={() => { setEv(!ev) }} className="ext">这是扩展的内容</div>}
 			items={[
 				{
 					title: "tab1",
 					key: "tab1",
-					children: <div>test</div>
+					children: <div>tab1</div>
 				},
 				{
 					title: "tab2",
@@ -73,6 +87,7 @@ function App() {
 					}, 1000);
 				})
 			}}
+
 			valueFilter={({ response }) => {
 				return (response as Record<string, Object>).url
 			}}

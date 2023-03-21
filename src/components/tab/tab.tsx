@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { useState, ReactNode } from "react"
 import { motion } from 'framer-motion'
@@ -19,6 +18,9 @@ export interface TabProps extends BaseProps {
 	items: Array<TabItem>;
 	motionConfig?: any;
 	className?: string
+	tabContentVisible?: boolean,
+	onTabChange?(tab: TabItem): void,
+	hiddenStyle?: any
 }
 
 export default function Tab(props: TabProps) {
@@ -29,7 +31,10 @@ export default function Tab(props: TabProps) {
 		defaultActiveKey,
 		motionConfig,
 		extension,
-		extSelector
+		extSelector,
+		tabContentVisible = true,
+		onTabChange,
+		hiddenStyle = { display: 'none' }
 	} = props;
 
 	const [currentTab, setCurrentTab] = useState(0);
@@ -52,20 +57,34 @@ export default function Tab(props: TabProps) {
 
 	}, [rootRef.current])
 
+	console.log(hiddenStyle)
+
 	return <div ref={rootRef} className={`${styles.tab} ${className}`}>
 		{portalContainer ? createPortal(extension, portalContainer as HTMLElement) : null}
 		<motion.ul aria-label="tab" className={styles.title} >
 			{items?.map((tab, index) => {
 				return <motion.li
 					aria-label="tab-title"
-					onClick={() => { setCurrentTab(index) }}
+					onClick={() => {
+						setCurrentTab(index);
+						onTabChange?.(tab);
+					}}
 					key={tab.key}>
 					{tab.title}
 				</motion.li>
 			})}
 		</motion.ul>
-		<motion.div aria-label="tab-content" {...motionConfig} className={styles.tabContent}>
+
+		<motion.div
+			style={tabContentVisible ? hiddenStyle : null}
+			aria-label="tab-content" {...motionConfig} className={styles.tabContent}>
 			{items?.[currentTab].children}
 		</motion.div>
+
+		{/* {
+			tabContentVisible ? <motion.div aria-label="tab-content" {...motionConfig} className={styles.tabContent}>
+				{items?.[currentTab].children}
+			</motion.div> : null
+		} */}
 	</div>
 }
