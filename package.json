@@ -1,6 +1,6 @@
 {
   "name": "goji_ui",
-  "version": "1.0.12",
+  "version": "1.0.17",
   "description": "react goji react modal compnents ",
   "main": "dist/cjs/index.js",
   "modue": "dist/esm/index.js",

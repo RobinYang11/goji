@@ -57,7 +57,6 @@ export default function Tab(props: TabProps) {
 
 	}, [rootRef.current])
 
-	console.log(hiddenStyle)
 
 	return <div ref={rootRef} className={`${styles.tab} ${className}`}>
 		{portalContainer ? createPortal(extension, portalContainer as HTMLElement) : null}

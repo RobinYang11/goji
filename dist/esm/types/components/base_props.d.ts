@@ -6,4 +6,5 @@ export interface BaseProps {
     className?: string;
     id?: string;
     children?: ReactNode;
+    onClick?(e: Event): void;
 }

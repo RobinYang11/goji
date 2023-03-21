@@ -58,6 +58,7 @@ interface BaseProps {
     className?: string;
     id?: string;
     children?: ReactNode;
+    onClick?(e: Event): void;
 }
 
 type TabItem = {
@@ -86,11 +87,12 @@ interface FlexProps {
 declare function Flex({ children, style, className, }: FlexProps): JSX.Element;
 
 interface FlexItemProps {
-    children: ReactElement;
+    children: ReactNode;
     className?: string;
     style?: any;
+    perc?: null;
 }
-declare function FlexItem({ children, className, style }: FlexItemProps): JSX.Element;
+declare function FlexItem({ children, className, style, perc }: FlexItemProps): JSX.Element;
 
 interface IColProps {
     key: string;

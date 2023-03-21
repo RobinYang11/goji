@@ -1,8 +1,9 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 interface FlexItemProps {
-    children: ReactElement;
+    children: ReactNode;
     className?: string;
     style?: any;
+    perc?: null;
 }
-export default function FlexItem({ children, className, style }: FlexItemProps): JSX.Element;
+export default function FlexItem({ children, className, style, perc }: FlexItemProps): JSX.Element;
 export {};

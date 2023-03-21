@@ -1,21 +1,31 @@
 
-import React, { ReactElement } from 'react'
+import React, { ReactNode } from 'react'
 
 interface FlexItemProps {
-	children: ReactElement
+	children: ReactNode
 	className?: string
 	style?: any
+	perc?: null
 }
 
-export default function FlexItem(
-	{
-		children,
-		className,
-		style
-	}: FlexItemProps
-) {
+export default function FlexItem({
+	children,
+	className,
+	style,
+	perc
+}: FlexItemProps) {
 
-	return <div className={className} style={style} >
+	const percStyle = perc ? {
+		flexBasis: (perc / 24) * 100
+	} : {}
+
+	return <div
+		className={className}
+		style={{
+			...percStyle,
+			...style,
+		}}
+	>
 		{children}
 	</div>
 }
