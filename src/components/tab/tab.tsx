@@ -75,16 +75,16 @@ export default function Tab(props: TabProps) {
 			})}
 		</motion.ul>
 
-		<motion.div
+		{/* <motion.div
 			style={tabContentVisible ? hiddenStyle : null}
 			aria-label="tab-content" {...motionConfig} className={styles.tabContent}>
 			{items?.[currentTab].children}
-		</motion.div>
+		</motion.div> */}
 
-		{/* {
+		{
 			tabContentVisible ? <motion.div aria-label="tab-content" {...motionConfig} className={styles.tabContent}>
 				{items?.[currentTab].children}
 			</motion.div> : null
-		} */}
+		}
 	</div>
 }
