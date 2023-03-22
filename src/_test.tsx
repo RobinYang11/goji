@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import Modal from './components/modal/modal';
 import Upload from './components/upload/upload';
 import Tab from './components/tab/tab';
+
 import { createRoot } from 'react-dom/client'
+
+import { TestTable } from './testTable';
+
 
 import * as GOJI from 'goji_ui'
 import MyModal from './components/myModal';
@@ -29,6 +33,7 @@ function App() {
 			]}
 		/> */}
 
+		<TestTable />
 
     <h1>test</h1>
     <button
@@ -112,5 +117,9 @@ function App() {
     </Upload>
   </div >
 }
+
 const root = createRoot(document.getElementById("app")!)
 root.render(<App />)
+
+
+
