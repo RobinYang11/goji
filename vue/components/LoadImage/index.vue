@@ -1,6 +1,8 @@
 <template>
-  <div class="component-load-image">
-    <img ref="imgRef" :src="pictureUrl" alt="">
+  <div class="component-load-image" ref="imageContainerRef">
+    <div v-for="img in imageList" class="image-item">
+      <img :data-src="img" alt="img">
+    </div>
   </div>
 </template>
 
@@ -10,9 +12,9 @@ import { ref, defineComponent, onMounted } from 'vue'
 export default defineComponent({
   name: 'LoadImage',
   props: {
-    src: {
-      type: String,
-      default: ''
+    imageList: {
+      type: Array,
+      default: () => []
     },
     fallback: {
       type: String,
@@ -25,47 +27,48 @@ export default defineComponent({
   },
   setup(props) {
     const pictureUrl = ref("")
-    const imgRef = ref(null)
-
-    const loadImage = () => {
-      const img = new Image()
-      img.src = props.src
-      img.onload = function() {
-        pictureUrl.value = this.src
-      }
-      img.onerror = function() {
-        pictureUrl.value = this.fallback || "https://pic.616pic.com/ys_img/00/58/34/XibLrSEeQF.jpg"
-      }
-    }
-
-    const preLoad = () => {
-      const img = new Image()
-      img.src = props.loading
-      img.onload = function() {
-        // TODO: 最好还是做个限时，不然会闪现
-        // 防止图片加载完成后，src已经有值了
-        if (pictureUrl.value) return
-        pictureUrl.value = this.src
-      }
-    }
+    const imageContainerRef = ref(null)
 
     onMounted(() => {
-      preLoad()
+      const queue = []
+      const imageListDOM = imageContainerRef.value.querySelectorAll('img')
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            loadImage()
-            observer.unobserve(entry.target)
+            const imgDOM = entry.target
+            const imgUrl = imgDOM.getAttribute("data-src")
+            queue.push({ imgDOM, imgUrl })
+            observer.unobserve(imgDOM)
+            runQueue()
           }
         })
+      }, {
+        root: null,
+        rootMargin: '160px',
+        threshold: 0.1
       })
-      observer.observe(imgRef.value);
+
+      imageListDOM.forEach((imgDOM) => {
+        observer.observe(imgDOM);
+      })
+
+
+      const runQueue = () => {
+        requestAnimationFrame(() => {
+          if (queue.length === 0) return
+
+          const { imgDOM, imgUrl } = queue.shift()
+          imgDOM.setAttribute("src", imgUrl)
+          runQueue()
+        })
+      }
+
     })
 
     return {
       pictureUrl,
-      imgRef
+      imageContainerRef
     }
   }
 })
@@ -73,15 +76,21 @@ export default defineComponent({
 
 <style scoped>
 .component-load-image {
-  width: 320px;
+  width: 100%;
   height: 400px;
-  background-color: orange;
-  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.component-load-image .image-item {
+  width: 332px;
+  height: 100%;
+  background-color: rgba(131, 131, 131, 0.19);
 }
 
 .component-load-image img {
   width: 100%;
   height: 100%;
-  obj-fit: cover;
+  object-fit: cover;
 }
 </style>
