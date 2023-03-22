@@ -32,7 +32,7 @@ export default defineComponent({
     Modal,
   },
   setup (props) {
-    const msg = ref('有追求的')
+    const msg = ref('有追求')
 
     // -------------------- modal --------------------
     const modalRef = ref(null)
