@@ -1,4 +1,5 @@
 
+
 const fs = require('fs');
 const path = require('path')
 const process = require('process');
@@ -6,8 +7,10 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 
+const { VueLoaderPlugin } = require('vue-loader')
+
 const config = {
-	entry: "./src/_test.tsx",
+	entry: "./vue/vue_main.js",
 	mode: process.env.NODE_ENV === "development" ? "development" : "production",
 	output: {
 		filename: "[name].js",
@@ -15,22 +18,22 @@ const config = {
 
 		path: path.resolve(__dirname, "./test")
 	},
-	resolve: {
-		extensions: ['.js', '.tsx', '.jsx'],
-		fallback: {
-			'react/jsx-runtime': 'react/jsx-runtime.js',
-			'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
-		},
-		alias: {
-			'@src': path.resolve(__dirname, './src'),
-			'@api': path.resolve(__dirname, './src/api'),
-			'@common': path.resolve(__dirname, './src/common'),
-			'@components': path.resolve(__dirname, './src/components'),
-			'@pages': path.resolve(__dirname, './src/pages'),
-			'@util': path.resolve(__dirname, './src/util'),
-		},
+	// resolve: {
+	// 	extensions: ['.js', '.tsx', '.jsx'],
+	// 	fallback: {
+	// 		'react/jsx-runtime': 'react/jsx-runtime.js',
+	// 		'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
+	// 	},
+	// 	alias: {
+	// 		'@src': path.resolve(__dirname, './src'),
+	// 		'@api': path.resolve(__dirname, './src/api'),
+	// 		'@common': path.resolve(__dirname, './src/common'),
+	// 		'@components': path.resolve(__dirname, './src/components'),
+	// 		'@pages': path.resolve(__dirname, './src/pages'),
+	// 		'@util': path.resolve(__dirname, './src/util'),
+	// 	},
 
-	},
+	// },
 	optimization: {
 		splitChunks: {
 			chunks: 'all',
@@ -59,34 +62,17 @@ const config = {
 
 	module: {
 		rules: [
-			 {
-            /*将js文件转码成es5*/
-            test: /\.js?$/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env']
-              }
-            }
-          },         
-
 			{
-				test: /\.(js|tsx)$/,
-				exclude: /node_modules/,
+				/*将js文件转码成es5*/
+				test: /\.js?$/,
 				use: {
-					loader: "babel-loader",
+					loader: 'babel-loader',
 					options: {
-						presets: [
-							'@babel/preset-env',
-							'@babel/preset-react',
-							'@babel/preset-typescript'
-						],
-						plugins: [
-							'transform-class-properties'
-						]
+						presets: ['@babel/preset-env']
 					}
-				},
+				}
 			},
+
 			{
 				test: /\.(css|less)$/i, // 三个loader 都要安装
 				use: [
@@ -108,11 +94,24 @@ const config = {
 						}
 					}
 				],
+			},
+			{
+				test: /\.vue$/,
+				use: [
+					{
+						loader: 'vue-loader',
+						options: {
+							compilerOptions: {
+								preserveWhitespace: false
+							},
+						}
+					}
+				]
 			}
-	
 		]
 	},
 	plugins: [
+		new VueLoaderPlugin(),
 		new HtmlWebpackPlugin({
 			template: path.resolve('./index.html')
 		}),
