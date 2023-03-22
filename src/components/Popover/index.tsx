@@ -1,7 +1,7 @@
 import { getWindowSize } from './helper';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { Fragment, useCallback, useRef, useState } from 'react';
+import React, { Fragment, useCallback, useRef, useState, MouseEvent } from 'react';
 import ReactDOM from 'react-dom';
 
 const classNameProvider = 'Popover-Provider';
@@ -33,7 +33,18 @@ const Popover: React.FunctionComponent<{
   zIndex?: number;
   // 内容暂不支持string
   children: React.ReactNode;
-}> = ({ children, placement, overlay, offsetX = 5, offsetY = 5, needHold = false, className, zIndex = 100000 }) => {
+  getPopupContainer?: () => HTMLElement;
+}> = ({
+  children,
+  placement,
+  overlay,
+  offsetX = 5,
+  offsetY = 5,
+  needHold = false,
+  className,
+  zIndex = 100000,
+  getPopupContainer = () => document.body
+}) => {
   const [isShow, setIsShow] = useState(false);
   const [position, setPosition] = useState<{
     top?: number;
@@ -42,37 +53,33 @@ const Popover: React.FunctionComponent<{
     right?: number;
     transform?: string;
   }>({});
-  const countDownHideTimerRef = useRef<NodeJS.Timeout>();
-  const handleCountDownHide = useCallback(() => {
-    // TODO ESlint
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    clearTimeout(countDownHideTimerRef.current!);
+  const countDownHideTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
+  const clear = useCallback(() => {
+    if (countDownHideTimerRef.current) {
+      clearTimeout(countDownHideTimerRef.current);
+    }
+  }, []);
+
+  const handleCountDownHide = useCallback(() => {
+    clear();
     countDownHideTimerRef.current = setTimeout(
       () => {
         setIsShow(false);
       },
       needHold ? 300 : 0
     );
-    return () => {
-      // TODO ESlint
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      clearTimeout(countDownHideTimerRef.current!);
-    };
-  }, [needHold]);
+    return clear;
+  }, [needHold, clear]);
   const returnChildNode = React.Children.map(children, child => {
     const item = child as React.ReactElement<
       React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
     >;
     return React.cloneElement(item, {
       className: classNames(item.props?.className, classNameProvider),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onMouseEnter: (e: any) => {
-        // TODO ESlint
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      onMouseEnter: (e: MouseEvent) => {
         clearTimeout(countDownHideTimerRef.current!);
         let el = e.target as HTMLDivElement;
-        // 点击事件后直接出现在鼠标指针下，事件有可能是子元素触发
         while (el && !el.classList.contains(classNameProvider) && document.body !== el) {
           el = el.parentElement as HTMLDivElement;
         }
@@ -115,7 +122,8 @@ const Popover: React.FunctionComponent<{
             <motion.div
               className={className}
               style={{
-                position: 'fixed',
+                // 脱离文档流使用fixed
+                position: 'absolute',
                 zIndex,
                 left: position.left + 'px',
                 top: position.top + 'px',
@@ -132,9 +140,7 @@ const Popover: React.FunctionComponent<{
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25, type: 'tween' }}
               onMouseEnter={() => {
-                // TODO ESlint
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                clearTimeout(countDownHideTimerRef.current!);
+                clear();
                 setIsShow(true);
               }}
               onMouseLeave={() => {
@@ -145,7 +151,7 @@ const Popover: React.FunctionComponent<{
             </motion.div>
           )}
         </AnimatePresence>,
-        document.body
+        getPopupContainer()
       )}
       {returnChildNode}
     </Fragment>
