@@ -1,12 +1,14 @@
 
 <template>
   <div class="App">
-    要做 {{msg}} 的码农
+    <Demo/>
   </div>
 </template>
 
 <script>
+import Demo from './components/demo.vue';
 export default {
+  components: { Demo },
   name: 'App',
 
   data() {
