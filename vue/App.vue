@@ -20,16 +20,39 @@
       </template>
     </Modal>
   </div>
+
+  <!-- Popover组件 -->
+  <div class="box">
+    <div class="title">Popover组件</div>
+    <div class="scroll" ref="scrollBox">
+      <div class="scroll-content">
+        <Popover class="my-pop mt" trigger="click" title="click pop">
+          <button>click me</button>
+          <template #content>
+            <div class="pop-content">
+              我是 <span class="pop-color">{{ msg }}</span> 的内容!
+            </div>
+          </template>
+        </Popover>
+        <br>
+        <Popover class="my-pop" :showTitle="false" @popShow="popShow" @popClose="popClose">
+          <button>hover me</button>
+        </Popover>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import Modal from './components/modal/index.vue'
+import Popover from './components/popover/index.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     Modal,
+    Popover,
   },
   setup (props) {
     const msg = ref('有追求')
@@ -46,13 +69,35 @@ export default defineComponent({
     }
     // -------------------- modal --------------------
 
+
+
+
+    // -------------------- popover --------------------
+    const scrollBox = ref(null)
+    onMounted(() => { // 设置初始滚动条 - 测试用
+      scrollBox.value.scrollLeft = 300
+      scrollBox.value.scrollTop = 480
+    })
+    const popShow = () => {
+      console.log('我展示了!')
+    }
+    const popClose = () => {
+      console.log('我消失了!')
+    }
+    // -------------------- popover --------------------
+
     return {
       msg,
 
       // modal prop
       showModal,
       toShowModal,
-      modalRef
+      modalRef,
+
+      // popover prop
+      scrollBox,
+      popShow,
+      popClose,
     }
   }
 })
@@ -63,10 +108,18 @@ export default defineComponent({
 
 .box { padding: 20px; }
 .title { font-size: 18px; font-weight: 900; padding: 10px 0; }
+.scroll { width: 500px; height: 300px; background: rgba(0, 0, 0, .03); overflow: auto; }
+.scroll-content { width: 2000px; height: 2000px; }
 
 
 /* modal */
 .__modal_title { width: calc(100% - 60px); line-height: 40px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 16px; font-weight: 700; position: relative; left: 10px; top: 0; }
 .__modal_hr { width: calc(100% - 20px); height: 1px; background: #DCDFE6; transform-origin: center bottom; transform: scale(1, .5); position: absolute; left: 10px; bottom: 0; }
 .__modal_foot_btn { min-width: 80px; min-height: 30px; margin-right: 10px; }
+
+/* popover */
+.my-pop { margin-top: 100px; margin-left: 380px; }
+.mt { margin-top: 500px; }
+.pop-content { padding: 10px; font-size: 14px; }
+.pop-color { color: salmon; }
 </style>

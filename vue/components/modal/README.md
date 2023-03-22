@@ -32,7 +32,7 @@
 
 ## ref expose
 
-`close` : 关闭modal弹框的方法 [function]
+`close` : 通过ref.xxx关闭modal弹框的方法 [function]
 <br>
 
 ## slots
