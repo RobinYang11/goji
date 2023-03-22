@@ -7,7 +7,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
 
 const config = {
-	entry: "./src/_test.tsx",
+	entry: "./vue/App.vue",
+	// entry: "./src/_test.tsx",
 	mode: process.env.NODE_ENV === "development" ? "development" : "production",
 	output: {
 		filename: "[name].js",
