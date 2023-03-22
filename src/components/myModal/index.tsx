@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import './index.less';
+import style from './index.module.less';
 interface Iprops {
   visible: boolean;
   Onclose: () => void;
@@ -28,11 +28,11 @@ const MyModal = (props: Iprops) => {
   return (
     (ref.current && props.visible) ? createPortal(
       <div>
-        <div className="mask"></div>
-        <div className="wrap" style={{ width: props.width || 520 }}>
-          <p className="close" onClick={props.Onclose} >X</p>
+        <div className={style.mask} onClick={props.Onclose}></div>
+        <div className={style.wrap} style={{ width: props.width || 520 }}>
+          <p className={style.close} onClick={props.Onclose} >X</p>
           {props.header}
-          <div className="content">
+          <div className={style.content}>
             {props.children}
           </div>
           {props.footer}
