@@ -1,0 +1,13 @@
+# Ignore all CSS files:
+*.css
+
+/dist/*
+.local
+.output.js
+/node_modules/**
+
+**/*.svg
+**/*.sh
+
+/public/*
+!/public/login-state.html
