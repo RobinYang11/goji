@@ -35,10 +35,7 @@
           v-show="closeable"
         >x</div>
         <!-- 主内容部分 -->
-        <div
-          class="__modal_contentbox"
-          :style="contentStyle"
-        >
+        <div class="__modal_contentbox">
           <slot></slot>
         </div>
         <!-- 底部 -->
@@ -122,25 +119,6 @@ export default defineComponent({
       return json
     })
 
-    const contentStyle = computed(() => {
-      let height = '', top = '41px';
-      if (props.showHeader && props.showFooter) {
-        height = 'calc(100% - 92px)'
-      } else if (props.showHeader && !props.showFooter) {
-        height = 'calc(100% - 52px)'
-      } else if (!props.showHeader && props.showFooter) {
-        top = '10px'
-        height = 'calc(100% - 62px)'
-      } else if (!props.showHeader && !props.showFooter) {
-        top = '10px'
-        height = 'calc(100% - 22px)'
-      }
-      return {
-        height,
-        top,
-      }
-    })
-
     watch(
       () => props.modelValue,
       val => {
@@ -180,7 +158,6 @@ export default defineComponent({
     return {
       isRend,
       animationShow,
-      contentStyle,
       containerStyle,
 
       toCancel,
@@ -207,7 +184,7 @@ export default defineComponent({
 .__modal_close:hover { color: #333; }
 .__modal_hr { width: calc(100% - 20px); height: 1px; background: #DCDFE6; transform-origin: center bottom; transform: scale(1, .5); position: absolute; left: 10px; bottom: 0; }
 
-.__modal_contentbox { width: calc(100% - 20px); overflow: auto; position: absolute; left: 10px; }
+.__modal_contentbox { width: calc(100% - 20px); overflow: auto; position: relative; left: 10px; }
 .__modal_contentbox::-webkit-scrollbar { width: 6px; height: 6px; background: transparent; }
 .__modal_contentbox::-webkit-scrollbar-thumb { background: rgba(200, 200, 200, .4); border-radius: 3px; }
 .__modal_contentbox::-webkit-scrollbar-thumb:hover { background: rgba(200, 200, 200, .6); }
