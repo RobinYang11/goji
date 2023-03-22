@@ -6,10 +6,13 @@ import Upload from './components/upload/upload';
 import Tab from './components/tab/tab';
 
 import * as GOJI from 'goji_ui'
+import DropDown from './components/dropDown';
 
 function App() {
 	const [visible, setVisible] = useState(false)
 	const [ev, setEv] = useState(false)
+	const [modalVisible,setModalVisible]= useState(false);
+
 	return <div>
 		{/* <GOJI.Tab
 			extSelector={'.tab'}
@@ -97,6 +100,25 @@ function App() {
 		>
 			请选择文件
 		</Upload>
+
+
+		<DropDown
+			trigger={'hover'}
+			onChangeVisible={()=>{
+				setModalVisible(true)
+			}}
+			visible={modalVisible}
+			width={100}
+			disable={false}
+			style={{
+				width:"100px",
+				height:"100px",
+				backgroundColor:"green"
+			}}
+			modelContent={<div>弹框内容</div>}
+		>
+			SHOW MODEL
+		</DropDown>
 	</div >
 }
 
