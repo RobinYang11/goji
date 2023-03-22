@@ -38,12 +38,12 @@ function App() {
 			show modal
 		</button>
 		<Tab
-			onTabChange={()=>{
+			onTabChange={() => {
 				setEv(true)
 			}}
 			hiddenStyle={{
-				height:'0px',
-				overflow:'hidden'
+				height: '0px',
+				overflow: 'hidden'
 			}}
 			tabContentVisible={ev}
 			extSelector={'[aria-label="tab"]'}
