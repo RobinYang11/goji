@@ -1,7 +1,7 @@
 {
   "name": "goji_ui",
   "version": "1.0.17",
-  "description": "react goji react modal compnents ",
+  "description": "component ",
   "main": "dist/cjs/index.js",
   "modue": "dist/esm/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "keywords": [
     "react",
     "upload",
-    "compnent"
+    "component"
   ],
   "files": [
     "dist"
