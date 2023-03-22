@@ -1,18 +1,19 @@
 {
   "name": "goji_ui",
   "version": "1.0.17",
-  "description": "react goji react modal components ",
+  "description": "component",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "scripts": {
     "build": "rollup -c --bundleConfigAsCjs",
     "test": "jest",
+    "vue": "cross-env NODE_ENV=development webpack serve --config ./webpack.vue.config.js",
     "dev": " cross-env NODE_ENV=development webpack serve  "
   },
   "keywords": [
     "react",
     "upload",
-    "components"
+    "component"
   ],
   "files": [
     "dist"
@@ -66,6 +67,9 @@
     "ts-jest": "^29.0.5",
     "tslib": "^2.5.0",
     "typescript": "^4.9.5",
+    "vue": "^3.2.47",
+    "vue-loader": "^17.0.1",
+    "vue-template-compiler": "^2.7.14",
     "webpack": "^5.76.2",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.12.0"
