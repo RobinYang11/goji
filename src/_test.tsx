@@ -113,7 +113,8 @@ function App() {
         onChangeVisible={() => {
           setModalVisible(!modalVisible);
         }}
-        // width={100}
+				position="topRight"
+        width={150}
         disable={false}
         style={{
           width: "100px",

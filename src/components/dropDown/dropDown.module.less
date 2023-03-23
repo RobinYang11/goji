@@ -1,15 +1,19 @@
 .dropDown {
+  margin-top: 100px;
   position: relative;
+  // overflow: hidden;
   .dropDownButton {
     cursor: pointer;
-    position: absolute;
-    top: 0;
-    left: 0;
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .model {
+  .modelLeft{
     position: absolute;
-    top: 25px;
     cursor: pointer;
     height: auto;
     padding: 5px;
@@ -36,6 +40,200 @@
         background-color: aliceblue;
       }
     }
+  }
 
+  .modelLeft::after{
+    width: 0;
+    height: 0;
+    content: "";
+    border-width: 6px;
+    border-color: transparent transparent #a07676 transparent;
+    border-style: dashed dashed solid dashed;
+    position: absolute;
+    top: -11px;
+    right: 9px;
+    z-index: 99;
+  }
+
+  .modelLeft::before{
+    width: 0;
+    height: 0;
+    content: "";
+    border-width: 6px;
+    border-color: transparent transparent #884b4b transparent;
+    border-style: dashed dashed solid dashed;
+    position: absolute;
+    top: -11px;
+    right: 9px;
+    z-index: 99;
+  }
+
+  .modelCenter{
+    // position: absolute;
+    cursor: pointer;
+    height: auto;
+    padding: 5px;
+    display: inline-block;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+      0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+    .modelList{
+      margin: 0;
+      padding: 0;
+     .modalListItem  {
+        list-style: none;
+        padding: 5px;
+        a{
+          text-decoration: none;
+          color: rgb(65, 65, 65);
+        }
+      }
+
+      .modalListItem:hover{
+        transition: all .2s;
+        background-color: aliceblue;
+      }
+    }
+  }
+
+  .modelCenter::before{
+    width: 0;
+    height: 0;
+    content: "";
+    border-width: 6px;
+    border-color: transparent transparent #ffffff transparent;
+    border-style: dashed dashed solid dashed;
+    position: absolute;
+    top: -11px;
+    right: 45%;
+    z-index: 99;
+  }
+
+  .modelCenter::after{
+    width: 0;
+    height: 0;
+    content: "";
+    border-width: 6px;
+    border-color: transparent transparent #ffffff transparent;
+    border-style: dashed dashed solid dashed;
+    position: absolute;
+    top: -11px;
+    right: 45%;
+    z-index: 99;
+  }
+
+
+  .modelTopRight{
+    position: absolute;
+    cursor: pointer;
+    height: auto;
+    padding: 5px;
+    display: inline-block;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+      0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+    .modelList{
+      margin: 0;
+      padding: 0;
+     .modalListItem  {
+        list-style: none;
+        padding: 5px;
+        a{
+          text-decoration: none;
+          color: rgb(65, 65, 65);
+        }
+      }
+
+      .modalListItem:hover{
+        transition: all .2s;
+        background-color: aliceblue;
+      }
+    }
+  }
+
+  .modelTopRight::before{
+    width: 0;
+    height: 0;
+    content: "";
+    border-width: 6px;
+    border-color: #ffffff transparent transparent transparent;
+    border-style: dashed dashed solid dashed;
+    position: absolute;
+    top: -11px;
+    right: 9px;
+    z-index: 99;
+  }
+
+  .modelTopRight::after{
+    width: 0;
+    height: 0;
+    content: "";
+    border-width: 6px;
+    border-color: #ffffff transparent transparent transparent;
+    border-style: dashed dashed solid dashed;
+    position: absolute;
+    top: -11px;
+    right: 9px;
+    z-index: 99;
+  }
+
+  .modelTopCenter{
+    position: absolute;
+    cursor: pointer;
+    height: auto;
+    padding: 5px;
+    display: inline-block;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+      0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+    .modelList{
+      margin: 0;
+      padding: 0;
+     .modalListItem  {
+        list-style: none;
+        padding: 5px;
+        a{
+          text-decoration: none;
+          color: rgb(65, 65, 65);
+        }
+      }
+
+      .modalListItem:hover{
+        transition: all .2s;
+        background-color: aliceblue;
+      }
+    }
+  }
+
+  .modelTopCenter::before{
+    width: 0;
+    height: 0;
+    content: "";
+    border-width: 6px;
+    border-color: #ffffff transparent transparent transparent;
+    border-style: dashed dashed solid dashed;
+    position: absolute;
+    top: -11px;
+    right: 45%;
+    z-index: 99;
+  }
+
+  .modelTopCenter::after{
+    width: 0;
+    height: 0;
+    content: "";
+    border-width: 6px;
+    border-color: #ffffff transparent transparent transparent;
+    border-style: dashed dashed solid dashed;
+    position: absolute;
+    top: -11px;
+    right: 45%;
+    z-index: 99;
   }
 }
