@@ -1,0 +1,46 @@
+.popover {
+	position: relative;
+
+	.children {
+		width: 100%;
+	}
+
+	.modal {
+		position: absolute;
+		color: #d4d4d4;
+		background: #1f1f1f;
+		z-index: 1;
+
+		.triangle {
+			position: absolute;
+			width: 0;
+			height: 0;
+		}
+
+		.triangleTop {
+			bottom: -16px;
+			left: 8px;
+			border-top: 8px solid #1f1f1f;
+			border-right: 8px solid transparent;
+			border-bottom: 8px solid transparent;
+			border-left: 8px solid transparent;
+		}
+
+		.triangleBottom {
+			top: -16px;
+			left: 8px;
+			border-top: 8px solid transparent;
+			border-right: 8px solid transparent;
+			border-bottom: 8px solid #1f1f1f;
+			border-left: 8px solid transparent;
+		}
+
+		.layout {
+			padding: 8px;
+		}
+
+		.title {
+			border-bottom: 1px solid #303030;
+		}
+	}
+}
