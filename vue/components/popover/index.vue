@@ -79,11 +79,13 @@ export default defineComponent({
     }
 
     const hidePop = () => {
-      popStyle.value.opacity = 0
-      emit('popClose')
-      setTimeout(() => {
-        isRend.value = false
-      }, 300)
+      if (isRend.value) {
+        popStyle.value.opacity = 0
+        emit('popClose')
+        setTimeout(() => {
+          isRend.value = false
+        }, 300)
+      }
     }
 
     const toClick = () => {

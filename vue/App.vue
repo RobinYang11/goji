@@ -41,18 +41,30 @@
       </div>
     </div>
   </div>
+
+  <!-- LoadImage组件 -->
+  <div class="box">
+    <div class="title">LoadImage组件</div>
+    <LoadImage :data="dataList" :isOver="isOver" @lazyLoad="lazyLoad"></LoadImage>
+  </div>
+
+
+  <!-- 我只是来撑开window的滚动条的 -->
+  <div style="height: 500px;"></div>
 </template>
 
 <script>
 import { defineComponent, ref, onMounted } from 'vue'
 import Modal from './components/modal/index.vue'
 import Popover from './components/popover/index.vue'
+import LoadImage from './components/loadImage/index.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     Modal,
     Popover,
+    LoadImage,
   },
   setup (props) {
     const msg = ref('有追求')
@@ -86,6 +98,43 @@ export default defineComponent({
     }
     // -------------------- popover --------------------
 
+
+
+
+    // -------------------- loadImage --------------------
+    const urlList = [
+      'https://pic.3gbizhi.com/2020/0715/20200715125404687.jpg', 'https://img1.baidu.com/it/u=3069316274,2216493367&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422',
+      'https://img0.baidu.com/it/u=3298051423,2256566422&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=683', 'https://img1.baidu.com/it/u=668908956,3142956363&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=800',
+      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F3d901398-5fff-4b1b-9b39-e8d37d9ac62c%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1682136309&t=8cdf6b2519283cabffb2ac188e9fd588', 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2Fdea210ca-3743-4f2a-b9b1-c2c3b185ae52%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1682136309&t=aa59fc3e4b6f3d5012e5bfdf98effd5e',
+      'https://img2.baidu.com/it/u=3447143413,168358415&fm=253&fmt=auto&app=138&f=JPEG?w=347&h=500', 'https://file.moyublog.com/d/file/2020-12-19/67da057fd7824f2a2f367cf488790ac2.jpg',
+      'https://img2.baidu.com/it/u=4223569044,1151190333&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=800', 'https://www.gpbctv.com/uploads/20210527/zip_1622099026QUAPEW.jpg'
+    ]
+
+    const getId = () => {
+      return Math.ceil(Math.random() * 100000000)
+    }
+
+    const isOver = ref(false)
+    const dataList = ref(urlList.map(url => ({ id: getId(), url })))
+
+    const getUrls = () => { // 模拟一次获取10张图片的接口
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(urlList.map(url => ({ id: getId(), url })))
+        }, 500)
+      })
+    }
+
+    const lazyLoad = () => { // 滚动加载
+      getUrls().then(urlList => {
+        const result = [...dataList.value, ...urlList]
+        // 当一共加载超过50张图片后, 标记所有图片已经加载完毕(测试)
+        if (result.length >= 50) isOver.value = true
+        dataList.value = result
+      })
+    }
+    // -------------------- loadImage --------------------
+
     return {
       msg,
 
@@ -98,6 +147,11 @@ export default defineComponent({
       scrollBox,
       popShow,
       popClose,
+
+      // loadImage prop
+      isOver,
+      dataList,
+      lazyLoad,
     }
   }
 })
