@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from "./dropDown.module.less";
 
@@ -29,16 +29,15 @@ const DropDown: React.FC<IDropDown> = ({
   onChangeVisible,
 }) => {
   const [show, setShow] = useState(visible);
-  const dropDownButton = document.getElementById('dropDownButton') as HTMLElement;
+  const dropDown = document.getElementById('dropDown') as HTMLElement;
 
   return (
-    <div className={styles.dropDown}>
+    <div id="dropDown" className={styles.dropDown}>
       {trigger === "click" ? (
         <button
           onClick={() => onChangeVisible()}
           disabled={disable}
           className={styles.dropDownButton}
-          id="dropDownButton"
         >
           {children}
         </button>
@@ -48,18 +47,17 @@ const DropDown: React.FC<IDropDown> = ({
           onMouseLeave={() => setShow(false)}
           disabled={disable}
           className={styles.dropDownButton}
-          id="dropDownButton"
         >
           {children}
         </button>
       )}
 
-      {show === true &&
+      {(show === true || visible === true) &&
         createPortal(
           <div className={styles.model} style={{ width: `${width}px` }}>
             {modelContent}
           </div>,
-          dropDownButton
+          dropDown
         )}
     </div>
   );
