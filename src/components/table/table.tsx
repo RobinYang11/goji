@@ -1,160 +1,142 @@
-
-import React, { ReactElement, useMemo, useContext, useState, FormEvent } from 'react';
-
-const TableContext = React.createContext<{
-	cols: Array<IColProps>,
-	data: Array<any>,
-	renderData: Array<any>,
-	setStore?(store: any): void
-}>({
-	cols: [],
-	data: [],
-	renderData: [],
-});
-
-export interface IColProps {
-	key: string;
-	title: string;
-	render?(data: any): ReactElement;
-	sort?: boolean;
-	screening?: boolean;
+import React from "react";
+import styles from "./table.module.less";
+interface Column {
+  title: string;
+  dataIndex: string;
 }
 
-interface ITableProps<RowType> {
-	className?: string;
-	data: Array<RowType>;
-	cols: Array<IColProps>
+interface Props {
+  data: any[];
+  columns: Column[];
 }
 
-export default function Table<RowType extends Record<string, any>>(props: ITableProps<RowType>) {
-	const { data: OutData, cols: OutCols, className } = props;
-
-	const [store, setStore] = useState({
-		cols: OutCols,
-		renderData: OutData.slice()
-	})
-
-	return (
-		<TableContext.Provider value={{
-			cols: OutCols,
-			data: OutData,
-			renderData: store.renderData,
-			setStore
-		}}>
-			<table border={1} className={className}>
-				<THead />
-				<TBody />
-			</table>
-		</TableContext.Provider>
-	)
+enum SortOrder {
+  Ascending = "ascend",
+  Descending = "descend",
+  None = "none",
 }
 
-function THead() {
-	let { cols, data, setStore } = useContext(TableContext)
-	const [show, setShow] = useState(false)
-	const [searchInputs, setSearchInputs] = useState<Record<string, any>>({})
-
-	const sort = (key: string) => {
-		// 拷贝一份数据
-		const newData = data.slice()
-
-		// 过滤数据 简单排序
-		setStore?.((store: any) => ({
-			...store,
-			renderData: newData.sort((pre, next) => {
-				const a = pre[key]
-				const b = next[key]
-				if (typeof a === 'string' && typeof b === 'string') {
-					// 如果两个元素都是字符串，则按照字母顺序排序
-					return a.localeCompare(b);
-				} else if (typeof a === 'number' && typeof b === 'number') {
-					// 如果两个元素都是数字，则按照数值大小排序
-					return a - b;
-				} else {
-					// 否则，将数字排在字符串的前面
-					return typeof a === 'string' ? 1 : -1;
-				}
-			})
-		}))
-	}
-
-	const screening = () => {
-		setShow(!show)
-	}
-
-	const changeSearchValue = (v: FormEvent<HTMLInputElement>, key: string) => {
-		const keyword = (v.target as HTMLInputElement).value
-		// 拷贝一份数据
-		const newData = data.slice()
-		// 过滤数据 简单排序
-		setStore?.((store: any) => ({
-			...store,
-			renderData: newData.filter((rowData) => {
-				return rowData[key].indexOf(keyword) > -1
-			})
-		}))
-
-		setSearchInputs(prevState => ({ ...prevState, [key]: (v.target as HTMLInputElement).value }))
-	}
-
-	// 等待性能优化
-	const col = useMemo(() => {
-		const renderSearchInput = (c: IColProps) => {
-			if (!c.screening || !show) {
-				return null
-			}
-
-			return (
-				<input
-					key={c.key}
-					value={searchInputs[c.key] || ''}
-					onInput={(e) => changeSearchValue(e, c.key)}
-					placeholder="筛选"
-				/>
-			)
-		}
-
-		return cols?.map(c => {
-			return <td key={c?.key}>
-				{c?.title}
-				{c?.sort && <button onClick={() => sort(c.key)}>排序</button>}
-				{c?.screening && <button onClick={() => screening()}>{show ? "关闭筛选" : "筛选"}</button>}
-				{renderSearchInput(c)}
-			</td>
-		})
-	}, [cols, show, searchInputs])
-
-	return (
-		<thead>
-			<tr>{col}</tr>
-		</thead>
-	)
+interface State {
+  sortOrder: SortOrder;
+  sortColumn: string;
+  filteredData: any[];
+  filterValues: { [key: string]: any };
 }
 
-function TBody<RowType extends Record<string, any>>() {
-	const { renderData, cols } = useContext<{
-		cols: Array<IColProps>,
-		data: Array<RowType>,
-		renderData: Array<RowType>,
-	}>(TableContext)
+export default class Table extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
 
-	const renderTd = (col: IColProps, rowData: RowType) => {
-		return <td key={col.key}>{
-			col.render
-				? col.render(rowData)
-				: rowData[col.key]
-		}</td>
-	}
+    this.state = {
+      sortOrder: SortOrder.None,
+      sortColumn: "",
+      filteredData: props.data,
+      filterValues: {},
+    };
+  }
 
-	return (
-		<tbody>{
-			renderData?.map(d => {
-				return (
-					<tr key={d.id}>
-						{cols?.map(c => renderTd(c, d))}
-					</tr>
-				)
-			})
-		}</tbody>
-	)
+  handleSort = (column: Column) => {
+    const { dataIndex } = column;
+    const { sortOrder, sortColumn } = this.state;
+
+    let newSortOrder: SortOrder = SortOrder.Ascending;
+    if (sortColumn === dataIndex) {
+      newSortOrder =
+        sortOrder === SortOrder.Ascending
+          ? SortOrder.Descending
+          : SortOrder.Ascending;
+    }
+
+    let newData = [...this.state.filteredData];
+    if (newSortOrder !== SortOrder.None) {
+      newData = newData.sort((a, b) =>
+        newSortOrder === SortOrder.Ascending
+          ? a[dataIndex] - b[dataIndex]
+          : b[dataIndex] - a[dataIndex]
+      );
+    }
+
+    this.setState({
+      sortOrder: newSortOrder,
+      sortColumn: dataIndex,
+      filteredData: newData,
+    });
+  };
+
+  handleFilter = (column: Column, value: any) => {
+    const { dataIndex } = column;
+    const { filterValues } = this.state;
+
+    const newFilterValues = { ...filterValues, [dataIndex]: value };
+
+    let newData = [...this.props.data];
+    Object.keys(newFilterValues).forEach((key) => {
+      const filterValue = newFilterValues[key];
+      if (filterValue !== null && filterValue !== undefined) {
+        newData = newData.filter(
+          (item) => item[key].toString() === filterValue.toString()
+        );
+      }
+    });
+
+    this.setState({
+      filteredData: newData,
+      filterValues: newFilterValues,
+    });
+  };
+
+  render() {
+    const { columns } = this.props;
+    const { sortOrder, sortColumn, filteredData, filterValues } = this.state;
+
+    return (
+      <div className={styles.content}>
+        <table>
+          <thead>
+            <tr>
+              {columns.map((column) => (
+                <th key={column.dataIndex}>
+                  {column.title}
+                  <button
+                    onClick={() => this.handleSort(column)}
+                    disabled={sortOrder === SortOrder.None}
+                  >
+                    {sortColumn === column.dataIndex &&
+                    sortOrder === SortOrder.Ascending
+                      ? "↑"
+                      : "↓"}
+                  </button>
+                  <select
+                    value={filterValues[column.dataIndex] || ""}
+                    onChange={(e) => this.handleFilter(column, e.target.value)}
+                  >
+                    <option value="">All</option>
+                    {filteredData
+                      .map((item) => item[column.dataIndex])
+                      .filter(
+                        (value, index, self) => self.indexOf(value) === index
+                      )
+                      .map((value) => (
+                        <option key={value} value={value}>
+                          {value}
+                        </option>
+                      ))}
+                  </select>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((item, index) => (
+              <tr key={index}>
+                {columns.map((column) => (
+                  <td key={column.dataIndex}>{item[column.dataIndex]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
 }
