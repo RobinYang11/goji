@@ -1,9 +1,14 @@
 
-### contributors
+
+[![Stargazers repo roster for @RobinYang11/goji](https://reporoster.com/stars/RobinYang11/goji)](https://github.com/RobinYang11/goji/stargazers)
+
+
+[![Forkers repo roster for @RobinYang11/goji](https://reporoster.com/forks/RobinYang11/goji)](https://github.com/RobinYang11/goji/network/members)
+<!-- ### contributors
 <a href="https://github.com/mfts2048">
 <img  style="border-radius:10;width:60px" src="https://avatars.githubusercontent.com/u/44958959?s=120&v=4" />
 </>
-  
+   -->
 
 ### 前言
 
