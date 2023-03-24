@@ -108,7 +108,7 @@ function App() {
       </Upload>
 
       <DropDown
-        trigger={"hover"}
+        trigger={"click"}
         visible={modalVisible}
         onChangeVisible={() => {
           setModalVisible(!modalVisible);
