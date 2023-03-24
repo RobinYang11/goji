@@ -1,15 +1,29 @@
-import { getWindowSize } from './helper';
 import classNames from 'classnames';
-import { AnimatePresence, motion } from 'framer-motion';
-import React, { Fragment, useCallback, useRef, useState, MouseEvent } from 'react';
+import { AnimatePresence, motion, MotionProps } from 'framer-motion';
+import React, { CSSProperties, Fragment, MouseEvent, useCallback, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { isDevMode } from '../../libs/env';
+import { DEFAULT_ANIMATE_POSITION, DEFAULT_MOTION_ANIMATE } from './constants';
+import { findPositionRect, getPositionRect } from './helper';
+import './index.less';
+import { Position } from './types';
 
-const classNameProvider = 'Popover-Provider';
+const classNameProvider = 'go-ji-popover-provider';
+
+/**
+ * 获取默认framer-motion配置
+ * @param position
+ * @returns
+ */
+const getDefaultMotionOption = (position: Position): MotionProps => {
+  return Object.assign({ ...DEFAULT_MOTION_ANIMATE }, { ...DEFAULT_ANIMATE_POSITION[position] });
+};
+
 const Popover: React.FunctionComponent<{
   /**
    * 显示位置
    */
-  placement: 'left' | 'right' | 'top';
+  placement: Position;
   /**
    * 显示内容
    */
@@ -31,7 +45,18 @@ const Popover: React.FunctionComponent<{
   needHold?: boolean;
   className?: string;
   zIndex?: number;
-  // 内容暂不支持string
+  /**
+   * 是否自动调整位置
+   */
+  autoAdjustOverflow?: boolean;
+  /**
+   * 动画自定义 (当autoAdjustOverflow打开时，支持多方向动画)
+   */
+  motionOption?: MotionProps;
+  /**
+   * 自定义调整方向权重（仅支持autoAdjustOverflow打开时）
+   */
+  customPosition?: Position[];
   children: React.ReactNode;
   getPopupContainer?: () => HTMLElement;
 }> = ({
@@ -42,24 +67,54 @@ const Popover: React.FunctionComponent<{
   offsetY = 5,
   needHold = false,
   className,
+  autoAdjustOverflow = true,
   zIndex = 100000,
+  customPosition,
+  motionOption,
   getPopupContainer = () => document.body
 }) => {
   const [isShow, setIsShow] = useState(false);
-  const [position, setPosition] = useState<{
-    top?: number;
-    left?: number;
-    bottom?: number;
-    right?: number;
-    transform?: string;
-  }>({});
   const countDownHideTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const [cssProperties, setCssProperties] = useState<CSSProperties>();
+  const posRef = useRef<Position>(placement);
+  const computeRef = useRef<HTMLDivElement | null>(null);
 
   const clear = useCallback(() => {
     if (countDownHideTimerRef.current) {
       clearTimeout(countDownHideTimerRef.current);
     }
   }, []);
+
+  const updateCSSProperties = useCallback(
+    (anchorEl: HTMLElement) => {
+      const anchorElRect = anchorEl.getBoundingClientRect();
+      const computeEl = computeRef.current;
+      console.log('computeEl ->', computeEl);
+      if (!computeEl) return;
+      const computeRect = computeEl.getBoundingClientRect();
+      let positionRect = getPositionRect(posRef.current, anchorElRect, computeRect, offsetX, offsetY);
+      // 尝试自动调整位置
+      if (autoAdjustOverflow) {
+        const { positionRect: positionRectTemp, pos } = findPositionRect(
+          placement,
+          anchorElRect,
+          computeRect,
+          offsetX,
+          offsetY,
+          customPosition
+        );
+
+        if (pos !== 'fail' && positionRectTemp) {
+          positionRect = positionRectTemp;
+          posRef.current = pos;
+        } else if (isDevMode()) {
+          console.warn('Popover: 无法找到合适的位置, 使用传入位置');
+        }
+      }
+      setCssProperties(positionRect);
+    },
+    [offsetX, offsetY, customPosition, placement]
+  );
 
   const handleCountDownHide = useCallback(() => {
     clear();
@@ -71,48 +126,36 @@ const Popover: React.FunctionComponent<{
     );
     return clear;
   }, [needHold, clear]);
-  const returnChildNode = React.Children.map(children, child => {
-    const item = child as React.ReactElement<
-      React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-    >;
-    return React.cloneElement(item, {
-      className: classNames(item.props?.className, classNameProvider),
-      onMouseEnter: (e: MouseEvent) => {
-        clearTimeout(countDownHideTimerRef.current!);
-        let el = e.target as HTMLDivElement;
-        while (el && !el.classList.contains(classNameProvider) && document.body !== el) {
-          el = el.parentElement as HTMLDivElement;
-        }
-        const rect = el.getBoundingClientRect();
-        const winSize = getWindowSize();
 
-        if (placement === 'left') {
-          setPosition({
-            top: rect.top + offsetY,
-            right: winSize.width - rect.left + offsetX
-          });
-        }
-        if (placement === 'right') {
-          setPosition({
-            top: rect.top + offsetY,
-            left: rect.left + rect.width + offsetX
-          });
-        }
-        if (placement === 'top') {
-          setPosition({
-            bottom: winSize.height - rect.top + offsetY,
-            left: rect.left + rect.width / 2,
-            transform: `translateX(-50%)`
-          });
-        }
-
-        setIsShow(true);
-      },
-      onMouseLeave: () => {
-        handleCountDownHide();
+  const onMouseEnter = useCallback(
+    (e: MouseEvent) => {
+      clear();
+      let el = e.target as HTMLDivElement;
+      while (el && !el.classList.contains(classNameProvider) && document.body !== el) {
+        el = el.parentElement as HTMLDivElement;
       }
-    });
-  });
+      console.log('el ->', el);
+      updateCSSProperties(el);
+      setIsShow(true);
+    },
+    [updateCSSProperties, clear]
+  );
+
+  const returnChildNode = React.Children.map(
+    typeof children === 'string' ? <span>{children}</span> : children,
+    child => {
+      const item = child as React.ReactElement<
+        React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+      >;
+      return React.cloneElement(item, {
+        className: classNames(item.props?.className, classNameProvider),
+        onMouseEnter,
+        onMouseLeave: () => {
+          handleCountDownHide();
+        }
+      });
+    }
+  );
 
   return (
     <Fragment>
@@ -120,16 +163,13 @@ const Popover: React.FunctionComponent<{
         <AnimatePresence>
           {isShow && (
             <motion.div
-              className={className}
+              className={classNames(className, 'go-ji-ui-popover')}
+              {...(motionOption ? motionOption : getDefaultMotionOption(posRef.current))}
               style={{
+                ...cssProperties,
                 // 脱离文档流使用fixed
                 position: 'absolute',
-                zIndex,
-                left: position.left + 'px',
-                top: position.top + 'px',
-                right: position.right + 'px',
-                bottom: position.bottom + 'px',
-                transform: position.transform
+                zIndex
               }}
               initial={{
                 opacity: 0
@@ -147,13 +187,19 @@ const Popover: React.FunctionComponent<{
                 handleCountDownHide();
               }}
             >
-              {overlay}
+              <div className="go-ji-ui-popover-content">{overlay}</div>
             </motion.div>
           )}
         </AnimatePresence>,
         getPopupContainer()
       )}
       {returnChildNode}
+      {/* 用于ref计算rect用 */}
+      {!cssProperties && (
+        <div className="go-ji-ui-popover-compute" ref={computeRef}>
+          {overlay}
+        </div>
+      )}
     </Fragment>
   );
 };

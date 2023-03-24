@@ -30,38 +30,47 @@ function App() {
 			]}
 		/> */}
 
-		<h1>test</h1>
-		<button
-			onClick={() => {
-				setVisible(true)
-			}}
-		>
-			show modal
-		</button>
-		<Tab
-			onTabChange={() => {
-				setEv(true)
-			}}
-			hiddenStyle={{
-				height: '0px',
-				overflow: 'hidden'
-			}}
-			tabContentVisible={ev}
-			extSelector={'[aria-label="tab"]'}
-			extension={<div onClick={() => { setEv(!ev) }} className="ext">这是扩展的内容</div>}
-			items={[
-				{
-					title: "tab1",
-					key: "tab1",
-					children: <div>tab1</div>
-				},
-				{
-					title: "tab2",
-					key: "tab2",
-					children: <div>tab2</div>
-				}
-			]}
-		/>
+      <h1>test</h1>
+      <button
+        onClick={() => {
+          setVisible(true);
+        }}
+      >
+        show modal
+      </button>
+      <Tab
+        onTabChange={() => {
+          setEv(true);
+        }}
+        hiddenStyle={{
+          height: '0px',
+          overflow: 'hidden'
+        }}
+        tabContentVisible={ev}
+        extSelector={'[aria-label="tab"]'}
+        extension={
+          <div
+            onClick={() => {
+              setEv(!ev);
+            }}
+            className="ext"
+          >
+            这是扩展的内容
+          </div>
+        }
+        items={[
+          {
+            title: 'tab1',
+            key: 'tab1',
+            children: <div>tab1</div>
+          },
+          {
+            title: 'tab2',
+            key: 'tab2',
+            children: <div>tab2</div>
+          }
+        ]}
+      />
 
       <Modal
         // dontDestroyOnClose={true}
@@ -98,61 +107,18 @@ function App() {
         请选择文件
       </Upload>
       <div ref={anchorRef}></div>
-      <Popover placement={'top'} overlay={'这是一个popover'}>
-        <div>简约版</div>
+      <Popover placement="right" overlay={'文本节点popover'}>
+        文本节点
       </Popover>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
-      <div>简约版</div>
+      <Popover placement="left" autoAdjustOverflow overlay={'autoAdjustOverflow popover'}>
+        <div style={{ width: 300, border: '1px solid #ddd', marginTop: 10 }}>autoAdjustOverflow</div>
+      </Popover>
+      <Popover placement="bottom" overlay={'bottom popover'}>
+        <div style={{ width: 300, border: '1px solid #ddd', marginTop: 10 }}>bottom</div>
+      </Popover>
+      <Popover placement="top" overlay={'top popover'}>
+        <div style={{ width: 300, border: '1px solid #ddd', marginTop: 10 }}>top</div>
+      </Popover>
     </div>
   );
 }
