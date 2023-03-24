@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+echo "开始执行 格式化代码... and ESLint...\n"
+npx lint-staged
+echo "开始执行 Typescript 类型检查...\n"
+npm run docs
+# more commands can be added here
