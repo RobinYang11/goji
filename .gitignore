@@ -1,5 +1,10 @@
-
-
+# Dependency directories
 /node_modules/
-
 /examples/node_modules/
+
+# IDE
+.idea
+.vscode
+
+# Build output
+/dist
