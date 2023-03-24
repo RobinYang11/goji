@@ -1,6 +1,7 @@
 <template>
   <div class="App">
     <Demo/>
+    <table-demo/>
     <LoadImage :imageList="imageUrls" />
   </div>
 </template>
@@ -8,9 +9,10 @@
 <script>
 import Demo from './components/demo.vue';
 import LoadImage from './components/LoadImage/index.vue';
+import TableDemo from './components/RETable/demo.vue'
 
 export default {
-  components: {Demo, LoadImage},
+  components: {Demo, LoadImage, TableDemo},
   name: 'App',
 
   data() {
