@@ -48,6 +48,12 @@
     <LoadImage :data="dataList" :isOver="isOver" @lazyLoad="lazyLoad"></LoadImage>
   </div>
 
+  <!-- Table组件 -->
+  <div class="box">
+    <div class="title">Table组件</div>
+    <Table :data="tableData" :col="col"></Table>
+  </div>
+
 
   <!-- 我只是来撑开window的滚动条的 -->
   <div style="height: 500px;"></div>
@@ -58,6 +64,7 @@ import { defineComponent, ref, onMounted } from 'vue'
 import Modal from './components/modal/index.vue'
 import Popover from './components/popover/index.vue'
 import LoadImage from './components/loadImage/index.vue'
+import Table from './components/table/index.vue'
 
 export default defineComponent({
   name: 'App',
@@ -65,6 +72,7 @@ export default defineComponent({
     Modal,
     Popover,
     LoadImage,
+    Table,
   },
   setup (props) {
     const msg = ref('有追求')
@@ -135,6 +143,62 @@ export default defineComponent({
     }
     // -------------------- loadImage --------------------
 
+
+
+
+    // -------------------- table --------------------
+    const tableDataMap = [
+      { name: '张一', sex: '男', age: 43, address: 'I\'m address ...', key: 1 },
+      { name: '张二', sex: '女', age: 32, address: 'I\'m address ...', key: 2 },
+      { name: '张三', sex: '男', age: 54, address: 'I\'m address ...', key: 3 },
+      { name: '张四', sex: '女', age: 36, address: 'I\'m address ...', key: 4 },
+      { name: '张五', sex: '男', age: 38, address: 'I\'m address ...', key: 5 },
+      { name: '张六', sex: '女', age: 31, address: 'I\'m address ...', key: 6 },
+      { name: '张七', sex: '男', age: 25, address: 'I\'m address ...', key: 7 },
+      { name: '张八', sex: '女', age: 35, address: 'I\'m address ...', key: 8 },
+      { name: '张九', sex: '男', age: 37, address: 'I\'m address ...', key: 9 },
+      { name: '张十', sex: '女', age: 35, address: 'I\'m address ...', key: 10 },
+      { name: '张十一', sex: '男', age: 39, address: 'I\'m address ...', key: 11 },
+      { name: '张十二', sex: '女', age: 20, address: 'I\'m address ...', key: 12 },
+      { name: '张十三', sex: '男', age: 28, address: 'I\'m address ...', key: 13 },
+      { name: '张十四', sex: '女', age: 26, address: 'I\'m address ...', key: 14 },
+      { name: '张十五', sex: '男', age: 27, address: 'I\'m address ...', key: 15 },
+      { name: '张十六', sex: '女', age: 29, address: 'I\'m address ...', key: 16 },
+      { name: '张十七', sex: '男', age: 21, address: 'I\'m address ...', key: 17 },
+      { name: '张十八', sex: '女', age: 24, address: 'I\'m address ...', key: 18 },
+      { name: '张十九', sex: '男', age: 30, address: 'I\'m address ...', key: 19 },
+      { name: '张二十', sex: '女', age: 28, address: 'I\'m address ...', key: 20 },
+    ]
+
+    const tableData = ref(tableDataMap.slice(0, 10))
+    const col = ref([
+      {
+        title: '名称',
+        dataIndex: 'name',
+        sorter: false,
+        filter: false
+      },
+      {
+        title: '性别',
+        dataIndex: 'sex',
+        sorter: false,
+        filter: true
+      },
+      {
+        title: '年龄',
+        dataIndex: 'age',
+        sorter: true,
+        filter: false
+      },
+      {
+        title: '地址',
+        dataIndex: 'address',
+        sorter: false,
+        filter: false
+      }
+    ])
+    // -------------------- table --------------------
+
     return {
       msg,
 
@@ -152,6 +216,10 @@ export default defineComponent({
       isOver,
       dataList,
       lazyLoad,
+
+      // table prop
+      tableData,
+      col,
     }
   }
 })
