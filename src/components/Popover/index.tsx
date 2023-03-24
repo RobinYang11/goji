@@ -113,7 +113,7 @@ const Popover: React.FunctionComponent<{
       }
       setCssProperties(positionRect);
     },
-    [offsetX, offsetY, customPosition, placement]
+    [offsetX, offsetY, autoAdjustOverflow, placement, customPosition]
   );
 
   const handleCountDownHide = useCallback(() => {
