@@ -72,18 +72,18 @@ function App() {
         ]}
       />
 
-      <Modal
-        // dontDestroyOnClose={true}
-        onClose={() => {
-          setVisible(false);
-        }}
-        visible={visible}
-      >
-        <div>
-          how to set default value for typescript interface field
-          <input type="text" />
-        </div>
-      </Modal>
+		<Modal
+			// dontDestroyOnClose={true}
+			onClose={() => {
+				setVisible(false)
+			}}
+			visible={visible}
+		>
+			<div>
+				how to set default value for typescript interface field
+				<input type="text" />
+			</div>
+		</Modal>
 
       <Upload
         uploadUrl="/api/video-service/upload"
