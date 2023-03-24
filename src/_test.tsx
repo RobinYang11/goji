@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Modal from './components/modal/modal';
 import Upload from './components/upload/upload';
 import Tab from './components/tab/tab';
+import LoadImage from './components/loadImage/index';
+import imagesData from './components/loadImage/dataSource';
 
 import { createRoot } from 'react-dom/client'
 
@@ -115,6 +117,23 @@ function App() {
     >
       请选择文件
     </Upload>
+
+
+    <div><h1>这是loadImage组件</h1></div>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      overflow: 'hidden',
+      position: 'absolute',
+      paddingTop: '20px',
+      width: '100%',
+      height: '70vh',
+      boxSizing: 'content-box'
+    }}>
+      {[1100, 940, 850, 500, 850, 940, 1100, 1460].map((item, index) => (
+      <LoadImage imagesData={imagesData} delay={item} key={`loadImage-${item}-${index}`} />
+      ))}
+    </div>
   </div >
 }
 
