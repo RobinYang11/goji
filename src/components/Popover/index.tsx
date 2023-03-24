@@ -89,7 +89,6 @@ const Popover: React.FunctionComponent<{
     (anchorEl: HTMLElement) => {
       const anchorElRect = anchorEl.getBoundingClientRect();
       const computeEl = computeRef.current;
-      console.log('computeEl ->', computeEl);
       if (!computeEl) return;
       const computeRect = computeEl.getBoundingClientRect();
       let positionRect = getPositionRect(posRef.current, anchorElRect, computeRect, offsetX, offsetY);
@@ -134,7 +133,6 @@ const Popover: React.FunctionComponent<{
       while (el && !el.classList.contains(classNameProvider) && document.body !== el) {
         el = el.parentElement as HTMLDivElement;
       }
-      console.log('el ->', el);
       updateCSSProperties(el);
       setIsShow(true);
     },
