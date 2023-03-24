@@ -34,7 +34,41 @@ function App() {
 		/> */}
 
 		<TestTable />
+    
+		<h1>test</h1>
+		<button
+			onClick={() => {
+				setVisible(true)
+			}}
+		>
+			show modal
+		</button>
+		<Tab
+			onTabChange={() => {
+				setEv(true)
+			}}
+			hiddenStyle={{
+				height: '0px',
+				overflow: 'hidden'
+			}}
+			tabContentVisible={ev}
+			extSelector={'[aria-label="tab"]'}
+			extension={<div onClick={() => { setEv(!ev) }} className="ext">这是扩展的内容</div>}
+			items={[
+				{
+					title: "tab1",
+					key: "tab1",
+					children: <div>tab1</div>
+				},
+				{
+					title: "tab2",
+					key: "tab2",
+					children: <div>tab2</div>
+				}
+			]}
+		/>
 
+		<Modal
     <h1>test</h1>
     <button
       onClick={() => {
