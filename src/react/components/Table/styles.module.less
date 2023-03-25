@@ -1,0 +1,63 @@
+.wrap {
+	color: #dddddd;
+
+	.table {
+		border-collapse: collapse;
+	}
+
+	thead {
+		background: #1d1d1d;
+	}
+
+	tbody {
+		background: #141414;
+	}
+
+	tr {
+		border-bottom: 1px solid #303030;
+
+		&:hover {
+			cursor: pointer;
+			background: #262626;
+		}
+	}
+
+	th {
+		padding: 8px;
+		height: 48px;
+		width: 200px;
+		line-height: 48px;
+		text-align: left;
+		border-right: 1px solid #262626;
+	}
+
+	.header {
+		tr {
+			&:hover {
+				background: none;
+			}
+		}
+
+		th {
+			&:hover {
+				cursor: pointer;
+				background: #262626;
+			}
+		}
+	}
+
+	.filter {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		.icon {
+			width: 10px;
+			height: 10px;
+			background: #ffffff;
+			&:hover {
+				background: #434343;
+			}
+		}
+	}
+}
