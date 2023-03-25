@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./index.less";
+import styles from "./index.module.less";
 
 interface ModalProps {
   /** 控制弹框的显示隐藏 */
@@ -23,6 +23,14 @@ interface ModalProps {
   mask?: boolean;
   /** 有遮罩层时是否点击关闭 */
   isMaskClosed?: boolean;
+  /** 外层容器的样式 */
+  style?: React.CSSProperties;
+  /** 外层容器的类名 */
+  modalClassName?: string;
+  /** 遮罩层的样式 */
+  maskStyle?: React.CSSProperties;
+  /** 内容区域的样式 */
+  contentStyle?: React.CSSProperties;
 }
 
 function MyModal(props: ModalProps) {
@@ -38,37 +46,55 @@ function MyModal(props: ModalProps) {
     cancelText,
     mask = true,
     isMaskClosed = true,
+    style,
+    modalClassName = "",
+    contentStyle,
+    maskStyle,
   } = props;
   if (!open) return null;
 
+  const modalStyle = {
+    ...style,
+    width,
+  };
+  const modalClsName = modalClassName
+    ? `${styles.modal} ${modalClassName}`
+    : styles.modal;
+  console.log(styles);
   return (
     <>
-      <div className="modal" style={width ? { width } : undefined}>
-        <div className="close" onClick={onCancel}>
+      <div className={modalClsName} style={modalStyle}>
+        <div className={styles.close} onClick={onCancel}>
           x
         </div>
-        <div className="header">
+        <div className={styles.header}>
           <strong>{title}</strong>
         </div>
-        <div className="content">{children}</div>
-        <div className="footer">
+        <div className={styles.content} style={contentStyle}>
+          {children}
+        </div>
+        <div className={styles.footer}>
           {footer ? (
             footer
           ) : (
             <>
-              <button onClick={onCancel}>
+              <button className={styles["my-button"]} onClick={onCancel}>
                 {cancelText ? cancelText : "取消"}
               </button>
-              <button onClick={onOk}>{okText ? okText : "确定"}</button>
+              <button className={styles["my-button"]} onClick={onOk}>
+                {okText ? okText : "确定"}
+              </button>
             </>
           )}
         </div>
       </div>
-      <div
-        className="mask"
-        style={!mask ? { backgroundColor: "transparent" } : undefined}
-        onClick={mask && isMaskClosed ? onCancel : undefined}
-      ></div>
+      {mask ? (
+        <div
+          className={styles.mask}
+          style={maskStyle}
+          onClick={isMaskClosed ? onCancel : undefined}
+        ></div>
+      ) : null}
     </>
   );
 }
@@ -90,7 +116,10 @@ export default function HjjTables() {
           footer={null}
           width={700}
           // mask={false}
-          // isMaskClosed={false}
+          isMaskClosed={false}
+          // maskStyle={{ backgroundColor: "red" }}
+          style={{ backgroundColor: "aliceblue" }}
+          // modalClassName="test"
         >
           <p>自定义内容--------------------</p>
           <p>自定义内容--------------------</p>
