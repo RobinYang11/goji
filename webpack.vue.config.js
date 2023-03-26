@@ -18,22 +18,23 @@ const config = {
 
 		path: path.resolve(__dirname, "./test")
 	},
-	// resolve: {
+	resolve: {
 	// 	extensions: ['.js', '.tsx', '.jsx'],
 	// 	fallback: {
 	// 		'react/jsx-runtime': 'react/jsx-runtime.js',
 	// 		'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
 	// 	},
-	// 	alias: {
-	// 		'@src': path.resolve(__dirname, './src'),
-	// 		'@api': path.resolve(__dirname, './src/api'),
-	// 		'@common': path.resolve(__dirname, './src/common'),
-	// 		'@components': path.resolve(__dirname, './src/components'),
-	// 		'@pages': path.resolve(__dirname, './src/pages'),
-	// 		'@util': path.resolve(__dirname, './src/util'),
-	// 	},
+		alias: {
+			'@': path.resolve(__dirname,'./vue')
+			// '@src': path.resolve(__dirname, './src'),
+			// '@api': path.resolve(__dirname, './src/api'),
+			// '@common': path.resolve(__dirname, './src/common'),
+			// '@components': path.resolve(__dirname, './src/components'),
+			// '@pages': path.resolve(__dirname, './src/pages'),
+			// '@util': path.resolve(__dirname, './src/util'),
+		},
 
-	// },
+	},
 	optimization: {
 		splitChunks: {
 			chunks: 'all',
@@ -107,7 +108,24 @@ const config = {
 						}
 					}
 				]
-			}
+			},
+			{
+				test: /\.(jpg|png|jpeg|gif)$/, loader: 'url-loader'
+			},
+			{
+				test: /\.svg$/,
+				// include: [resolve('vue/assets/image')], // 作用于图标文件
+				use: [
+					{
+						loader: 'svg-sprite-loader',
+						options: {
+							symbolId: "icon-[name]", // 保持与vue文件一致
+						},
+					}
+				],
+		}
+		
+			
 		]
 	},
 	plugins: [
