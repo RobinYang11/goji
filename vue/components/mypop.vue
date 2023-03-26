@@ -64,12 +64,12 @@ export default {
         contentWrap.value.style.color = props.color;
         switch (props.placement) {
           case "left":
-            contentWrap.value.classList.add("left", "cLeft");
-            element.value.classList.add("left", "eLeft");
+            contentWrap.value.classList.add("tLeft", "cLeft");
+            element.value.classList.add("tLeft", "eLeft");
             break;
           case "right":
-            contentWrap.value.classList.add("right", "cRight");
-            element.value.classList.add("right", "eRight");
+            contentWrap.value.classList.add("tRight", "cRight");
+            element.value.classList.add("tRight", "eRight");
             break;
           case "top":
             contentWrap.value.classList.add("top", "cTop");
@@ -113,12 +113,12 @@ export default {
   position: absolute;
   z-index: 2;
 }
-.left {
+.tLeft {
   right: 100%;
   top: 50%;
   transform: translateY(-50%);
 }
-.right {
+.tRight {
   left: 100%;
   top: 50%;
   transform: translateY(-50%);
