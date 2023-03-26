@@ -22,8 +22,6 @@ export default ({ request }: { request: () => any }) => {
       { root: ref.current }
     );
     obs.observe(visibleRef.current);
-
-    return () => obs.unobserve(visibleRef.current);
   }, []);
   useEffect(() => {
     const imageList = Array.from(ref.current?.children);
@@ -41,6 +39,7 @@ export default ({ request }: { request: () => any }) => {
             item.target.alt = JSON.parse(
               item.target.dataset?.value || "{}"
             )?.alt;
+            inter.unobserve(item.target)
           }
         });
       },
@@ -50,9 +49,6 @@ export default ({ request }: { request: () => any }) => {
       inter.observe(el);
     });
 
-    return () => {
-      imageList.map((el: any) => inter.unobserve(el));
-    };
   }, [data]);
   return (
     <div ref={ref} style={{ maxHeight: "500px", overflow: "auto" }}>
