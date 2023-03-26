@@ -135,7 +135,7 @@
       nextPage点击下一页时触发
      -->
     <tablepagination
-    class="tablePage"
+      class="tablePage"
       width="80px"
       height="50px"
       bgColor="skyblue"
@@ -168,9 +168,9 @@
   font-size: 20px;
   font-family: "Courier New", Courier, monospace;
 }
-.loadimage{
+.loadimage {
   width: 300px;
-  padding-top:250px
+  padding-top: 250px;
 }
 .tablePage {
   text-align: left;
@@ -185,7 +185,6 @@ import mypop from "./mypop.vue";
 import tablepagination from "./tablepagination.vue";
 export default {
   setup() {
-    
     let name = ref("Demo");
 
     //测试 table 的相关数据
@@ -229,17 +228,17 @@ export default {
     }
 
     //测试 TablePagination 的相关数据
-    let currentPage=ref(1)
-    let pageSize=ref(5)
-    let pageBtn=ref(3)
+    let currentPage = ref(1);
+    let pageSize = ref(5);
+    let pageBtn = ref(3);
     function handlePrev() {
-      currentPage.value--
+      currentPage.value--;
     }
     function handleNext() {
-      currentPage.value++
+      currentPage.value++;
     }
     function handleCurrentPage(p) {
-      currentPage.value=p
+      currentPage.value = p;
     }
 
     return {
@@ -261,7 +260,7 @@ export default {
       pageBtn,
       handlePrev,
       handleNext,
-      handleCurrentPage
+      handleCurrentPage,
     };
   },
   components: {
