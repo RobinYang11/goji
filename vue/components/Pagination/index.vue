@@ -65,6 +65,7 @@ export default {
       const { total, pageSize } = this
       return Math.ceil(total / pageSize)
     },
+    // 获取连续页码，设置页码 ...
     startEnd() {
       const { curPage, continues, totalPage } = this
       let start, end

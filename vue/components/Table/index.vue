@@ -8,7 +8,7 @@
            <th v-for="(header,index) in columns" :key="index"  @click="handleSort(null,header.prop)" >
               {{header.label}}
               <svg-icon iconFileName="search" class="search"
-                @click="showFilter($event,header.prop)"
+                @click.native="showFilter($event,header.prop)"
                 :style="{color: filter.filterList.includes(header.prop) || filter.filterProp === header.prop ? '#258aff':''}"></svg-icon>
               <span class="sort" >
                 <svg-icon class="asc" 
@@ -32,7 +32,7 @@
     </table>
   </div>
   <!-- 分页器 -->
-  <Pagination
+  <Page
     @current-change="handleCurrentChange"
     :current-page="currentPage"
     :page-size="pageSize"
@@ -56,15 +56,19 @@
 </template>
 <script>
 import _ from 'lodash'
-import Pagination from '../Pagination/index.vue'
+import Page from '@/components/Pagination/index.vue'
 export default {
-  name: "MyTable",
+  name: "Table",
   components:{
-    Pagination
+    Page
   },
   props:{
-    columns:Array,
-    tableData: Array,
+    columns:{
+      type:Array
+    },
+    tableData: {
+      type:Array
+    },
   },
   data () {
     return {
@@ -102,11 +106,11 @@ export default {
     },
   },
   methods:{
+    // 列表排序
     handleSort(type,label){
       this.sortType = type || null
       this.sortKey =  type? label : 'id' 
       this.data.sort((a, b) => {
-        console.log(a[this.sortKey])
         const aValue = a[this.sortKey];
         const bValue = b[this.sortKey];
         if(this.sortType === 'desc' ){
@@ -116,6 +120,7 @@ export default {
         }
       });
     },
+    // 根据鼠标点击位置确定筛选框展示位置  
     showFilter(e,item){
       this.clientX = e.clientX - 70
       this.clientY = e.clientY - 10
@@ -123,6 +128,8 @@ export default {
       this.filter.filterData = ''
       this.isFilterVisible = true
     },
+
+     // 列表筛选
     handleFilter(){
       this.isFilterVisible = false
       const {filterProp,filterData } = this.filter

@@ -141,7 +141,12 @@ const config = {
 			options: {
 				assetPrefix: "https://app-test.zjhzoyad.com/material-prod/static/",
 			}
-		})
+		}),
+		new webpack.DefinePlugin({
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: true,
+    }),
+		
 	]
 }
 

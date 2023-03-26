@@ -26,11 +26,13 @@ export default {
         { label: "出生地", prop: "city" },
 
       ],
-      // tableData: [],
+      tableData: [],
 	 }
  },
  computed:{
-  tableData(){
+ 
+ },
+ created() {
     const data = Mock.mock({
       // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
       'list|20-70': [{
@@ -43,8 +45,7 @@ export default {
         'city': '@city(true)'  //中国城市
       }]
     })
-    return data.list
-  }
+    this.tableData = data.list
  }
 }
 </script>
