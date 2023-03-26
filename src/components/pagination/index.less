@@ -1,0 +1,43 @@
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    li{
+        display: inline-block;
+        min-width: 32px;
+        height: 32px;
+        margin-inline-end: 8px;
+        font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
+        line-height: 30px;
+        text-align: center;
+        vertical-align: middle;
+        list-style: none;
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        outline: 0;
+        cursor: pointer;
+        user-select: none;
+        &.disable{
+            color:rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+        &:hover{
+            background-color: rgba(0, 0, 0, 0.06);
+        }
+        &.active{
+            border-color: #1677ff;
+            color: #1677ff;
+            &:hover{
+                background-color: transparent;
+                color: #69b1ff;
+
+            }
+        }
+    }
+}
+:global{
+    li{
+        list-style: none;
+    }
+}

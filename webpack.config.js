@@ -16,7 +16,7 @@ const config = {
 		path: path.resolve(__dirname, "./test")
 	},
 	resolve: {
-		extensions: ['.js', '.tsx', '.jsx'],
+		extensions: ['.js', '.tsx', '.jsx', '.ts'],
 		fallback: {
 			'react/jsx-runtime': 'react/jsx-runtime.js',
 			'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
@@ -71,7 +71,7 @@ const config = {
           },         
 
 			{
-				test: /\.(js|tsx)$/,
+				test: /\.(js|tsx|ts)$/,
 				exclude: /node_modules/,
 				use: {
 					loader: "babel-loader",
@@ -93,6 +93,9 @@ const config = {
 					{ loader: "style-loader" },
 					{
 						loader: "css-loader",
+						options: {
+							modules: true,
+						}
 					},
 					{
 						loader: "less-loader",

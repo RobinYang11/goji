@@ -1,0 +1,31 @@
+.popContanier {
+    background-color: #fff;
+    padding:12px;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    position: absolute;
+    z-index: 999;
+    border-radius: 10px;
+    top: 100%;
+    margin-top: 10px;
+    &::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background-color: white;
+        top:0 ;
+        left: 7px;
+        transform: rotate(45deg);
+        margin-top: -2px;
+        position: absolute;
+    }
+    .title{
+        min-width: 177px;
+        margin-bottom: 8px;
+        color: rgba(0, 0, 0, 0.88);
+        font-weight: 600;
+        text-align: left;
+    }
+    .content{
+        text-align: left;
+    }
+}
