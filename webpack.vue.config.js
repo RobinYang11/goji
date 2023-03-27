@@ -123,7 +123,7 @@ const config = {
 						},
 					}
 				],
-		}
+		  }
 		
 			
 		]
@@ -143,8 +143,8 @@ const config = {
 			}
 		}),
 		new webpack.DefinePlugin({
-      __VUE_OPTIONS_API__: true,
-      __VUE_PROD_DEVTOOLS__: true,
+      __VUE_OPTIONS_API__: true,  // 兼容 vue2 
+      __VUE_PROD_DEVTOOLS__: false,  // 开发环境
     }),
 		
 	]

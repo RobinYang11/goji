@@ -2,6 +2,9 @@
 <template>
 	<div class="demo">
   	<MyTable :columns="columns" :table-data="tableData" class="demo-table" />
+    <MyPopover :content="content" :title="title">
+        <button class="prop-btn" >click</button>
+    </MyPopover>
 	</div>
 </template>
 <style scoped>
@@ -10,9 +13,13 @@
 </style>
 <script>
 import MyTable from '@/components/Table/index.vue'
+import MyPopover from  '@/components/Popover/index.vue'
 import Mock from 'mockjs'
 export default {
-	components: { MyTable },
+	components: { 
+    MyTable,
+    MyPopover,
+  },
  data() {
 	 return {
 		 name:'Demo',
@@ -27,6 +34,11 @@ export default {
 
       ],
       tableData: [],
+      content:` <div>
+                  <p>Content</p>
+                  <p>Content</p>
+                </div>`,
+      title:'haha'
 	 }
  },
  computed:{
@@ -55,5 +67,17 @@ export default {
 }
 .demo-table {
   width: 50%;
+}
+.prop-btn {
+  height: 28px;
+  padding: 0 10px;
+  line-height: 28px;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #258aff;
+  border: none;
+  cursor: pointer;
+
+
 }
 </style>
