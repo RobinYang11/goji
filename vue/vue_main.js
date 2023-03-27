@@ -3,8 +3,10 @@
 import {createApp} from 'vue'
 import App from './App.vue'
 
+// 弹框插件
+import MessageBox from './plugins/messageBox'
 
-createApp(App).mount("#app")
+createApp(App).use(MessageBox).mount("#app")
 // new Vue({
 //   render: h => h(App)
-// }).$mount('#app');
+// }).$mount('#app')
