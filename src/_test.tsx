@@ -4,7 +4,6 @@ import ReactDom from 'react-dom'
 import Modal from './components/modal/modal';
 import Upload from './components/upload/upload';
 import Tab from './components/tab/tab';
-import { TestTable } from './testTable';
 
 import * as GOJI from 'goji_ui'
 
@@ -29,7 +28,6 @@ function App() {
 			]}
 		/> */}
 
-		<TestTable />
 
 		<h1>test</h1>
 		<button
