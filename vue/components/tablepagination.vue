@@ -53,95 +53,85 @@
 <script>
 import { computed, ref, watchEffect } from "vue";
 export default {
-  /* 
-   tablepagination组件：
-		属性：data,col,sortable,sortBy,filterable,filterBy,width,height,tAlign,vAlign,bgColor,color,border，
-          pageSize，pageBtn，currentPage
-    事件：changeCurrentPage，prevPage，nextPage
-			data值为要展示为表格的数据，是个数组，元素是对象
-			col值为表头，是个数组，元素是字符串，字符串顺序与上述对象的属性应该一一对应
-			sortable是否排序，默认为false
-			sortBy值是一个字符串，字符串中间用逗号分开，逗号前面的为排序依据，逗号后面的为排序方式，可选值有-1和1，-1表示降序，1表示升序
-			filterable是否筛选，默认为false
-			filterBy值为字符串，表示筛选条件
-      width属性，值为字符串，用于设置单元格的宽度
-      height属性，值为字符串，用于设置单元格的高度
-      tAlign属性，值是字符串，用于设置单元格的水平文本对齐方式
-      vAlign属性，值是字符串，用于设置单元格的垂直方向的文本对齐方式
-      bgColor属性，值是字符串，用于设置每单元格的背景颜色
-      color属性，值是字符串，用于设置单元格内的文本颜色
-      border属性，值是字符串，用于设置单元格边框
-      borderCollapse属性，值是字符串，用于设置单元格之间的边框是否合并
-      pageSize属性，值是Number，用于设置每页表格展示数据的数量
-      pageBtn属性，值是Number，用于设置每页表格连续页码的数量
-      currentPage属性，值是Number，用于设置当前页
-      事件：
-      changeCurrentPage改变当前页时触发
-      prevPage点击上一页时触发
-      nextPage点击下一页时触发
-  */
   name: "tablepagination",
   props: {
+    //要展示为表格的数据
     data: {
       type: Array,
     },
+    //表头
     col: {
       type: Array,
     },
+    //是否排序
     sortable: {
       type: Boolean,
       default: false,
     },
+    //排序方式：字符串中间用逗号分开，逗号前面的为排序依据，逗号后面的为排序方式，可选值有-1和1，-1表示降序，1表示升序
     sortBy: {
       type: String,
     },
+    //是否筛选
     filterable: {
       type: Boolean,
       default: false,
     },
+    //筛选条件
     filterBy: {
       type: String,
     },
+    //单元格的宽度
     width: {
       type: String,
       default: "30px",
     },
+    //单元格的高度
     height: {
       type: String,
       default: "30px",
     },
+    //单元格内的文本颜色
     color: {
       type: String,
       default: "black",
     },
+    //单元格的背景颜色
     bgColor: {
       type: String,
       default: "white",
     },
+    //单元格内文本的水平对齐方式
     tAlign: {
       type: String,
       default: "center",
     },
+    //单元格内文本的垂直对齐方式
     vAlign: {
       type: String,
       default: "middle",
     },
+    //单元格边框
     border: {
       type: String,
       default: "1px solid yellow",
     },
+    //单元格之间的边框是否合并
     borderCollapse: {
       type: String,
       default: "collapse",
     },
+    //单页表格展示的数据数量
     pageSize: {
       type: Number,
       default: 5,
     },
+    //每页表格连续页码的数量
     pageBtn: {
       type: Number,
       default: 5,
     },
+    //当前页
     currentPage: {
       type: Number,
       default: 1,
@@ -152,9 +142,79 @@ export default {
     let arr=JSON.parse(JSON.stringify(props.data))
     //排序
     if (props.sortable) {
-      let keyword = props.sortBy.trim().split(",")[0].trim();
-      let order = props.sortBy.trim().split(",")[1].trim() || 1;
-      // console.log(keyword,order);
+      sortData(props.sortBy,arr)
+    }
+     //筛选
+    if (props.filterable) {
+      filterData(props.filterBy,arr)
+    }
+
+    //计算数据总条数
+    let total = ref(arr.length);
+    //获取dom元素
+    const tds = ref([]);
+    const table = ref(null);
+    //设置表格样式
+    watchEffect(() => {
+      if (table.value && tds.value) {
+        table.value.style.borderCollapse = props.borderCollapse;
+        tds.value.forEach((ele) => {
+          ele.style.width = props.width;
+          ele.style.height = props.height;
+          ele.style.color = props.color;
+          ele.style.backgroundColor = props.bgColor;
+          ele.style.textAlign = props.tAlign;
+          ele.style.verticalAlign = props.vAlign;
+          ele.style.border = props.border;
+        });
+      }
+    });
+
+    //计算表格单页展示的数据
+    const dataArr = computed(() => {
+      let startIndex = (props.currentPage - 1) * props.pageSize;
+      let endIndex =
+        startIndex + props.pageSize > arr.length
+          ? arr.length
+          : startIndex + props.pageSize;
+      return arr.slice(startIndex, endIndex);
+    });
+    //计算总页数
+    const pages = computed(() => {
+      return Math.ceil(total.value / props.pageSize);
+    });
+    //计算连续页码的开始页码和结束页码
+    const startAndEnd = computed(() => {
+      let start = 0,
+        end = 0;
+      if (props.pageBtn >= Math.ceil(total.value / props.pageSize)) {
+        start = 1;
+        end = Math.ceil(total.value / props.pageSize);
+      } else {
+        start = props.currentPage - parseInt(props.pageBtn / 2);
+        end = props.currentPage + parseInt(props.pageBtn / 2);
+        if (start < 1) {
+          start = 1;
+          end = props.pageBtn;
+        }
+        if (end > Math.ceil(total.value / props.pageSize)) {
+          end = Math.ceil(total.value / props.pageSize);
+          start = Math.ceil(total.value / props.pageSize) - props.pageBtn + 1;
+        }
+      }
+      return { start, end };
+    });
+    
+    
+    /*
+    @ description: 对数据进行排序
+    @ param: sortBy String 排序规则
+    @ param: arr Array 要排序的初始数据
+    @ return: void
+    */
+     function sortData(sortBy,arr){
+      let keyword = sortBy.trim().split(",")[0].trim();
+      let order = sortBy.trim().split(",")[1].trim() || 1;
       for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr.length - 1 - i; j++) {
           if (order == 1) {
@@ -173,12 +233,17 @@ export default {
         }
       }
     }
-    //筛选
-    if (props.filterable) {
-      let key = props.filterBy.trim().split(/\b/g)[0].trim();
-      let relation = props.filterBy.trim().split(/\b/g)[1].trim();
-      let value = props.filterBy.trim().split(/\b/g)[2].trim();
-      // console.log(key,relation,value);
+
+    /*
+    @ description: 对数据进行筛选
+    @ param: sortBy String 筛选条件
+    @ param: arr Array 要筛选的初始数据
+    @ return: void
+    */
+    function filterData(filterBy,arr){
+      let key = filterBy.trim().split(/\b/g)[0].trim();
+      let relation = filterBy.trim().split(/\b/g)[1].trim();
+      let value = filterBy.trim().split(/\b/g)[2].trim();
       for (let i = 0; i < arr.length; i++) {
         switch (relation) {
           case ">":
@@ -232,76 +297,30 @@ export default {
         }
       }
     }
-
-    //计算数据总条数
-    let total = ref(arr.length);
-    //获取dom元素
-    const tds = ref([]);
-    const table = ref(null);
-    //设置表格样式
-    watchEffect(() => {
-      if (table.value && tds.value) {
-        table.value.style.borderCollapse = props.borderCollapse;
-        // console.log(tds.value)
-        tds.value.forEach((ele) => {
-          ele.style.width = props.width;
-          ele.style.height = props.height;
-          ele.style.color = props.color;
-          ele.style.backgroundColor = props.bgColor;
-          ele.style.textAlign = props.tAlign;
-          ele.style.verticalAlign = props.vAlign;
-          ele.style.border = props.border;
-        });
-      }
-    });
-
-    //计算表格单页展示的数据
-    const dataArr = computed(() => {
-      let startIndex = (props.currentPage - 1) * props.pageSize;
-      let endIndex =
-        startIndex + props.pageSize > arr.length
-          ? arr.length
-          : startIndex + props.pageSize;
-      return arr.slice(startIndex, endIndex);
-    });
-    //计算总页数
-    const pages = computed(() => {
-      return Math.ceil(total.value / props.pageSize);
-    });
-    //计算连续页码的开始页码和结束页码
-    const startAndEnd = computed(() => {
-      let start = 0,
-        end = 0;
-      if (props.pageBtn >= Math.ceil(total.value / props.pageSize)) {
-        start = 1;
-        end = Math.ceil(total.value / props.pageSize);
-      } else {
-        start = props.currentPage - parseInt(props.pageBtn / 2);
-        end = props.currentPage + parseInt(props.pageBtn / 2);
-        if (start < 1) {
-          start = 1;
-          end = props.pageBtn;
-        }
-        if (end > Math.ceil(total.value / props.pageSize)) {
-          end = Math.ceil(total.value / props.pageSize);
-          start = Math.ceil(total.value / props.pageSize) - props.pageBtn + 1;
-        }
-      }
-      return { start, end };
-    });
-    //点击上一页的回调函数
+    
+    /*
+    @ description: 点击上一页的回调函数
+    @ return: void
+    */
     function handlePrev() {
       if (props.currentPage > 1) {
         emit("prevPage");
       }
     }
-    //点击下一页的回调函数
+    /*
+    @ description: 点击下一页的回调函数
+    @ return: void
+    */
     function handleNext() {
       if (props.currentPage < pages.value) {
         emit("nextPage");
       }
     }
-    //点击页码的回调函数
+    /*
+    @ description: 点击页码的回调函数
+    @ param: p Number 点击的页码
+    @ return: void
+    */
     function handleCurrentPage(p) {
       emit("changeCurrentPage", p);
     }
@@ -315,9 +334,9 @@ export default {
       handlePrev,
       handleNext,
       handleCurrentPage,
-      startAndEnd,
+      startAndEnd
     };
-  },
+  }
 };
 </script>
 

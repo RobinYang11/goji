@@ -20,60 +20,55 @@
 <script>
 import { reactive, ref, watchEffect } from "vue";
 export default {
-  /* 
-  mytable组件：
-		属性：data,col,sortable,sortBy,filterable,filterBy,tAlign,vAlign,bgColor,color,border
-			data值为要展示为表格的数据，是个数组，元素是对象
-			col值为表头，是个数组，元素是字符串，字符串顺序与上述对象的属性应该一一对应
-			sortable是否排序，默认为false
-			sortBy值是一个字符串，字符串中间用逗号分开，逗号前面的为排序依据，逗号后面的为排序方式，可选值有-1和1，-1表示降序，1表示升序
-			filterable是否筛选，默认为false
-			filterBy值为字符串，表示筛选条件
-      tAlign属性，值是字符串，用于设置每个表格的水平文本对齐方式
-      vAlign属性，值是字符串，用于设置每个表格的垂直方向的文本对齐方式
-      bgColor属性，值是字符串，用于设置每个表格的背景颜色
-      color属性，值是字符串，用于设置每个表格内的文本颜色
-      border属性，值是字符串，用于设置每个表格边框
-  */
   name: "mytable",
   props: {
+    //要展示为表格的数据
     data: {
       type: Array,
-      // required: true,
     },
+    //表头
     col: {
       type: Array,
     },
+    //是否排序
     sortable: {
       type: Boolean,
       default: false,
     },
+    //排序规则，字符串中间用逗号分开，逗号前面的为排序依据，逗号后面的为排序方式，可选值有-1和1，-1表示降序，1表示升序
     sortBy: {
       type: String,
     },
+    //是否筛选
     filterable: {
       type: Boolean,
       default: false,
     },
+    //筛选条件
     filterBy: {
       type: String,
     },
+    //单元格内文本的水平对齐方式
     tAlign: {
       type: String,
       default: "center",
     },
+    //单元格内文本的垂直对齐方式
     vAlign: {
       type: String,
       default: "middle",
     },
+    //单元格边框
     border: {
       type: String,
       default: "1px solid yellow",
     },
+    //单元格内的文本颜色
     color: {
       type: String,
       default: "black",
     },
+    //单元格的背景颜色
     bgColor: {
       type: String,
       default: "white",
@@ -83,9 +78,42 @@ export default {
     let arr = JSON.parse(JSON.stringify(props.data));
     //排序
     if (props.sortable) {
-      let keyword = props.sortBy.trim().split(",")[0].trim();
-      let order = props.sortBy.trim().split(",")[1].trim() || 1;
-      // console.log(keyword,order);
+      sortData(props.sortBy,arr)
+    }
+    //筛选
+    if (props.filterable) {
+      filterData(props.filterBy,arr)
+      }
+    
+
+    let dataArr = reactive([]);
+    dataArr.push(...arr);
+
+    const tds = ref([]);
+    const table = ref(null);
+
+    watchEffect(() => {
+      if (table.value && tds.value) {
+        tds.value.forEach((ele) => {
+          ele.style.backgroundColor = props.bgColor;
+          ele.style.color = props.color;
+          ele.style.textAlign = props.tAlign;
+          ele.style.verticalAlign = props.vAlign;
+          ele.style.border = props.border;
+        });
+      }
+    });
+
+
+     /*
+    @ description: 对数据进行排序
+    @ param: sortBy String 排序规则
+    @ param: arr Array 要排序的初始数据
+    @ return: void
+    */
+     function sortData(sortBy,arr){
+      let keyword = sortBy.trim().split(",")[0].trim();
+      let order = sortBy.trim().split(",")[1].trim() || 1;
       for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr.length - 1 - i; j++) {
           if (order == 1) {
@@ -104,12 +132,17 @@ export default {
         }
       }
     }
-    //筛选
-    if (props.filterable) {
-      let key = props.filterBy.trim().split(/\b/g)[0].trim();
-      let relation = props.filterBy.trim().split(/\b/g)[1].trim();
-      let value = props.filterBy.trim().split(/\b/g)[2].trim();
-      // console.log(key,relation,value);
+
+    /*
+    @ description: 对数据进行筛选
+    @ param: sortBy String 筛选条件
+    @ param: arr Array 要筛选的初始数据
+    @ return: void
+    */
+    function filterData(filterBy,arr){
+      let key = filterBy.trim().split(/\b/g)[0].trim();
+      let relation = filterBy.trim().split(/\b/g)[1].trim();
+      let value = filterBy.trim().split(/\b/g)[2].trim();
       for (let i = 0; i < arr.length; i++) {
         switch (relation) {
           case ">":
@@ -163,25 +196,6 @@ export default {
         }
       }
     }
-
-    let dataArr = reactive([]);
-    dataArr.push(...arr);
-
-    const tds = ref([]);
-    const table = ref(null);
-
-    watchEffect(() => {
-      if (table.value && tds.value) {
-        // console.log(tds.value)
-        tds.value.forEach((ele) => {
-          ele.style.backgroundColor = props.bgColor;
-          ele.style.color = props.color;
-          ele.style.textAlign = props.tAlign;
-          ele.style.verticalAlign = props.vAlign;
-          ele.style.border = props.border;
-        });
-      }
-    });
 
     return {
       dataArr,

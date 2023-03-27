@@ -12,43 +12,39 @@
 <script>
 import { ref, watchEffect } from "vue";
 export default {
-  /* 
-  mypop组件：
-		属性：show,title,content,width,color,align，placement
-    show属性，值为布尔类型，用来控制气泡框的显示与隐藏
-		title属性，值为一个字符串，用来填充气泡框的标题，默认值为‘气泡框标题’
-		content属性，值为一个字符串，用来填充气泡框的内容，默认值为‘我是气泡框内容区我是气泡框内容区我是气泡框内容区’
-		width属性，值为一个字符串，用来设置气泡框的宽度,默认值为‘150px’
-		color属性，值为一个字符串，用来设置气泡框中文字的颜色,默认值为‘black’
-		align属性，值为一个字符串，用来设置气泡框中文字的对齐方式，默认值为‘left’
-    placement属性，值为一个字符串，用来设置气泡框的位置，可选值有 "left","right","top","bottom",默认值为bottom
-  */
   name: "mypop",
   props: {
+    //控制气泡框的显示与隐藏
     show: {
       type: Boolean,
       default: false,
     },
+    //气泡框的标题
     title: {
       type: String,
       default: "气泡框标题",
     },
+    //气泡框的内容
     content: {
       type: String,
       default: "我是气泡框内容区我是气泡框内容区我是气泡框内容区",
     },
+    //气泡框的宽度
     width: {
       type: String,
       default: "150px",
     },
+    //气泡框内文字的对齐方式
     align: {
       type: String,
       default: "left",
     },
+    //气泡框内文字的颜色
     color: {
       type: String,
       default: "black",
     },
+    //气泡框的出现位置
     placement: {
       type: String,
       default: "bottom",

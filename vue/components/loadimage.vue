@@ -17,18 +17,9 @@
 <script>
 import { watchEffect, ref, reactive } from "vue";
 export default {
-    /* 
-    loadimage组件：
-		属性：imgUrls,imgWidth,imgHeight,duration,timer,timingFunction
-		imgUrls属性，值为数组类型，元素是字符串，是要展示的所有的图片路径
-		imgWidth属性，值为一个字符串，用来设置图片的宽度
-		imgHeight属性，值为一个字符串，用来设置图片的高度
-		duration属性，值是Number类型的，用来设置每张图片的过渡时间
-		timer属性，值是Number类型的，用来设置每张图片的显示时间，并且值不能低于2倍的duration
-        timingFunction属性，值为一个字符串，用来设置图片的过渡函数
-    */
   name: "loadimage",
   props: {
+    //要展示的图片的路径
     imgUrls: {
       type: Array,
       default() {
@@ -42,22 +33,27 @@ export default {
         ];
       },
     },
+    //图片宽度
     imgWidth: {
       type: String,
       default: "200px",
     },
+    //图片高度
     imgHeight: {
       type: String,
       default: "292px",
     },
+    //图片的过渡时间
     duration: {
       type: Number,
       default: 300,
     },
+    //图片的显示时间，值不能低于2倍的duration
     timer: {
       type: Number,
       default: 3000,
     },
+    //图片的过渡函数
     timingFunction: {
       type: String,
       default: "linear",
