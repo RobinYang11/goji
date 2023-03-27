@@ -1,16 +1,111 @@
 
 <template>
-	 <div class="demo">this is a {{name}}</div>	
+	 <div class="demo">表格分页组件-杨子英</div>	
+	 <Table :rowdata=rowdata :columns=columns></Table>
 </template>
-<style scoped>
-	.demo{
-		color:red
-	}
-</style>
 <script>
+import Table from './Table/index.vue'
 export default {
+	components:{
+		Table
+	},
 	data() {
-		name:'Demo'
+		return{
+			rowdata:[
+				{id:'1',name:'张三',sex:'男',grades:100},
+				{id:'3',name:'李四',sex:'男',grades:98},
+				{id:'2',name:'王五',sex:'女',grades:76},
+				{id:'11',name:'赵四',sex:'男',grades:100},
+				{id:'5',name:'百里',sex:'女',grades:66},
+				{id:'4',name:'张启',sex:'女',grades:24},
+				{id:'6',name:'六一',sex:'男',grades:87},
+				{id:'12',name:'张三',sex:'男',grades:57},
+				{id:'7',name:'周其',sex:'女',grades:98},
+				{id:'8',name:'刘娥',sex:'女',grades:77},
+				{id:'10',name:'赵斌',sex:'男',grades:85},
+				{id:'9',name:'张十一',sex:'女',grades:98},
+				{id:'13',name:'张三一',sex:'男',grades:67},
+				{id:'14',name:'李思思',sex:'女',grades:99},
+				{id:'15',name:'王一一',sex:'男',grades:99},
+				{id:'21',name:'李莫愁',sex:'女',grades:100},
+				{id:'19',name:'周生',sex:'女',grades:99},
+				{id:'17',name:'聂云',sex:'男',grades:44},
+				{id:'22',name:'张三',sex:'男',grades:99},
+				{id:'18',name:'李四',sex:'男',grades:97},
+				{id:'32',name:'周周',sex:'女',grades:46},
+				{id:'16',name:'王琦',sex:'女',grades:65},
+				{id:'20',name:'周洋',sex:'女',grades:99},
+				{id:'24',name:'严红',sex:'女',grades:87},
+				{id:'26',name:'杨正',sex:'男',grades:99},
+				{id:'28',name:'厚生',sex:'男',grades:65},
+				{id:'30',name:'冉一',sex:'女',grades:99},
+				{id:'41',name:'李五',sex:'女',grades:76},
+				{id:'36',name:'赵三',sex:'女',grades:99},
+				{id:'22',name:'王刘',sex:'男',grades:90},
+				{id:'23',name:'周王',sex:'男',grades:99},
+				{id:'25',name:'张丽',sex:'女',grades:87},
+				{id:'27',name:'赵州',sex:'男',grades:67},
+				{id:'31',name:'刘宇',sex:'女',grades:57},
+				{id:'29',name:'徐萍',sex:'男',grades:46},
+				{id:'33',name:'朱正',sex:'女',grades:87},
+				{id:'34',name:'刘琦',sex:'男',grades:45},
+				{id:'35',name:'王伟',sex:'男',grades:86},
+				{id:'40',name:'张伟',sex:'女',grades:84},
+				{id:'56',name:'张三',sex:'男',grades:99},
+				{id:'51',name:'郑启',sex:'女',grades:76},
+				{id:'76',name:'洋洋',sex:'男',grades:99},
+				{id:'54',name:'月桂',sex:'男',grades:88},
+				{id:'45',name:'羊季',sex:'女',grades:56},
+				{id:'53',name:'周沫',sex:'男',grades:56},
+				{id:'67',name:'年十',sex:'女',grades:87},
+				{id:'77',name:'廿一',sex:'男',grades:67},
+				{id:'57',name:'张十一',sex:'男',grades:24},
+				{id:'66',name:'沈胡',sex:'女',grades:78},
+				{id:'58',name:'胡汉三',sex:'女',grades:99},
+				{id:'69',name:'周瑜',sex:'男',grades:65},
+				{id:'60',name:'诸葛里',sex:'男',grades:72},
+				{id:'68',name:'张维',sex:'女',grades:99},
+				{id:'78',name:'张十',sex:'女',grades:82},
+				{id:'74',name:'李丽',sex:'女',grades:87},
+				{id:'79',name:'王婉',sex:'男',grades:78},
+				{id:'55',name:'杨艳',sex:'男',grades:57},
+				{id:'80',name:'宙斯',sex:'男',grades:100},
+			],
+			columns:[
+				{
+					prop:'id',
+					label:'学号',
+					sort:false,
+					sift:false
+				},
+				{
+					prop:'name',
+					label:'姓名',
+					sort:false,
+					sift:false
+				},
+				{
+					prop:'sex',
+					label:'性别',
+					sort:false,
+					sift:true
+				},
+				{
+					prop:'grades',
+					label:'成绩',
+					sort:true,
+					sift:false
+				}
+			]
+		}
 	}
 }
 </script>
+<style scoped>
+	.demo{
+		color:black;
+		font-size:26px;
+		text-align: center;
+		margin: 10px 0;
+	}
+</style>
