@@ -1,9 +1,9 @@
 {
   "name": "goji_ui",
   "version": "1.0.17",
-  "description": "component",
+  "description": "component ",
   "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "modue": "dist/esm/index.js",
   "scripts": {
     "build": "rollup -c --bundleConfigAsCjs",
     "test": "jest",
