@@ -1,0 +1,205 @@
+.dropDown {
+  margin-top: 100px;
+  position: relative;
+}
+.dropDown .dropDownButton {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropDown .modelLeft {
+  position: absolute;
+  cursor: pointer;
+  padding: 5px;
+  display: inline-block;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+.dropDown .modelLeft .modelList {
+  margin: 0;
+  padding: 0;
+}
+.dropDown .modelLeft .modelList .modalListItem {
+  list-style: none;
+  padding: 5px;
+}
+.dropDown .modelLeft .modelList .modalListItem a {
+  text-decoration: none;
+  color: #414141;
+}
+.dropDown .modelLeft .modelList .modalListItem:hover {
+  transition: all 0.2s;
+  background-color: aliceblue;
+}
+.dropDown .modelLeft::after {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: transparent transparent #a07676 transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 9px;
+  z-index: 99;
+}
+.dropDown .modelLeft::before {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: transparent transparent #884b4b transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 9px;
+  z-index: 99;
+}
+.dropDown .modelCenter {
+  cursor: pointer;
+  padding: 5px;
+  display: inline-block;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+.dropDown .modelCenter .modelList {
+  margin: 0;
+  padding: 0;
+}
+.dropDown .modelCenter .modelList .modalListItem {
+  list-style: none;
+  padding: 5px;
+}
+.dropDown .modelCenter .modelList .modalListItem a {
+  text-decoration: none;
+  color: #414141;
+}
+.dropDown .modelCenter .modelList .modalListItem:hover {
+  transition: all 0.2s;
+  background-color: aliceblue;
+}
+.dropDown .modelCenter::before {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: transparent transparent #ffffff transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 45%;
+  z-index: 99;
+}
+.dropDown .modelCenter::after {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: transparent transparent #ffffff transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 45%;
+  z-index: 99;
+}
+.dropDown .modelTopRight {
+  position: absolute;
+  cursor: pointer;
+  padding: 5px;
+  display: inline-block;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+.dropDown .modelTopRight .modelList {
+  margin: 0;
+  padding: 0;
+}
+.dropDown .modelTopRight .modelList .modalListItem {
+  list-style: none;
+  padding: 5px;
+}
+.dropDown .modelTopRight .modelList .modalListItem a {
+  text-decoration: none;
+  color: #414141;
+}
+.dropDown .modelTopRight .modelList .modalListItem:hover {
+  transition: all 0.2s;
+  background-color: aliceblue;
+}
+.dropDown .modelTopRight::before {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: #ffffff transparent transparent transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 9px;
+  z-index: 99;
+}
+.dropDown .modelTopRight::after {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: #ffffff transparent transparent transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 9px;
+  z-index: 99;
+}
+.dropDown .modelTopCenter {
+  position: absolute;
+  cursor: pointer;
+  padding: 5px;
+  display: inline-block;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+.dropDown .modelTopCenter .modelList {
+  margin: 0;
+  padding: 0;
+}
+.dropDown .modelTopCenter .modelList .modalListItem {
+  list-style: none;
+  padding: 5px;
+}
+.dropDown .modelTopCenter .modelList .modalListItem a {
+  text-decoration: none;
+  color: #414141;
+}
+.dropDown .modelTopCenter .modelList .modalListItem:hover {
+  transition: all 0.2s;
+  background-color: aliceblue;
+}
+.dropDown .modelTopCenter::before {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: #ffffff transparent transparent transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 45%;
+  z-index: 99;
+}
+.dropDown .modelTopCenter::after {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: #ffffff transparent transparent transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 45%;
+  z-index: 99;
+}
