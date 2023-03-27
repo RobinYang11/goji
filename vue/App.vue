@@ -1,9 +1,8 @@
-
 <template>
   <div class="App">
-  
-    <table-demo/>
-    
+
+    <demo/>
+
     <!-- Modal组件 -->
     <div class="box">
       <div class="title">Modal组件</div>
@@ -56,18 +55,17 @@
 
 
     <!-- 我只是来撑开window的滚动条的 -->
-    <div style="height: 500px;"></div>
-
-    <LoadImage :imageList="imageUrls" />
+    <div style="height: 500px;"/>
+  </div>
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from 'vue'
+import {defineComponent, onMounted, ref} from 'vue'
 import Modal from './components/modal/index.vue'
 import Popover from './components/popover/index.vue'
 import LoadImage from './components/loadImage/index.vue'
 import Table from './components/table/index.vue'
-import TableDemo from './components/RETable/demo.vue'
+import Demo from './components/demo.vue'
 
 export default defineComponent({
   name: 'App',
@@ -76,9 +74,9 @@ export default defineComponent({
     Popover,
     LoadImage,
     Table,
-    TableDemo
+    Demo
   },
-  setup (props) {
+  setup(props) {
     const msg = ref('有追求')
 
     // -------------------- modal --------------------
@@ -92,8 +90,6 @@ export default defineComponent({
       }, 3000)
     }
     // -------------------- modal --------------------
-
-
 
 
     // -------------------- popover --------------------
@@ -111,8 +107,6 @@ export default defineComponent({
     // -------------------- popover --------------------
 
 
-
-
     // -------------------- loadImage --------------------
     const urlList = [
       'https://pic.3gbizhi.com/2020/0715/20200715125404687.jpg', 'https://img1.baidu.com/it/u=3069316274,2216493367&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422',
@@ -127,12 +121,12 @@ export default defineComponent({
     }
 
     const isOver = ref(false)
-    const dataList = ref(urlList.map(url => ({ id: getId(), url })))
+    const dataList = ref(urlList.map(url => ({id: getId(), url})))
 
     const getUrls = () => { // 模拟一次获取10张图片的接口
       return new Promise(resolve => {
         setTimeout(() => {
-          resolve(urlList.map(url => ({ id: getId(), url })))
+          resolve(urlList.map(url => ({id: getId(), url})))
         }, 500)
       })
     }
@@ -148,30 +142,28 @@ export default defineComponent({
     // -------------------- loadImage --------------------
 
 
-
-
     // -------------------- table --------------------
     const tableDataMap = [
-      { name: '张一', sex: '男', age: 43, address: 'I\'m address ...', key: 1 },
-      { name: '张二', sex: '女', age: 32, address: 'I\'m address ...', key: 2 },
-      { name: '张三', sex: '男', age: 54, address: 'I\'m address ...', key: 3 },
-      { name: '张四', sex: '女', age: 36, address: 'I\'m address ...', key: 4 },
-      { name: '张五', sex: '男', age: 38, address: 'I\'m address ...', key: 5 },
-      { name: '张六', sex: '女', age: 31, address: 'I\'m address ...', key: 6 },
-      { name: '张七', sex: '男', age: 25, address: 'I\'m address ...', key: 7 },
-      { name: '张八', sex: '女', age: 35, address: 'I\'m address ...', key: 8 },
-      { name: '张九', sex: '男', age: 37, address: 'I\'m address ...', key: 9 },
-      { name: '张十', sex: '女', age: 35, address: 'I\'m address ...', key: 10 },
-      { name: '张十一', sex: '男', age: 39, address: 'I\'m address ...', key: 11 },
-      { name: '张十二', sex: '女', age: 20, address: 'I\'m address ...', key: 12 },
-      { name: '张十三', sex: '男', age: 28, address: 'I\'m address ...', key: 13 },
-      { name: '张十四', sex: '女', age: 26, address: 'I\'m address ...', key: 14 },
-      { name: '张十五', sex: '男', age: 27, address: 'I\'m address ...', key: 15 },
-      { name: '张十六', sex: '女', age: 29, address: 'I\'m address ...', key: 16 },
-      { name: '张十七', sex: '男', age: 21, address: 'I\'m address ...', key: 17 },
-      { name: '张十八', sex: '女', age: 24, address: 'I\'m address ...', key: 18 },
-      { name: '张十九', sex: '男', age: 30, address: 'I\'m address ...', key: 19 },
-      { name: '张二十', sex: '女', age: 28, address: 'I\'m address ...', key: 20 },
+      {name: '张一', sex: '男', age: 43, address: 'I\'m address ...', key: 1},
+      {name: '张二', sex: '女', age: 32, address: 'I\'m address ...', key: 2},
+      {name: '张三', sex: '男', age: 54, address: 'I\'m address ...', key: 3},
+      {name: '张四', sex: '女', age: 36, address: 'I\'m address ...', key: 4},
+      {name: '张五', sex: '男', age: 38, address: 'I\'m address ...', key: 5},
+      {name: '张六', sex: '女', age: 31, address: 'I\'m address ...', key: 6},
+      {name: '张七', sex: '男', age: 25, address: 'I\'m address ...', key: 7},
+      {name: '张八', sex: '女', age: 35, address: 'I\'m address ...', key: 8},
+      {name: '张九', sex: '男', age: 37, address: 'I\'m address ...', key: 9},
+      {name: '张十', sex: '女', age: 35, address: 'I\'m address ...', key: 10},
+      {name: '张十一', sex: '男', age: 39, address: 'I\'m address ...', key: 11},
+      {name: '张十二', sex: '女', age: 20, address: 'I\'m address ...', key: 12},
+      {name: '张十三', sex: '男', age: 28, address: 'I\'m address ...', key: 13},
+      {name: '张十四', sex: '女', age: 26, address: 'I\'m address ...', key: 14},
+      {name: '张十五', sex: '男', age: 27, address: 'I\'m address ...', key: 15},
+      {name: '张十六', sex: '女', age: 29, address: 'I\'m address ...', key: 16},
+      {name: '张十七', sex: '男', age: 21, address: 'I\'m address ...', key: 17},
+      {name: '张十八', sex: '女', age: 24, address: 'I\'m address ...', key: 18},
+      {name: '张十九', sex: '男', age: 30, address: 'I\'m address ...', key: 19},
+      {name: '张二十', sex: '女', age: 28, address: 'I\'m address ...', key: 20},
     ]
 
     const tableData = ref(tableDataMap.slice(0, 10))
@@ -230,22 +222,83 @@ export default defineComponent({
 </script>
 
 <style>
-._not-chooseable { user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
+._not-chooseable {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
 
-.box { padding: 20px; }
-.title { font-size: 18px; font-weight: 900; padding: 10px 0; }
-.scroll { width: 500px; height: 300px; background: rgba(0, 0, 0, .03); overflow: auto; }
-.scroll-content { width: 2000px; height: 2000px; }
+.box {
+  padding: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 900;
+  padding: 10px 0;
+}
+
+.scroll {
+  width: 500px;
+  height: 300px;
+  background: rgba(0, 0, 0, .03);
+  overflow: auto;
+}
+
+.scroll-content {
+  width: 2000px;
+  height: 2000px;
+}
 
 
 /* modal */
-.__modal_title { width: calc(100% - 60px); line-height: 40px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 16px; font-weight: 700; position: relative; left: 10px; top: 0; }
-.__modal_hr { width: calc(100% - 20px); height: 1px; background: #DCDFE6; transform-origin: center bottom; transform: scale(1, .5); position: absolute; left: 10px; bottom: 0; }
-.__modal_foot_btn { min-width: 80px; min-height: 30px; margin-right: 10px; }
+.__modal_title {
+  width: calc(100% - 60px);
+  line-height: 40px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  left: 10px;
+  top: 0;
+}
+
+.__modal_hr {
+  width: calc(100% - 20px);
+  height: 1px;
+  background: #DCDFE6;
+  transform-origin: center bottom;
+  transform: scale(1, .5);
+  position: absolute;
+  left: 10px;
+  bottom: 0;
+}
+
+.__modal_foot_btn {
+  min-width: 80px;
+  min-height: 30px;
+  margin-right: 10px;
+}
 
 /* popover */
-.my-pop { margin-top: 100px; margin-left: 380px; }
-.mt { margin-top: 500px; }
-.pop-content { padding: 10px; font-size: 14px; }
-.pop-color { color: salmon; }
+.my-pop {
+  margin-top: 100px;
+  margin-left: 380px;
+}
+
+.mt {
+  margin-top: 500px;
+}
+
+.pop-content {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.pop-color {
+  color: salmon;
+}
 </style>

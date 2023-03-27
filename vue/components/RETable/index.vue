@@ -3,7 +3,8 @@
     <div class="table-filters" v-if="filters.length">
       <div v-for="filter in filters" :key="filter.prop" class="table-filter">
         <label class="table-filter-label">{{ filter.label }}:</label>
-        <input type="text" :class="filterInputClass" :name="filter.prop" v-model.trim="filterProp[filter.prop]">
+        <input type="text" :class="filterInputClass" :name="filter.prop"
+               v-model.trim="filterProp[filter.prop]">
       </div>
       <button class="table-reset-button" @click="resetFilters">重置</button>
     </div>
@@ -26,23 +27,16 @@
       </tr>
       </tbody>
     </table>
-    <div class="pagination" v-if="isPagination">
-      <span class="page-count">Total {{ pageCount }} pages</span>
-      <select v-model="pageSize" @change="selectPage(1)">
-        <option v-for="option in props.customPageSizes" :key="option" :value="option">{{ option }} / pages</option>
-      </select>
-      <ul>
-        <li v-for="page in pages" :key="page" :class="{ active: +page === currentPage }">
-          <a @click.prevent="selectPage(page)">{{ page }}</a>
-        </li>
-      </ul>
-    </div>
+    <REPagination v-if="isPagination"
+                  :total-num="filterRows.length"
+                  @page-change="(start, end) => onPageChange(start, end)"/>
   </div>
 </template>
 
 <script setup>
-import {computed, defineProps, reactive, ref, watch} from 'vue';
+import {computed, defineProps, reactive, ref} from 'vue';
 import {compareFn} from './util/RETool';
+import REPagination from '../REPagination/index.vue'
 
 const props = defineProps({
   // style
@@ -101,19 +95,6 @@ const props = defineProps({
   isPagination: {
     type: Boolean,
     default: false,
-  },
-  defaultPageSize: {
-    type: Number,
-    default: 10,
-  },
-  customPageSizes: {
-    type: Array,
-    default: [5, 10, 20, 50],
-    validator: value => value.every(pageSize => typeof pageSize === "number"),
-  },
-  maxDisplayCount: {
-    type: Number,
-    default: 8,
   }
 });
 
@@ -135,68 +116,23 @@ const filterRows = computed(() => props.rows.filter(row => {
 }));
 resetFilters();
 
-// pagination
-const currentPage = ref(1);
-const startIndex = ref(1);
-const pageSize = ref(props.defaultPageSize);
-const pageCount = computed(() => Math.ceil(filterRows.value.length / pageSize.value));
-const pages = computed(() => {
-  const pagesArray = ["<"];
-  const endIndex = startIndex.value + props.maxDisplayCount;
-  for (let i = startIndex.value; i <= pageCount.value && i < endIndex; i++) {
-    pagesArray.push(i);
-  }
-  pagesArray.push(">")
-  return pagesArray;
-});
-const selectPage = page => {
-  if (page === 1) {
-    startIndex.value = 1;
-    currentPage.value = 1;
-    return;
-  }
-
-  switch (page) {
-    case ">":
-      if (currentPage.value < pageCount.value) {
-        currentPage.value++;
-      }
-      break;
-    case "<":
-      if (currentPage.value > 1) {
-        currentPage.value--;
-      }
-      break;
-    default:
-      currentPage.value = +page;
-  }
-
-  if (pageCount.value > props.maxDisplayCount) {
-    if (startIndex.value > currentPage.value) {
-      startIndex.value = currentPage.value - props.maxDisplayCount / 2;
-    } else if (startIndex.value < currentPage.value - props.maxDisplayCount / 2) {
-      startIndex.value++;
-    }
-
-    if (startIndex.value < 1) {
-      startIndex.value = 1;
-    } else if (startIndex.value + props.maxDisplayCount > pageCount.value) {
-      startIndex.value = pageCount.value - props.maxDisplayCount + 1;
-    }
-  }
-}
-watch(() => filterRows.value.length, () => selectPage(1));
-
 // sort
 const sortField = ref(props.defaultSortField);
 const sortOrder = ref(props.defaultSortOrder);
 const sort = (field, order) => {
-  if (props.sortable) {
+  if (field) {
     sortField.value = field;
     sortOrder.value = order === "asc" ? "desc" : "asc";
-    selectPage(1);
   }
 };
+
+// pagination
+const startIndex = ref(0);
+const pageSize = ref(filterRows.value.length);
+const onPageChange = (start, size) => {
+  startIndex.value = start;
+  pageSize.value = size;
+}
 
 // render data
 const _columns = computed(() => [...props.columns]
@@ -208,12 +144,14 @@ const _columns = computed(() => [...props.columns]
       }
     }));
 const _rows = computed(() => {
-  if (sortField.value && props.columns.some(col => col.prop === sortField.value)) {
+  if (props.sortable && sortField.value) {
     filterRows.value.sort((a, b) => compareFn(a, b, sortField.value, sortOrder.value));
   }
-  const start = (currentPage.value - 1) * pageSize.value;
-  const end = start + pageSize.value;
-  return filterRows.value.slice(start, end);
+
+  if (props.isPagination) {
+    return filterRows.value.slice(startIndex.value, startIndex.value + pageSize.value);
+  }
+  return filterRows.value;
 });
 
 </script>
@@ -249,7 +187,7 @@ input {
   transition: all 0.2s ease-in-out;
 }
 
-.table-filter-input:focus {
+input:focus {
   border-color: #79bbff;
   box-shadow: 0 0 0 2px #c6e2ff;
 }
@@ -324,73 +262,6 @@ th:hover .arrow-down {
 th:active .arrow-up,
 th:active .arrow-down {
   transform: rotate(180deg);
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-}
-
-.pagination select {
-  margin: 1.5rem;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid #ced4da;
-  background-color: #fff;
-  color: #495057;
-  font-size: 1rem;
-  appearance: none;
-  outline: none;
-  transition: all 0.2s ease-in-out;
-}
-
-.pagination select:hover {
-  border-color: #79bbff;
-}
-
-.pagination select:focus {
-  border-color: #79bbff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.pagination ul {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  width: fit-content;
-}
-
-.pagination li {
-  position: relative;
-  border-collapse: collapse;
-  text-align: center;
-  width: 36px;
-}
-
-.pagination li a {
-  display: block;
-  padding: 0.5rem 0;
-  border: 1px solid #ced4da;
-  color: #495057;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.pagination li.active a {
-  color: #fff;
-  background-color: #79bbff;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-}
-
-.pagination li a:hover {
-  background-color: #f2f2f2;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 </style>
