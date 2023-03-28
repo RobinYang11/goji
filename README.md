@@ -1,7 +1,6 @@
 <p align="center">
-<img  style="border-radius:10;width:60px" src="https://cdn.discordapp.com/attachments/1008571027565072494/1090239316699140116/rav.png" />
+  <img src="https://cdn.discordapp.com/attachments/1008571027565072494/1090239316699140116/rav.png" />
 <p/>
-
 
 [![Forkers repo roster for @RobinYang11/goji](https://reporoster.com/forks/RobinYang11/goji)](https://github.com/RobinYang11/goji/network/members)
 
