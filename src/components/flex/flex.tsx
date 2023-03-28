@@ -1,18 +1,21 @@
 
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
+import { BaseProps } from '../base_props';
 import styles from './flex.module.less';
 
 
-interface FlexProps {
-	children: ReactElement;
+interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
+	children: ReactNode;
 	style?: any;
-	className?: string
+	className?: string,
+	itemSpace?: number | string,
 }
 
 export default function Flex({
 	children,
 	style,
 	className,
+	itemSpace,
 }: FlexProps) {
 
 	return <div

@@ -4,6 +4,8 @@ import ReactDom from 'react-dom'
 import Modal from './components/modal/modal';
 import Upload from './components/upload/upload';
 import Tab from './components/tab/tab';
+import Flex from './components/flex/flex';
+import FlexItem from './components/flex_item/flex_item';
 
 import * as GOJI from 'goji_ui'
 
@@ -97,6 +99,13 @@ function App() {
 		>
 			请选择文件
 		</Upload>
+
+		<Flex>
+			<FlexItem> 1</FlexItem>
+			<FlexItem> 1</FlexItem>
+			<FlexItem> 1</FlexItem>
+		</Flex>
+
 	</div >
 }
 

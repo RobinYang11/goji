@@ -79,12 +79,13 @@ interface TabProps extends BaseProps {
 }
 declare function Tab(props: TabProps): JSX.Element;
 
-interface FlexProps {
-    children: ReactElement;
+interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
+    children: ReactNode;
     style?: any;
     className?: string;
+    itemSpace?: number | string;
 }
-declare function Flex({ children, style, className, }: FlexProps): JSX.Element;
+declare function Flex({ children, style, className, itemSpace, }: FlexProps): JSX.Element;
 
 interface FlexItemProps {
     children: ReactNode;
