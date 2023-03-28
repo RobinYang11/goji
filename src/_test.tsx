@@ -1,22 +1,19 @@
-
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
+import ReactDom from 'react-dom';
 import Modal from './components/modal/modal';
 import Upload from './components/upload/upload';
 import Tab from './components/tab/tab';
 
-import { createRoot } from 'react-dom/client'
-
-import { TestTable } from './testTable';
-
-
-import * as GOJI from 'goji_ui'
-import MyModal from './components/myModal';
+import * as GOJI from 'goji_ui';
+import Popover from './components/Popover';
 
 function App() {
-  const [visible, setVisible] = useState(false)
-  const [ev, setEv] = useState(false)
-  return <div>
-    {/* <GOJI.Tab
+  const [visible, setVisible] = useState(false);
+  const [ev, setEv] = useState(false);
+  const anchorRef = useRef(null);
+  return (
+    <div>
+      {/* <GOJI.Tab
 			extSelector={'.tab'}
 			extension={<div>这是扩展的内容</div>}
 			items={[
@@ -33,127 +30,97 @@ function App() {
 			]}
 		/> */}
 
-		<TestTable />
-    
-		<h1>test</h1>
-		<button
-			onClick={() => {
-				setVisible(true)
-			}}
-		>
-			show modal
-		</button>
-		<Tab
-			onTabChange={() => {
-				setEv(true)
-			}}
-			hiddenStyle={{
-				height: '0px',
-				overflow: 'hidden'
-			}}
-			tabContentVisible={ev}
-			extSelector={'[aria-label="tab"]'}
-			extension={<div onClick={() => { setEv(!ev) }} className="ext">这是扩展的内容</div>}
-			items={[
-				{
-					title: "tab1",
-					key: "tab1",
-					children: <div>tab1</div>
-				},
-				{
-					title: "tab2",
-					key: "tab2",
-					children: <div>tab2</div>
-				}
-			]}
-		/>
-
-		<Modal
-    <h1>test</h1>
-    <button
-      onClick={() => {
-        setVisible(true)
-      }}
-    >
-      show modal
-    </button>
-    <Tab
-      onTabChange={() => {
-        setEv(true)
-      }}
-      hiddenStyle={{
-        height: '0px',
-        overflow: 'hidden'
-      }}
-      tabContentVisible={ev}
-      extSelector={'[aria-label="tab"]'}
-      extension={<div onClick={() => { setEv(!ev) }} className="ext">这是扩展的内容</div>}
-      items={[
-        {
-          title: "tab1",
-          key: "tab1",
-          children: <div>tab1</div>
-        },
-        {
-          title: "tab2",
-          key: "tab2",
-          children: <div>tab2</div>
+      <h1>test</h1>
+      <button
+        onClick={() => {
+          setVisible(true);
+        }}
+      >
+        show modal
+      </button>
+      <Tab
+        onTabChange={() => {
+          setEv(true);
+        }}
+        hiddenStyle={{
+          height: '0px',
+          overflow: 'hidden'
+        }}
+        tabContentVisible={ev}
+        extSelector={'[aria-label="tab"]'}
+        extension={
+          <div
+            onClick={() => {
+              setEv(!ev);
+            }}
+            className="ext"
+          >
+            这是扩展的内容
+          </div>
         }
-      ]}
-    />
-    <MyModal
-      title='标题'
-      visible={visible}
-      Onclose={() => setVisible(false)}
-      header={
-        <div>自定义头部</div>
-      }
-      footer={
-        <div>自定义尾部</div>
-      }
-    >
-      <div>我是内容区我是内容区我是内容区我是内容区我是内容区我是内容区我是内容区我是内容区</div>
-    </MyModal>
-    {/* <Modal
-			// dontDestroyOnClose={true}
-			onClose={() => {
-				setVisible(false)
-			}}
-			visible={visible}
-		>
-			<div>
-				how to set default value for typescript interface field
-				<input type="text" />
-			</div>
-		</Modal> */}
+        items={[
+          {
+            title: 'tab1',
+            key: 'tab1',
+            children: <div>tab1</div>
+          },
+          {
+            title: 'tab2',
+            key: 'tab2',
+            children: <div>tab2</div>
+          }
+        ]}
+      />
 
-    <Upload
-      uploadUrl='/api/video-service/upload'
-      beforeUpload={(f) => {
-        for (var i = 0; i < f.length; i++) {
-          console.log(f[i].name)
-        }
-        return new Promise((r, j) => {
-          setTimeout(() => {
-            r(f)
-          }, 1000);
-        })
-      }}
+      <Modal
+        // dontDestroyOnClose={true}
+        onClose={() => {
+          setVisible(false);
+        }}
+        visible={visible}
+      >
+        <div>
+          how to set default value for typescript interface field
+          <input type="text" />
+        </div>
+      </Modal>
 
-      valueFilter={({ response }) => {
-        return (response as Record<string, Object>).url
-      }}
-      onComplete={(res: any[]) => {
-        console.log(res)
-      }}
-    >
-      请选择文件
-    </Upload>
-  </div >
+      <Upload
+        uploadUrl="/api/video-service/upload"
+        beforeUpload={f => {
+          for (var i = 0; i < f.length; i++) {
+            console.log(f[i].name);
+          }
+          return new Promise((r, j) => {
+            setTimeout(() => {
+              r(f);
+            }, 1000);
+          });
+        }}
+        valueFilter={({ response }) => {
+          return (response as Record<string, Object>).url;
+        }}
+        onComplete={(res: any[]) => {
+          console.log(res);
+        }}
+      >
+        请选择文件
+      </Upload>
+      <div ref={anchorRef}></div>
+      <Popover placement="right" overlay={'文本节点popover'}>
+        文本节点
+      </Popover>
+      <Popover placement="left" autoAdjustOverflow overlay={'autoAdjustOverflow popover'}>
+        <div style={{ width: 300, border: '1px solid #ddd', marginTop: 10 }}>autoAdjustOverflow</div>
+      </Popover>
+      <Popover placement="bottom" overlay={'bottom popover'}>
+        <div style={{ width: 300, border: '1px solid #ddd', marginTop: 10 }}>bottom</div>
+      </Popover>
+      <Popover placement="top" overlay={'top popover'}>
+        <div style={{ width: 300, border: '1px solid #ddd', marginTop: 10 }}>top</div>
+      </Popover>
+    </div>
+  );
 }
 
-const root = createRoot(document.getElementById("app")!)
-root.render(<App />)
-
-
-
+ReactDom.render(<App />, document.getElementById('app'));

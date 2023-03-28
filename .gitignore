@@ -8,3 +8,5 @@
 
 # Build output
 /dist
+.eslintcache
+docs/*

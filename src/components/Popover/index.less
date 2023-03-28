@@ -1,0 +1,27 @@
+:root {
+  --go-ji-ui-color-bg: #fff;
+  --go-ji-ui-shadow-elevated: 0 0 1px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.1);
+  --go-ji-ui-border-radius-medium: 6px;
+}
+
+.go-ji-ui-popover {
+  background-color: var(--go-ji-ui-color-bg);
+  box-shadow: var(--go-ji-ui-shadow-elevated);
+  border-radius: var(--go-ji-ui-border-radius-medium);
+  font-size: 14px;
+  line-height: 20px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei,
+    Helvetica Neue, Helvetica, Arial, sans-serif;
+  opacity: 1;
+
+  &-content {
+    padding: 12px;
+  }
+
+  &-compute {
+    position: absolute;
+    padding: 12px;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
