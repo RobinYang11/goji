@@ -11,14 +11,15 @@ interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
 	itemSpace?: number | string,
 }
 
-export default function Flex({
-	children,
-	style,
-	className,
-	itemSpace,
-}: FlexProps) {
-
+export default function Flex(props: FlexProps) {
+	const {
+		children,
+		style,
+		className,
+		itemSpace,
+	} = props;
 	return <div
+		{...props}
 		style={style}
 		className={`${styles.flex} ${className}`}
 	>

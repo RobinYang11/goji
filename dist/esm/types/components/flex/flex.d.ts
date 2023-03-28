@@ -5,5 +5,5 @@ interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
     className?: string;
     itemSpace?: number | string;
 }
-export default function Flex({ children, style, className, itemSpace, }: FlexProps): JSX.Element;
+export default function Flex(props: FlexProps): JSX.Element;
 export {};

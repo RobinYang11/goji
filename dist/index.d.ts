@@ -85,7 +85,7 @@ interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
     className?: string;
     itemSpace?: number | string;
 }
-declare function Flex({ children, style, className, itemSpace, }: FlexProps): JSX.Element;
+declare function Flex(props: FlexProps): JSX.Element;
 
 interface FlexItemProps {
     children: ReactNode;
