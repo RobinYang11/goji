@@ -1,247 +1,211 @@
-
 <template>
   <div class="App">
-    要做 {{msg}} 的码农
-  </div>
+    <div class="Division-line">{{'-------------------以下是表格组件---------------------'}}</div>
+    <!--    Question 1.以下是表格组件-->
+    <CaseyTable :columns="columns" :data="TableData" />
 
-  <!-- Modal组件 -->
-  <div class="box">
-    <div class="title">Modal组件</div>
-    <button @click="toShowModal">showModal</button>
-    <Modal v-model="showModal" ref="modalRef">
-      <template #header="{title}">
-        <div class="__modal_title _um-_not-chooseable">{{ title }}</div>
-        <div class="__modal_hr"></div>
+    <div class="Division-line">{{'-------------------以下是弹框组件---------------------'}}</div>
+    <!--    Question 2.以下是弹框组件-->
+    <button @click="showDialog">显示弹框</button>
+    <CaseyModal :visible.sync="dialogVisible" title="自定义标题">
+      <p>这是弹框的内容</p>
+      <template #footer>
+        <button @click="handleOK">确定</button>
+        <button @click="handleCancel">取消</button>
       </template>
-      我是 {{ msg }} 的 Modal 组件
-      <template #footer="{close, submit, cancelText, submitText}">
-        <button class="__modal_foot_btn" @click="close">{{ cancelText }}</button>
-        <button class="__modal_foot_btn" @click="submit">{{ submitText }}</button>
-      </template>
-    </Modal>
-  </div>
+    </CaseyModal>
+    <Demo />
+    <LoadImage :imageList="imageUrls" />
+    <!-- Modal组件 -->
+    <div class="box">
+      <div class="title">Modal组件</div>
+      <button @click="toShowModal">showModal</button>
+      <Modal v-model="showModal" ref="modalRef">
+        <template #header="{title}">
+          <div class="__modal_title _um-_not-chooseable">{{ title }}</div>
+          <div class="__modal_hr"></div>
+        </template>
+        我是 {{ msg }} 的 Modal 组件
+        <template #footer="{close, submit, cancelText, submitText}">
+          <button class="__modal_foot_btn" @click="close">{{ cancelText }}</button>
+          <button class="__modal_foot_btn" @click="submit">{{ submitText }}</button>
+        </template>
+      </Modal>
+    </div>
 
-  <!-- Popover组件 -->
-  <div class="box">
-    <div class="title">Popover组件</div>
-    <div class="scroll" ref="scrollBox">
-      <div class="scroll-content">
-        <Popover class="my-pop mt" trigger="click" title="click pop">
-          <button>click me</button>
-          <template #content>
-            <div class="pop-content">
-              我是 <span class="pop-color">{{ msg }}</span> 的内容!
-            </div>
-          </template>
-        </Popover>
-        <br>
-        <Popover class="my-pop" :showTitle="false" @popShow="popShow" @popClose="popClose">
-          <button>hover me</button>
-        </Popover>
+    <!-- Popover组件 -->
+    <div class="box">
+      <div class="title">Popover组件</div>
+      <div class="scroll" ref="scrollBox">
+        <div class="scroll-content">
+          <Popover class="my-pop mt" trigger="click" title="click pop">
+            <button>click me</button>
+            <template #content>
+              <div class="pop-content">
+                我是 <span class="pop-color">{{ msg }}</span> 的内容!
+              </div>
+            </template>
+          </Popover>
+          <br>
+          <Popover class="my-pop" :showTitle="false" @popShow="popShow" @popClose="popClose">
+            <button>hover me</button>
+          </Popover>
+        </div>
       </div>
     </div>
+
+    <!-- LoadImage组件 -->
+    <div class="box">
+      <div class="title">LoadImage组件</div>
+      <LoadImage :data="dataList" :isOver="isOver" @lazyLoad="lazyLoad"></LoadImage>
+    </div>
+
+    <!-- Table组件 -->
+    <div class="box">
+      <div class="title">Table组件</div>
+      <Table :data="tableData" :col="col"></Table>
+    </div>
+
+
+    <!-- 我只是来撑开window的滚动条的 -->
+    <div style="height: 500px;"></div>
   </div>
 
-  <!-- LoadImage组件 -->
-  <div class="box">
-    <div class="title">LoadImage组件</div>
-    <LoadImage :data="dataList" :isOver="isOver" @lazyLoad="lazyLoad"></LoadImage>
-  </div>
 
-  <!-- Table组件 -->
-  <div class="box">
-    <div class="title">Table组件</div>
-    <Table :data="tableData" :col="col"></Table>
-  </div>
-
-
-  <!-- 我只是来撑开window的滚动条的 -->
-  <div style="height: 500px;"></div>
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from 'vue'
-import Modal from './components/modal/index.vue'
-import Popover from './components/popover/index.vue'
-import LoadImage from './components/loadImage/index.vue'
-import Table from './components/table/index.vue'
-
-export default defineComponent({
-  name: 'App',
-  components: {
-    Modal,
-    Popover,
-    LoadImage,
-    Table,
-  },
-  setup (props) {
-    const msg = ref('有追求')
-
-    // -------------------- modal --------------------
-    const modalRef = ref(null)
-    const showModal = ref(false)
-    const toShowModal = () => {
-      showModal.value = true
-      setTimeout(() => {
-        // 可以通过 modalRef.value.close() 方法来关闭弹框
-        modalRef.value.close()
-      }, 3000)
-    }
-    // -------------------- modal --------------------
-
-
-
-
-    // -------------------- popover --------------------
-    const scrollBox = ref(null)
-    onMounted(() => { // 设置初始滚动条 - 测试用
-      scrollBox.value.scrollLeft = 300
-      scrollBox.value.scrollTop = 480
-    })
-    const popShow = () => {
-      console.log('我展示了!')
-    }
-    const popClose = () => {
-      console.log('我消失了!')
-    }
-    // -------------------- popover --------------------
-
-
-
-
-    // -------------------- loadImage --------------------
-    const urlList = [
-      'https://pic.3gbizhi.com/2020/0715/20200715125404687.jpg', 'https://img1.baidu.com/it/u=3069316274,2216493367&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422',
-      'https://img0.baidu.com/it/u=3298051423,2256566422&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=683', 'https://img1.baidu.com/it/u=668908956,3142956363&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=800',
-      'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F3d901398-5fff-4b1b-9b39-e8d37d9ac62c%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1682136309&t=8cdf6b2519283cabffb2ac188e9fd588', 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2Fdea210ca-3743-4f2a-b9b1-c2c3b185ae52%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1682136309&t=aa59fc3e4b6f3d5012e5bfdf98effd5e',
-      'https://img2.baidu.com/it/u=3447143413,168358415&fm=253&fmt=auto&app=138&f=JPEG?w=347&h=500', 'https://file.moyublog.com/d/file/2020-12-19/67da057fd7824f2a2f367cf488790ac2.jpg',
-      'https://img2.baidu.com/it/u=4223569044,1151190333&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=800', 'https://www.gpbctv.com/uploads/20210527/zip_1622099026QUAPEW.jpg'
-    ]
-
-    const getId = () => {
-      return Math.ceil(Math.random() * 100000000)
-    }
-
-    const isOver = ref(false)
-    const dataList = ref(urlList.map(url => ({ id: getId(), url })))
-
-    const getUrls = () => { // 模拟一次获取10张图片的接口
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(urlList.map(url => ({ id: getId(), url })))
-        }, 500)
-      })
-    }
-
-    const lazyLoad = () => { // 滚动加载
-      getUrls().then(urlList => {
-        const result = [...dataList.value, ...urlList]
-        // 当一共加载超过50张图片后, 标记所有图片已经加载完毕(测试)
-        if (result.length >= 50) isOver.value = true
-        dataList.value = result
-      })
-    }
-    // -------------------- loadImage --------------------
-
-
-
-
-    // -------------------- table --------------------
-    const tableDataMap = [
-      { name: '张一', sex: '男', age: 43, address: 'I\'m address ...', key: 1 },
-      { name: '张二', sex: '女', age: 32, address: 'I\'m address ...', key: 2 },
-      { name: '张三', sex: '男', age: 54, address: 'I\'m address ...', key: 3 },
-      { name: '张四', sex: '女', age: 36, address: 'I\'m address ...', key: 4 },
-      { name: '张五', sex: '男', age: 38, address: 'I\'m address ...', key: 5 },
-      { name: '张六', sex: '女', age: 31, address: 'I\'m address ...', key: 6 },
-      { name: '张七', sex: '男', age: 25, address: 'I\'m address ...', key: 7 },
-      { name: '张八', sex: '女', age: 35, address: 'I\'m address ...', key: 8 },
-      { name: '张九', sex: '男', age: 37, address: 'I\'m address ...', key: 9 },
-      { name: '张十', sex: '女', age: 35, address: 'I\'m address ...', key: 10 },
-      { name: '张十一', sex: '男', age: 39, address: 'I\'m address ...', key: 11 },
-      { name: '张十二', sex: '女', age: 20, address: 'I\'m address ...', key: 12 },
-      { name: '张十三', sex: '男', age: 28, address: 'I\'m address ...', key: 13 },
-      { name: '张十四', sex: '女', age: 26, address: 'I\'m address ...', key: 14 },
-      { name: '张十五', sex: '男', age: 27, address: 'I\'m address ...', key: 15 },
-      { name: '张十六', sex: '女', age: 29, address: 'I\'m address ...', key: 16 },
-      { name: '张十七', sex: '男', age: 21, address: 'I\'m address ...', key: 17 },
-      { name: '张十八', sex: '女', age: 24, address: 'I\'m address ...', key: 18 },
-      { name: '张十九', sex: '男', age: 30, address: 'I\'m address ...', key: 19 },
-      { name: '张二十', sex: '女', age: 28, address: 'I\'m address ...', key: 20 },
-    ]
-
-    const tableData = ref(tableDataMap.slice(0, 10))
-    const col = ref([
-      {
-        title: '名称',
-        dataIndex: 'name',
-        sorter: false,
-        filter: false
+  import CaseyTable from './components/CaseyTable/index.vue';
+  import CaseyModal from './components/CaseyModal/index.vue';
+  import Demo from './components/demo.vue';
+  import LoadImage from './components/LoadImage/index.vue';
+  export default {
+    components: {
+      Demo,
+      LoadImage,
+      CaseyTable,
+      CaseyModal,
+    },
+    name: 'App',
+    data() {
+      return {
+        // 表头
+        columns: [{
+            title: '姓名',
+            key: 'name',
+            width: '120'
+          },
+          {
+            title: '性别',
+            key: 'sex',
+            width: '60'
+          },
+          {
+            title: '年龄',
+            key: 'age',
+            width: '60'
+          }
+        ],
+        // 表格数据
+        TableData: [{
+            name: '小明',
+            sex: '男',
+            age: '25'
+          },
+          {
+            name: '小红',
+            sex: '女',
+            age: '26'
+          },
+          {
+            name: '小刚',
+            sex: '男',
+            age: '28'
+          },
+          {
+            name: '小蓝',
+            sex: '女',
+            age: '21'
+          },
+          {
+            name: '花花',
+            sex: '女',
+            age: '21'
+          },
+          {
+            name: '明明',
+            sex: '男',
+            age: '21'
+          }
+        ],
+        // 弹框显示
+        dialogVisible: false,
+        msg: "有追求的",
+        imageUrls: [
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679397002175-cf3fa427bfa4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
+          'https://images.unsplash.com/photo-1679392454750-a02b9753e683?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679398380337-d953e0f65e60?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+          'https://images.unsplash.com/photo-1679400859117-2b2b877fb38c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
+        ],
+      };
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
       },
-      {
-        title: '性别',
-        dataIndex: 'sex',
-        sorter: false,
-        filter: true
+      handleOK() {
+        this.dialogVisible = false;
+        // 确定按钮的逻辑
       },
-      {
-        title: '年龄',
-        dataIndex: 'age',
-        sorter: true,
-        filter: false
+      handleCancel() {
+        this.dialogVisible = false;
+        // 取消按钮的逻辑
       },
-      {
-        title: '地址',
-        dataIndex: 'address',
-        sorter: false,
-        filter: false
-      }
-    ])
-    // -------------------- table --------------------
-
-    return {
-      msg,
-
-      // modal prop
-      showModal,
-      toShowModal,
-      modalRef,
-
-      // popover prop
-      scrollBox,
-      popShow,
-      popClose,
-
-      // loadImage prop
-      isOver,
-      dataList,
-      lazyLoad,
-
-      // table prop
-      tableData,
-      col,
     }
   }
-})
 </script>
-
-<style>
-._not-chooseable { user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
-
-.box { padding: 20px; }
-.title { font-size: 18px; font-weight: 900; padding: 10px 0; }
-.scroll { width: 500px; height: 300px; background: rgba(0, 0, 0, .03); overflow: auto; }
-.scroll-content { width: 2000px; height: 2000px; }
-
-
-/* modal */
-.__modal_title { width: calc(100% - 60px); line-height: 40px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 16px; font-weight: 700; position: relative; left: 10px; top: 0; }
-.__modal_hr { width: calc(100% - 20px); height: 1px; background: #DCDFE6; transform-origin: center bottom; transform: scale(1, .5); position: absolute; left: 10px; bottom: 0; }
-.__modal_foot_btn { min-width: 80px; min-height: 30px; margin-right: 10px; }
-
-/* popover */
-.my-pop { margin-top: 100px; margin-left: 380px; }
-.mt { margin-top: 500px; }
-.pop-content { padding: 10px; font-size: 14px; }
-.pop-color { color: salmon; }
-</style>
+<style scoped>
+  .App{
+  height: 1500px;
+  }
+  .Division-line{
+  text-align: center;
+  margin: 20px auto;
+  }
+  </style>
