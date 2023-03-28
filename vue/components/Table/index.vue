@@ -164,6 +164,7 @@ export default {
   position: relative;
   .table-wrapper {
     display: table;
+    width: 100%;
     border: 1px solid #ebeef5;
   }
   .my-table {
@@ -208,8 +209,14 @@ export default {
         
       }
     }
+    
     img {
       width: 16px;
+    }
+    tbody {
+      tr:last-child {
+        border: none;
+      }
     }
   } 
 
