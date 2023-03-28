@@ -67,6 +67,7 @@
     "ts-jest": "^29.0.5",
     "tslib": "^2.5.0",
     "typescript": "^4.9.5",
+    "url-loader": "^4.1.1",
     "vue": "^3.2.47",
     "vue-loader": "^17.0.1",
     "vue-template-compiler": "^2.7.14",
@@ -77,6 +78,8 @@
   "dependencies": {
     "@types/uuid": "^9.0.1",
     "framer-motion": "^8.5.5",
+    "mockjs": "^1.1.0",
+    "svg-sprite-loader": "^6.0.11",
     "uuid": "^9.0.0"
   }
 }
