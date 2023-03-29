@@ -1,0 +1,156 @@
+.dropDown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--white-shadow);
+  padding: 12px 24px;
+  cursor: pointer;
+  position: relative;
+  border-radius: 5px;
+}
+.dropDown .dropDownOption {
+  background: var(--white);
+  width: 100%;
+  box-shadow: var(--white-shadow);
+  padding: 2px;
+}
+.dropDown .dropDownOption .dropDownOptionItem {
+  padding: 12px;
+  color: var(--black);
+}
+.dropDown .dropDownOption .dropDownOptionItem:hover {
+  background: var(--background);
+  color: var(--fadedGary);
+}
+.dropDown .PositionTop {
+  position: absolute;
+  top: -12px;
+  left: 0;
+  transform: translateY(-100%);
+  background: var(--white);
+  width: 100%;
+  box-shadow: var(--white-shadow);
+}
+.dropDown .PositionTop::after {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 8px;
+  border-color: #ffffff transparent transparent transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: 91px;
+  right: 45%;
+  z-index: 99;
+}
+.dropDown .PositionTop::before {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 8px;
+  border-color: #ffffff transparent transparent transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: 91px;
+  right: 45%;
+  z-index: 99;
+}
+.dropDown .PositionTopRight {
+  position: absolute;
+  top: -12px;
+  left: 0;
+  transform: translateY(-100%);
+  background: var(--white);
+  width: 100%;
+  box-shadow: var(--white-shadow);
+}
+.dropDown .PositionTopRight::after {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 8px;
+  border-color: #ffffff transparent transparent transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: 91px;
+  right: 9px;
+  z-index: 99;
+}
+.dropDown .PositionTopRight::before {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 8px;
+  border-color: #ffffff transparent transparent transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: 91px;
+  right: 9px;
+  z-index: 99;
+}
+.dropDown .PositionBottom {
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  transform: translateY(100%);
+  background: var(--white);
+  width: 100%;
+  box-shadow: var(--white-shadow);
+}
+.dropDown .PositionBottom::after {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 8px;
+  border-color: transparent transparent #ffffff transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -14px;
+  right: 45%;
+  z-index: 99;
+}
+.dropDown .PositionBottom::before {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 8px;
+  border-color: transparent transparent #ffffff transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -14px;
+  right: 45%;
+  z-index: 99;
+}
+.dropDown .PositionBottomRight {
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  transform: translateY(100%);
+  background: var(--white);
+  width: 100%;
+  box-shadow: var(--white-shadow);
+}
+.dropDown .PositionBottomRight::after {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: transparent transparent #a07676 transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 9px;
+  z-index: 99;
+}
+.dropDown .PositionBottomRight::before {
+  width: 0;
+  height: 0;
+  content: "";
+  border-width: 6px;
+  border-color: transparent transparent #884b4b transparent;
+  border-style: dashed dashed solid dashed;
+  position: absolute;
+  top: -11px;
+  right: 9px;
+  z-index: 99;
+}

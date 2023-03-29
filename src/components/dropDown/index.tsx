@@ -1,23 +1,22 @@
 import React, { ReactNode, useState } from "react";
 import { createPortal } from "react-dom";
-import styles from "./dropDown.module.less";
-import Model from "./model";
-
+import "./dropDown.less";
+import { v4 as uuidv4 } from "uuid";
 type trigger = "click" | "hover";
 type position = "bottomRight" | "bottom" | "top" | "topRight";
 
 interface IDropDown {
-  // trigger?: ("click" | "hover")[];
   trigger: trigger;
   style?: React.CSSProperties;
   className?: string;
   children?: ReactNode;
   visible?: boolean;
-  disable?: boolean;
-  modelContent: object[];
+  setVisible?: any;
+  modelContent?: object[] | undefined;
   width?: number;
   position?: position;
   onChangeVisible: () => void;
+  icons: ReactNode[];
 }
 
 const DropDown: React.FC<IDropDown> = ({
@@ -27,94 +26,88 @@ const DropDown: React.FC<IDropDown> = ({
   className,
   children,
   visible,
-  disable,
   modelContent,
   position,
+  icons,
+  setVisible,
   onChangeVisible,
 }) => {
-  const [show, setShow] = useState(visible);
-  const dropDown = document.getElementById("dropDown") as HTMLElement;
+  // const dropDown = document.getElementById("dropDown") as HTMLElement;
 
-  const fixedPosition = {
-    bottomRight: {
-      top: "30px",
-    },
-    bottom: {
-      top: "30px",
-    },
-    top: {
-      bottom: "30px",
-    },
-    topRight: {
-      bottom: "30px",
-    },
+  const [optionValue, setOptionValue] = useState(children);
+
+  const fixedPosition = (position: position) => {
+    switch (position) {
+      case "bottom":
+        return "PositionBottom";
+      case "bottomRight":
+        return "PositionBottomRight";
+      case "top":
+        return "PositionTop";
+      case "topRight":
+        return "PositionTopRight";
+      default:
+        break;
+    }
   };
 
-  const modelClassName = {
-    bottom: "modelCenter",
-    bottomLeft: "modelLeft",
-    top: "modelTopCenter",
-    topRight: "modelTopRight",
+  const handleSelected = (option: unknown) => {
+    setOptionValue(option?.label);
+    setVisible(false);
   };
 
   return (
     <>
-      {trigger === "hover" ? (
+      {trigger === "click" ? (
         <div
-          id="dropDown"
-          className={styles.dropDown}
-          onMouseEnter={() => setShow(true)}
-          onMouseLeave={() => setShow(false)}
+          className="dropDown"
+          onClick={() => onChangeVisible()}
+          style={{ width: `${width}px`, ...style }}
         >
-          <button disabled={disable} className={styles.dropDownButton}>
-            {children}
-          </button>
-          {(show === true || visible === true) &&
-            createPortal(
-              <div
-                className={styles.modelCenter}
-                style={{ width: `${width}px`, ...fixedPosition[position] }}
-              >
-                <ul className={styles.modelList}>
-                  {modelContent?.map((item) => {
-                    return (
-                      <li key={item?.id} className={styles.modalListItem}>
-                        {item?.label}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>,
-              dropDown
-            )}
+          {optionValue}
+          {visible ? icons[0] : icons[1]}
+          {visible && (
+            <div className={`dropDownOption ${fixedPosition(position)}`}>
+              {modelContent?.length > 0 &&
+                modelContent?.map((option: unknown) => {
+                  return (
+                    <div
+                      key={uuidv4()}
+                      className="dropDownOptionItem"
+                      onClick={() => handleSelected(option)}
+                    >
+                      {option?.label}
+                    </div>
+                  );
+                })}
+            </div>
+          )}
         </div>
       ) : (
-        <div id="dropDown" className={styles.dropDown}>
-          <button
-            onClick={() => onChangeVisible()}
-            disabled={disable}
-            className={styles.dropDownButton}
-          >
-            {children}
-          </button>
-          {(show === true || visible === true) &&
-            createPortal(
-              <div
-                className={styles.modelCenter}
-                style={{ width: `${width}px`, ...fixedPosition[position] }}
-              >
-                <ul className={styles.modelList}>
-                  {modelContent?.map((item) => {
-                    return (
-                      <li key={item?.id} className={styles.modalListItem}>
-                        {item?.label}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>,
-              dropDown
-            )}
+        <div
+          className="dropDown"
+          style={{ width: `${width}px`, ...style }}
+          onMouseEnter={() => setVisible(true)}
+          onMouseLeave={() => setVisible(false)}
+        >
+          {optionValue}
+          {visible ? icons[0] : icons[1]}
+          {visible && (
+            <div className={`dropDownOption ${fixedPosition(position)}`}>
+              {modelContent?.length > 0 &&
+                modelContent?.map((option: unknown) => {
+                  return (
+                    <div
+                      key={uuidv4()}
+                      className="dropDownOptionItem"
+                      onClick={() => handleSelected(option)}
+                    >
+                      {option?.label}
+                    </div>
+                  );
+                })}
+            </div>
+          )}
         </div>
       )}
     </>

@@ -5,6 +5,8 @@ import Upload from "./components/upload/upload";
 import Tab from "./components/tab/tab";
 import * as GOJI from "goji_ui";
 import DropDown from "./components/dropDown";
+import Button from "./components/button/button";
+import "./_test.less";
 
 function App() {
   const [visible, setVisible] = useState(false);
@@ -72,18 +74,18 @@ function App() {
         ]}
       />
 
-		<Modal
-			// dontDestroyOnClose={true}
-			onClose={() => {
-				setVisible(false)
-			}}
-			visible={visible}
-		>
-			<div>
-				how to set default value for typescript interface field
-				<input type="text" />
-			</div>
-		</Modal>
+      <Modal
+        // dontDestroyOnClose={true}
+        onClose={() => {
+          setVisible(false);
+        }}
+        visible={visible}
+      >
+        <div>
+          how to set default value for typescript interface field
+          <input type="text" />
+        </div>
+      </Modal>
 
       <Upload
         uploadUrl="/api/video-service/upload"
@@ -107,51 +109,113 @@ function App() {
         请选择文件
       </Upload>
 
-      <DropDown
+      {/* <DropDown
         trigger={"click"}
         visible={modalVisible}
+        setVisible={setModalVisible}
         onChangeVisible={() => {
           setModalVisible(!modalVisible);
         }}
-				position="topRight"
+        position="topRight"
         width={150}
-        disable={false}
-        style={{
-          width: "100px",
-          height: "100px",
-          backgroundColor: "green",
-        }}
         modelContent={[
           {
             id: "1",
-            label: (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="#"
-              >
-                1st menu item
-              </a>
-            ),
+            label: "first Item",
           },
           {
             id: "2",
-            label: (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="#"
-              >
-                2nd menu item
-              </a>
-            ),
+            label: "second Item",
           },
-        ]
-			}
+        ]}
         // className={"modless"}
       >
-        SHOW MODEL <img src="../static/下箭头.jpg"/>
+        SHOW MODEL
+      </DropDown> */}
+
+      <DropDown
+        trigger={"hover"}
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        onChangeVisible={() => {
+          setModalVisible(!modalVisible);
+        }}
+        position="bottom"
+        width={150}
+        modelContent={[
+          {
+            id: "1",
+            label: "first Item",
+          },
+          {
+            id: "2",
+            label: "second Item",
+          },
+        ]}
+        icons={[
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="icon icon-tabler icon-tabler-chevron-down"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M6 9l6 6l6 -6"></path>
+          </svg>,
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="icon icon-tabler icon-tabler-chevron-up"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M6 15l6 -6l6 6"></path>
+          </svg>,
+        ]}
+        // className={"modless"}
+      >
+        SHOW MODEL
       </DropDown>
+
+      <Button
+        type="primary"
+        onBtnClick={() => {
+          console.log("primary");
+        }}
+      >
+        primary
+      </Button>
+      <Button />
+      <Button
+        type="dashed"
+        onBtnClick={() => {
+          alert("Dashed Button");
+        }}
+      >
+        dashed
+      </Button>
+      <Button type="link">Link</Button>
+      <Button type="text">Text</Button>
+      <Button shape="round">Circle</Button>
+      <Button shape="circle" type="primary">
+        A
+      </Button>
+      <Button icon="" iconPos="left">
+        会计师
+      </Button>
+      <Button disable={true}> disable</Button>
     </div>
   );
 }

@@ -1,0 +1,61 @@
+.gojiButton {
+  display: inline-block;
+  font-size: 14px;
+  padding: 4px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+  text-align: center;
+  border: 1px solid;
+  margin: 6px;
+  line-height: 30px;
+}
+.gojiButton:hover {
+  color: red;
+}
+.primaryButton {
+  font-size: 14px;
+  padding: 4px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #fff;
+  list-style: none;
+  color: rgba(0, 0, 0, 0.88);
+  text-align: center;
+  border: 1px solid;
+}
+.primaryButton:hover {
+  background-color: green !important;
+  color: #fff !important;
+}
+.linkButton {
+  border: none;
+  color: green;
+}
+.linkButton:hover {
+  color: #1f77db !important;
+}
+.textButton {
+  border: none;
+}
+.textButton:hover {
+  background-color: #b3b4b4;
+  color: #000;
+}
+.round {
+  border-radius: 40px;
+}
+.circle {
+  border-radius: 50%;
+}
+.dashedButton {
+  border: 1px dashed;
+}
+.disableButton {
+  cursor: not-allowed !important;
+  border-color: #d9d9d9;
+  color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.04);
+  box-shadow: none;
+}

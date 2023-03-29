@@ -1,12 +1,16 @@
+import classNames from "classnames";
 import React from "react";
 import { createPortal } from "react-dom";
-import styles from "./dropDown.less";
+import styles from "./dropDown.module.less";
 
 interface IModel {
-  modelContent: object[];
-  dropDown?: HTMLElement;
-  width?: number;
-  fixedPosition: any;
+  modelContent: object[] | undefined;
+  dropDown?: HTMLElement | undefined;
+  width?: number | undefined;
+  fixedPosition?: any;
+  position?: string | undefined;
+  className?: string | undefined;
+  style?: React.CSSProperties;
 }
 
 const Model: React.FC<IModel> = ({
@@ -14,15 +18,18 @@ const Model: React.FC<IModel> = ({
   dropDown,
   width,
   fixedPosition,
+  position,
+  className,
+  style,
 }) => {
-  console.log('====',modelContent, dropDown, width, fixedPosition);
-
   return (
     <>
       {createPortal(
         <div
-          className={styles.modelCenter}
-          style={{ width: `${width}px`, ...fixedPosition[position] }}
+          className={`${styles.modelCenter} ${fixedPosition(
+            position
+          )} ${className}`}
+          style={{ width: `${width}px`, ...style }}
         >
           <ul className={styles.modelList}>
             {modelContent?.map((item) => {
