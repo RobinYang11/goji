@@ -76,6 +76,7 @@
   },
   "dependencies": {
     "@types/uuid": "^9.0.1",
+    "ant-design-vue": "^3.2.16",
     "framer-motion": "^8.5.5",
     "uuid": "^9.0.0"
   }
