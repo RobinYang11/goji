@@ -5,7 +5,6 @@
 [![Forkers repo roster for @RobinYang11/goji](https://reporoster.com/forks/RobinYang11/goji)](https://github.com/RobinYang11/goji/network/members)
 
 
-
 ### 前言
 
 在过去的 1000 次面试中总结出，通过短短 1 个小时的问答很难全面准确地考核面试者。这其中有各种因素 ,比如:
