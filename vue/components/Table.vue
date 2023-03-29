@@ -47,6 +47,6 @@ export default {
     created() {
         this.getColSort()
         this.getColFilter()
-    },
+    }
 }
 </script>
