@@ -134,7 +134,7 @@ function App() {
       </DropDown> */}
 
       <DropDown
-        trigger={"hover"}
+        trigger={"click"}
         visible={modalVisible}
         setVisible={setModalVisible}
         onChangeVisible={() => {
@@ -142,16 +142,21 @@ function App() {
         }}
         position="bottom"
         width={150}
-        modelContent={[
-          {
-            id: "1",
-            label: "first Item",
-          },
-          {
-            id: "2",
-            label: "second Item",
-          },
-        ]}
+        modelContent={
+          // 1111,
+          // "splic"
+          // "string"
+          [
+            {
+              id: "1",
+              label: "first Item",
+            },
+            {
+              id: "2",
+              label: "second Item",
+            },
+          ]
+        }
         icons={[
           <svg
             xmlns="http://www.w3.org/2000/svg"

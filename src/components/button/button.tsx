@@ -6,7 +6,7 @@ type type = "primary" | "link" | "dashed" | "text" | "disable";
 type shape = "round" | "circle";
 type iconPos = "left" | "right";
 
-interface IButton {
+type IButton = {
   type?: type | undefined;
   style?: React.CSSProperties | undefined;
   className?: string | undefined;
@@ -17,7 +17,7 @@ interface IButton {
   iconPos?: iconPos | undefined;
   herf?: string | undefined;
   onBtnClick?: () => void;
-}
+};
 
 const Button: React.FC<IButton> = ({
   type,
@@ -57,7 +57,6 @@ const Button: React.FC<IButton> = ({
         break;
     }
   };
-
 
   return (
     <button

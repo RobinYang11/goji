@@ -5,19 +5,19 @@ import { v4 as uuidv4 } from "uuid";
 type trigger = "click" | "hover";
 type position = "bottomRight" | "bottom" | "top" | "topRight";
 
-interface IDropDown {
+type IDropDown = {
   trigger: trigger;
   style?: React.CSSProperties;
   className?: string;
   children?: ReactNode;
   visible?: boolean;
   setVisible?: any;
-  modelContent?: object[] | undefined;
+  modelContent?: ReactNode | React.ReactNode[];
   width?: number;
   position?: position;
   onChangeVisible: () => void;
   icons: ReactNode[];
-}
+};
 
 const DropDown: React.FC<IDropDown> = ({
   trigger,
@@ -51,8 +51,12 @@ const DropDown: React.FC<IDropDown> = ({
     }
   };
 
-  const handleSelected = (option: unknown) => {
-    setOptionValue(option?.label);
+  const handleSelected = (option: ReactNode) => {
+    if (typeof option === "object") {
+      setOptionValue(option?.label);
+    } else {
+      setOptionValue(option);
+    }
     setVisible(false);
   };
 
@@ -68,7 +72,7 @@ const DropDown: React.FC<IDropDown> = ({
           {visible ? icons[0] : icons[1]}
           {visible && (
             <div className={`dropDownOption ${fixedPosition(position)}`}>
-              {modelContent?.length > 0 &&
+              {Array.isArray(modelContent) ? (
                 modelContent?.map((option: unknown) => {
                   return (
                     <div
@@ -79,7 +83,15 @@ const DropDown: React.FC<IDropDown> = ({
                       {option?.label}
                     </div>
                   );
-                })}
+                })
+              ) : (
+                <div
+                  className="dropDownOptionItem"
+                  onClick={() => handleSelected(modelContent)}
+                >
+                  {modelContent}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -94,7 +106,7 @@ const DropDown: React.FC<IDropDown> = ({
           {visible ? icons[0] : icons[1]}
           {visible && (
             <div className={`dropDownOption ${fixedPosition(position)}`}>
-              {modelContent?.length > 0 &&
+              {Array.isArray(modelContent) ? (
                 modelContent?.map((option: unknown) => {
                   return (
                     <div
@@ -105,7 +117,15 @@ const DropDown: React.FC<IDropDown> = ({
                       {option?.label}
                     </div>
                   );
-                })}
+                })
+              ) : (
+                <div
+                  className="dropDownOptionItem"
+                  onClick={() => handleSelected(modelContent)}
+                >
+                  {modelContent}
+                </div>
+              )}
             </div>
           )}
         </div>
