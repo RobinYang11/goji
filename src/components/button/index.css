@@ -1,7 +1,7 @@
 .gojiButton {
   display: inline-block;
   font-size: 14px;
-  padding: 4px 15px;
+  padding: 0px 15px;
   border-radius: 6px;
   cursor: pointer;
   background-color: #fff;
@@ -16,7 +16,7 @@
 }
 .primaryButton {
   font-size: 14px;
-  padding: 4px 15px;
+  padding: 0px 15px;
   border-radius: 6px;
   cursor: pointer;
   background-color: #fff;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.less";
 
 type IProps = {
-  value?: string | number | undefined;
+  value?: string | undefined;
   defaultValue?: string | number | undefined;
   maxLength?: number | undefined;
   onChange: (e: Event) => void;
@@ -18,7 +18,7 @@ const Input: React.FC<IProps> = ({
 
   useEffect(() => {
     if (value) {
-      let inputValues = value.split("").length;
+      let inputValues = value?.split("").length;
       setInputLength(inputValues);
     } else {
       setInputLength(0);
@@ -43,7 +43,7 @@ const Input: React.FC<IProps> = ({
 
   return (
     <>
-      <div className={inputLength < 10 ? "inputBox" : "action"}>
+      <div className={inputLength <= 10 ? "inputBox" : "action"}>
         <input
           value={value}
           defaultValue={defaultValue}

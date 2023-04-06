@@ -208,6 +208,7 @@ function App() {
       </Button>
       <Button type="link">Link</Button>
       <Button type="text">Text</Button>
+
       <Button shape="round">Circle</Button>
       <Button shape="circle" type="primary">
         A
@@ -216,6 +217,8 @@ function App() {
         会计师
       </Button>
       <Button disable={true}> disable</Button>
+
+      <Button onDoubleClick={() => {}}>123213213123</Button>
 
       <>
         <Alpha
