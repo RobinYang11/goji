@@ -1,0 +1,36 @@
+.inputBox {
+  border: 1px solid #036df7;
+  display: inline;
+  padding: 4px;
+  border-radius: 5px;
+  margin: 10px;
+}
+.inputBox input {
+  outline: none;
+  border: none;
+  height: 19px;
+}
+.inputBox .numberLimit {
+  font-size: 14px;
+}
+.action {
+  border: 1px solid red;
+  display: inline;
+  padding: 4px;
+  border-radius: 5px;
+  margin: 10px;
+}
+.action input {
+  outline: none;
+  border: none;
+  height: 19px;
+}
+.action .numberLimit {
+  font-size: 14px;
+}
+.message {
+  margin: 0;
+  padding: 0;
+  color: red;
+  font-size: 12px;
+}

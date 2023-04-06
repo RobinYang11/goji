@@ -12,7 +12,7 @@ type IDropDown = {
   children?: ReactNode;
   visible?: boolean;
   setVisible?: any;
-  modelContent?: ReactNode | React.ReactNode[];
+  modelContent?: ReactNode;
   width?: number;
   position?: position;
   onChangeVisible: () => void;
@@ -52,11 +52,7 @@ const DropDown: React.FC<IDropDown> = ({
   };
 
   const handleSelected = (option: ReactNode) => {
-    if (typeof option === "object") {
-      setOptionValue(option?.label);
-    } else {
-      setOptionValue(option);
-    }
+    setOptionValue(option);
     setVisible(false);
   };
 
@@ -72,26 +68,7 @@ const DropDown: React.FC<IDropDown> = ({
           {visible ? icons[0] : icons[1]}
           {visible && (
             <div className={`dropDownOption ${fixedPosition(position)}`}>
-              {Array.isArray(modelContent) ? (
-                modelContent?.map((option: unknown) => {
-                  return (
-                    <div
-                      key={uuidv4()}
-                      className="dropDownOptionItem"
-                      onClick={() => handleSelected(option)}
-                    >
-                      {option?.label}
-                    </div>
-                  );
-                })
-              ) : (
-                <div
-                  className="dropDownOptionItem"
-                  onClick={() => handleSelected(modelContent)}
-                >
-                  {modelContent}
-                </div>
-              )}
+              {modelContent}
             </div>
           )}
         </div>
@@ -106,26 +83,7 @@ const DropDown: React.FC<IDropDown> = ({
           {visible ? icons[0] : icons[1]}
           {visible && (
             <div className={`dropDownOption ${fixedPosition(position)}`}>
-              {Array.isArray(modelContent) ? (
-                modelContent?.map((option: unknown) => {
-                  return (
-                    <div
-                      key={uuidv4()}
-                      className="dropDownOptionItem"
-                      onClick={() => handleSelected(option)}
-                    >
-                      {option?.label}
-                    </div>
-                  );
-                })
-              ) : (
-                <div
-                  className="dropDownOptionItem"
-                  onClick={() => handleSelected(modelContent)}
-                >
-                  {modelContent}
-                </div>
-              )}
+              {modelContent}
             </div>
           )}
         </div>
