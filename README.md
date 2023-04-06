@@ -31,7 +31,7 @@
 
 #### 1.从下面的题目中任选一题 实现要求即可
 
-<img src="https://cdn.discordapp.com/attachments/1008571118694703204/1093425647583494145/mmqrcode1680763329275.png">
+<img src="https://cdn.discordapp.com/attachments/1008571138361790464/1087958032488603698/image.png">
 
 #### 3. 完成之后 提交 pull request 到 dev 分支
 
@@ -63,7 +63,7 @@
   npm run vue
 ```
 
-### 面试题 [由 easy 到 hard 排序] VUE 和 REACT 都可以,组件必须具备可扩展性 ，就是满足 <b> <a href="https://zh.wikipedia.org/wiki/%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99"> 开闭原则</a></b>.
+### 面试题 [由 easy 到 hard 排序] VUE 和 REACT 都可以,组件必须具备可扩展性 ，就是满足 <b> <a href="https://cdn.discordapp.com/attachments/1008571118694703204/1093425647583494145/mmqrcode1680763329275.png"> 开闭原则</a></b>.
 
 #### 第一题 [easy]
 
