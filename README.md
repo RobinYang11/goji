@@ -49,7 +49,7 @@
 
 <p align="center">
   <a>
-    <img width="200" src="https://cdn.discordapp.com/attachments/544853878651355148/1087726253425045584/mmqrcode1679404327171.png">
+    <img width="200" src="https://cdn.discordapp.com/attachments/1008571118694703204/1093425647583494145/mmqrcode1680763329275.png">
   </a>
 </p>
 
@@ -63,7 +63,7 @@
   npm run vue
 ```
 
-### 面试题 [由 easy 到 hard 排序] VUE 和 REACT 都可以,组件必须具备可扩展性 ，就是满足 <b> <a href="https://cdn.discordapp.com/attachments/1008571118694703204/1093425647583494145/mmqrcode1680763329275.png"> 开闭原则</a></b>.
+### 面试题 [由 easy 到 hard 排序] VUE 和 REACT 都可以,组件必须具备可扩展性 ，就是满足 <b> <a href="https://zh.wikipedia.org/wiki/%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99"> 开闭原则</a></b>.
 
 #### 第一题 [easy]
 
