@@ -31,7 +31,7 @@
 
 #### 1.从下面的题目中任选一题 实现要求即可
 
-<img src="https://cdn.discordapp.com/attachments/1008571027565072494/1093424946232950875/Screenshot_20230406_143743_com.tencent.mm.jpg">
+<img src="https://cdn.discordapp.com/attachments/1008571118694703204/1093425647583494145/mmqrcode1680763329275.png">
 
 #### 3. 完成之后 提交 pull request 到 dev 分支
 
