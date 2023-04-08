@@ -44,7 +44,8 @@
     <!-- LoadImage组件 -->
     <div class="box">
       <div class="title">LoadImage组件</div>
-      <LoadImage :data="dataList" :isOver="isOver" @lazyLoad="lazyLoad"></LoadImage>
+      <!-- <LoadImage :data="dataList" :isOver="isOver" @lazyLoad="lazyLoad"></LoadImage> -->
+      <qjLoadImage :list="dataList" @lazyLoad="lazyLoad"></qjLoadImage>
     </div>
 
     <!-- Table组件 -->
@@ -64,6 +65,7 @@ import {defineComponent, onMounted, ref} from 'vue'
 import Modal from './components/modal/index.vue'
 import Popover from './components/popover/index.vue'
 import LoadImage from './components/loadImage/index.vue'
+import qjLoadImage from './components/qjLoadImage/index.vue'
 import Table from './components/table/index.vue'
 import Demo from './components/demo.vue'
 
@@ -74,7 +76,8 @@ export default defineComponent({
     Popover,
     LoadImage,
     Table,
-    Demo
+    Demo,
+    qjLoadImage
   },
   setup(props) {
     const msg = ref('有追求')
