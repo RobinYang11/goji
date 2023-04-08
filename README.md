@@ -28,10 +28,10 @@
 ### 面试题指南 [vuejs /reactjs 二选一]
 
 #### 2. 点击仓库上方的 watch-> all activity ,star 或者 fork 当前仓库，以便面试官能及时看到你状态. 或者从当前 git 项目的 dev 分支 创建自己的分支，当然点个 star 那就更完美了
-
+<p align="center">
+  <img  width="200px" src="https://cdn.discordapp.com/attachments/1008571063732539392/1094225511540068352/lQLPJwriiku-2c7NAunNAlqw2vh7K4dIp9AEKckaSgBkAA_602_745.png">
+</p>
 #### 1.从下面的题目中任选一题 实现要求即可
-
-<img src="https://cdn.discordapp.com/attachments/1008571138361790464/1087958032488603698/image.png">
 
 #### 3. 完成之后 提交 pull request 到 dev 分支
 
@@ -43,16 +43,19 @@
 
 #### 7. 作业时间 3-5 日
 
-#### 8. 其他问题 可以提 issue 或者进微信群提问
+#### 8. 其他问题 可以提 issue 或者进微信群提问 ,或者关注抖音号学习高阶前端技术.
+
+
 
 ### 交流群
-
 <p align="center">
   <a>
+    <img width="200" src="https://cdn.discordapp.com/attachments/1008571063732539392/1094224319300784248/886dee5612cfe0324a63870bf3feeaa8.png">
+  </a>
+   <a>
     <img width="200" src="https://cdn.discordapp.com/attachments/1008571118694703204/1093425647583494145/mmqrcode1680763329275.png">
   </a>
 </p>
-
 ### 项目启动指南
 
 ```shell
