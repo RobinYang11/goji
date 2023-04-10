@@ -2,64 +2,30 @@ import React from "react";
 import "./index.less";
 import classnames from "classnames";
 
-//如果继承 DOMAttributes
+//如何继承 DOMAttributes
 
 type type = "primary" | "link" | "dashed" | "text" | "disable";
 type shape = "round" | "circle";
 type iconPos = "left" | "right";
 
-type IButton = {
-  type?: type | undefined;
+interface IButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  types?: type | undefined;
   style?: React.CSSProperties | undefined;
   className?: string | undefined;
   children?: React.ReactNode | undefined;
-  disable?: boolean | undefined;
   shape?: shape | undefined;
   icon?: React.ReactNode | undefined;
   iconPos?: iconPos | undefined;
   herf?: string | undefined;
-  form?: string | undefined;
-  value?: string | undefined;
-  name?: string | string;
-  onBtnClick?: () => void;
-  onDoubleClick?: () => void;
-  onMouseDown?: () => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-  onMouseMove?: () => void;
-  onMouseOut?: () => void;
-  onMouseOutCapture?: () => void;
-  onMouseOver?: () => void;
-  onMouseUp?: () => void;
-  onMouseUpCapture?: () => void;
-};
+  disabled?: boolean | undefined;
+}
 
-const Button: React.FC<IButton> = ({
-  type,
-  style,
-  className,
-  children,
-  disable,
-  shape,
-  icon,
-  iconPos,
-  form,
-  value,
-  name,
-  onBtnClick,
-  onDoubleClick,
-  onMouseDown,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseMove,
-  onMouseOut,
-  onMouseOutCapture,
-  onMouseOver,
-  onMouseUp,
-  onMouseUpCapture,
-}) => {
+const Button = (props: IButton) => {
+  const { types, style, className, children, shape, icon, iconPos, disabled } =
+    props;
+
   const getBtnClass = () => {
-    switch (type) {
+    switch (types) {
       case "primary":
         return "primaryButton gojiButton";
       case "dashed":
@@ -88,26 +54,13 @@ const Button: React.FC<IButton> = ({
 
   return (
     <button
-      className={classnames(`${getBtnClass()} ${shapes()} ${className}`, {
-        disableButton: disable,
-      })}
-      onClick={
-        onBtnClick ? onBtnClick : () => console.log("Nothing is happing")
-      }
-      onDoubleClick={
-        onDoubleClick ? onDoubleClick : () => console.log("Nothing is happing")
-      }
-      onMouseDown={
-        onMouseDown ? onMouseDown : () => console.log("Nothing is happing")
-      }
-      onMouseEnter={
-        onMouseEnter ? onMouseEnter : () => console.log("Nothing is ...")
-      }
-      disabled={disable}
-      style={style}
-      form={form}
-      value={value}
-      name={name}
+      className={classnames(
+        `${getBtnClass()} ${shapes()} ${className} ${
+          disabled && "disableButton"
+        }`
+      )}
+      style={{...style}}
+      {...props}
     >
       {icon && iconPos === "left"} {children ? children : "BUTTON"}
       {icon && iconPos === "right"}

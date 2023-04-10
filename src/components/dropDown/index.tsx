@@ -51,11 +51,6 @@ const DropDown: React.FC<IDropDown> = ({
     }
   };
 
-  const handleSelected = (option: ReactNode) => {
-    setOptionValue(option);
-    setVisible(false);
-  };
-
   return (
     <>
       {trigger === "click" ? (

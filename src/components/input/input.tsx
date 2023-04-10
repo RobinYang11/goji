@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./index.less";
 
-type IProps = {
-  value?: string | undefined;
-  defaultValue?: string | number | undefined;
+interface IProps extends React.HTMLProps<HTMLInputElement> {
+  className?: string | undefined;
+  style?: React.CSSProperties;
+  value: string | number | undefined;
   maxLength?: number | undefined;
-  onChange: (e: Event) => void;
-};
+  defaultValue?: string | undefined;
+}
 
-const Input: React.FC<IProps> = ({
-  value,
-  defaultValue,
-  maxLength,
-  onChange,
-}) => {
+const Input = (props: IProps) => {
+  const { value, defaultValue, maxLength, className, style } = props;
   const [inputLength, setInputLength] = useState(0);
 
   useEffect(() => {
-    if (value) {
+    if (value === "string") {
       let inputValues = value?.split("").length;
       setInputLength(inputValues);
     } else {
@@ -39,17 +36,15 @@ const Input: React.FC<IProps> = ({
         setInputLength(0);
       }
     }
-  }, [defaultValue]);
+  }, []);
 
   return (
     <>
-      <div className={inputLength <= 10 ? "inputBox" : "action"}>
-        <input
-          value={value}
-          defaultValue={defaultValue}
-          maxLength={maxLength}
-          onChange={(e: Event) => onChange(e)}
-        />
+      <div
+        className={`${inputLength <= 10 ? "inputBox" : "action"} ${className}`}
+        style={{ ...style }}
+      >
+        <input {...props} />
         <span className="numberLimit">{`${inputLength}/${
           maxLength && maxLength
         }`}</span>

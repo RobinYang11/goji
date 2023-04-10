@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDom from "react-dom";
 import Modal from "./components/modal/modal";
 import Upload from "./components/upload/upload";
@@ -9,26 +9,35 @@ import Button from "./components/button/button";
 import "./_test.less";
 import Alpha from "@uiw/react-color-alpha";
 import Input from "./components/input/input";
+import useCountdown from "./components/countdown";
 
 function App() {
   const [visible, setVisible] = useState(false);
   const [ev, setEv] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [hsva, setHsva] = useState({ h: 0, s: 0, v: 20, a: 1 });
-
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(10);
+  const { date } = useCountdown(3);
 
   const handleClick = (e: unknown) => {
     setValue(e?.target.value);
+    console.log("e", e?.target.value);
   };
 
   return (
     <div>
+      <div>{date}</div>
       <Input
         defaultValue={"undefinedssss"}
         maxLength={10}
         value={value}
         onChange={handleClick}
+        onBlur={() => {
+          console.log("kdsk");
+        }}
+        onFocus={() => {
+          console.log("sssss");
+        }}
       />
       {/* <GOJI.Tab
 			extSelector={'.tab'}
@@ -190,8 +199,8 @@ function App() {
         SHOW MODEL
       </DropDown>
       <Button
-        type="primary"
-        onBtnClick={() => {
+        types="primary"
+        onClick={() => {
           console.log("primary");
         }}
       >
@@ -199,26 +208,36 @@ function App() {
       </Button>
       <Button />
       <Button
-        type="dashed"
-        onBtnClick={() => {
+        types="dashed"
+        onClick={() => {
           alert("Dashed Button");
         }}
       >
         dashed
       </Button>
-      <Button type="link">Link</Button>
-      <Button type="text">Text</Button>
+      <Button types="link">Link</Button>
+      <Button types="text">Text</Button>
 
       <Button shape="round">Circle</Button>
-      <Button shape="circle" type="primary">
+      <Button shape="circle" types="primary">
         A
       </Button>
       <Button icon="" iconPos="left">
         会计师
       </Button>
-      <Button disable={true}> disable</Button>
+      <Button disabled={true}> disable</Button>
 
       <Button onDoubleClick={() => {}}>123213213123</Button>
+      <Button
+        onMouseEnter={() => {
+          console.log("kdsk");
+        }}
+      >
+        {" "}
+        onHover
+      </Button>
+
+      <Button onMouseLeave={() => console.log("mouseLeave")}>MouseLeave</Button>
 
       <>
         <Alpha
