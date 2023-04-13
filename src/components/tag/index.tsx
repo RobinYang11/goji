@@ -11,7 +11,7 @@ type tagsBackgroundColor =
   | string
   | undefined;
 
-type ITagProps = {
+interface ITagProps extends React.DOMAttributes<HTMLSpanElement> {
   className?: string | undefined;
   style?: React.CSSProperties | undefined;
   children: React.ReactNode;
@@ -20,22 +20,22 @@ type ITagProps = {
   bordered?: boolean | undefined;
   icon?: React.ReactNode | undefined;
   closeIcon?: React.ReactNode | undefined;
-  onClose?: (e: React.MouseEvent<HTMLElement>) => void | undefined;
   closable?: boolean | undefined;
-};
+  onClose?: (e: React.MouseEvent<HTMLElement>) => void;
+}
 
-const Tag: React.FC<ITagProps> = (props) => {
+const Tag = (props: ITagProps) => {
   const {
     className,
     style,
     children,
     color,
     background,
-    onClose,
     icon,
     closeIcon,
     bordered = true,
     closable,
+    onClose
   } = props;
 
   const TagColor = (background: tagsBackgroundColor) => {
@@ -59,6 +59,7 @@ const Tag: React.FC<ITagProps> = (props) => {
         `tag ${className} ${!bordered && "bordered"} ${TagColor(background)}`
       )}
       style={{ background: `${background}`, color: `${color}`, ...style }}
+      {...props}
     >
       <div className="tagIconAndTagText">
         {!closable && <span className="tagIcon">{icon}</span>}

@@ -93,7 +93,11 @@ function App() {
         >
           Delete
         </Tag>
-        <Tag background="red" color="#fff">
+        <Tag
+          background="red"
+          color="#fff"
+          onClick={(e) => console.log("e====>", e)}
+        >
           tag
         </Tag>
       </div>
