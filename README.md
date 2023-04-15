@@ -1,7 +1,6 @@
-<p align="center">
-  <img src="https://cdn.discordapp.com/attachments/1008571027565072494/1090239316699140116/rav.png" />
-<p/>
 
+
+<h1> 前端面试仓库</h1>
 [![Forkers repo roster for @RobinYang11/goji](https://reporoster.com/forks/RobinYang11/goji)](https://github.com/RobinYang11/goji/network/members)
 
 
@@ -53,7 +52,7 @@
     <img width="200" src="https://i.postimg.cc/mkFfrK4b/886dee5612cfe0324a63870bf3feeaa8.png">
   </a>
    <a>
-    <img width="200" src="https://i.postimg.cc/7ZBkm3Kr/mmqrcode1680763329275.png">
+    <img width="200" src="https://i.postimg.cc/mgWB8knj/abc.png">
   </a>
 </p>
 ### 项目启动指南
