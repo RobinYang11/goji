@@ -43,7 +43,6 @@ export default {
   methods: {
     handleChangePage (current) {
       this.current = current
-      console.log(this.current, this.dataList);
       this.$forceUpdate()
     }
   }

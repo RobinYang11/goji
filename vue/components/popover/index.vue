@@ -40,7 +40,6 @@ export default {
   methods: {
     handleShow (e) {
       this.visible = true
-      console.log(e);
       const top = e.target.offsetTop
       const left = e.target.offsetLeft
       const width = e.target.offsetWidth
