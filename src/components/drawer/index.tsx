@@ -60,7 +60,6 @@ const Drawer: React.FC<IDrawer> = (props) => {
     top: "position-top",
   };
 
-  console.log("position", position);
 
   return (
     <>
