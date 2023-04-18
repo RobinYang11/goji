@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { CSSProperties, ReactElement } from 'react';
 type ModalProps = {
     /**
      * css class name
@@ -24,7 +24,7 @@ type ModalProps = {
     /**
      * inline style
      */
-    style?: any;
+    style?: CSSProperties;
     /**
      *  framer-motion configaration  please refer ## https://www.framer.com/motion/motion-config/
      * */

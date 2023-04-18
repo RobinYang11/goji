@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement } from 'react';
+import React, { ReactNode, ReactElement, CSSProperties } from 'react';
 
 interface UploadFile {
     lastModified: number;
@@ -43,7 +43,7 @@ type ModalProps = {
     /**
      * inline style
      */
-    style?: any;
+    style?: CSSProperties;
     /**
      *  framer-motion configaration  please refer ## https://www.framer.com/motion/motion-config/
      * */

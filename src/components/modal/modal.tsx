@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { CSSProperties, ReactElement } from 'react'
 import { motion } from "framer-motion";
 import styles from "./modal.module.less"
 
@@ -33,7 +33,7 @@ type ModalProps = {
 	/**
 	 * inline style 
 	 */
-	style?: any;
+	style?: CSSProperties;
 
 	/**
 	 *  framer-motion configaration  please refer ## https://www.framer.com/motion/motion-config/
@@ -57,7 +57,7 @@ export default function Modal(props: ModalProps) {
 			},
 			animate: {
 				opacity: 1,
-				y: 100,
+				y: 50,
 				scale: 1
 			}
 		}
