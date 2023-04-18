@@ -1,6 +1,6 @@
 {
   "name": "goji_ui",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "component ",
   "main": "dist/cjs/index.js",
   "modue": "dist/esm/index.js",
