@@ -1,0 +1,94 @@
+.drawer .drawer-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+.drawer .drawer-mask-none {
+  display: none;
+}
+@keyframes width {
+  from {
+    width: 0;
+  }
+  to {
+    width: 378px;
+  }
+}
+@keyframes height {
+  from {
+    height: 0;
+  }
+  to {
+    height: 378px;
+  }
+}
+.drawer .left-to-right-reverse {
+  animation: width 0.7s;
+}
+.drawer .top-to-height-reverse {
+  animation: height 0.7s;
+}
+.drawer .drawer-box {
+  background-color: #ffffff;
+  position: absolute;
+  z-index: 1000;
+}
+.drawer .drawer-box .drawer-title {
+  border: 1px solid #eee;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.drawer .drawer-box .drawer-title .drawer-title-right {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.drawer .drawer-box .drawer-title .drawer-title-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.drawer .drawer-box .drawer-title .drawer-delete-icon {
+  color: rgba(0, 0, 0, 0.45);
+  margin-inline-end: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.drawer .drawer-box .drawer-title .drawer-delete-icon :hover {
+  cursor: pointer;
+  color: #000;
+}
+.drawer .drawer-box .drawer-content {
+  padding: 24px;
+}
+.drawer .position-left {
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+.drawer .position-right {
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.drawer .position-top {
+  top: 0;
+  overflow: hidden;
+  width: 100%;
+}
+.drawer .position-bottom {
+  bottom: 0;
+  overflow: hidden;
+  width: 100%;
+}
+.drawer .default {
+  width: 378px;
+}
+.drawer .large {
+  width: 786px;
+}
