@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Modal from './components/modal/modal';
 import Upload from './components/upload/upload';
@@ -149,11 +148,9 @@ function App() {
     >
       请选择文件
     </Upload>
+    <HjjModal />
   </div >
 }
 
 const root = createRoot(document.getElementById("app")!)
 root.render(<App />)
-
-
-
