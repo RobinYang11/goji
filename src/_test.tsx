@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Modal from './components/modal/modal';
 import Upload from './components/upload/upload';
@@ -154,6 +153,3 @@ function App() {
 
 const root = createRoot(document.getElementById("app")!)
 root.render(<App />)
-
-
-

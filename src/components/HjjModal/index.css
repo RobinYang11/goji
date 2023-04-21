@@ -1,0 +1,67 @@
+.hjj-modal button {
+  background-color: #3875f7;
+  color: white;
+  border: 1px;
+  border-color: #d9d9d9;
+  border-radius: 3px;
+  padding: 5px 15px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.hjj-modal .modal {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%);
+  width: 520px;
+  padding: 20px 24px;
+  border-radius: 10px;
+  background-color: #fff;
+  z-index: 2;
+  box-shadow: 0 6px 16px 0 rgba(14, 13, 13, 0.1), 0 3px 6px -4px rgba(6, 6, 6, 0.12), 0 9px 28px 8px rgba(15, 14, 14, 0.05);
+}
+.hjj-modal .modal .close {
+  position: fixed;
+  right: 26px;
+  top: 10px;
+  font-size: 20px;
+  color: #ccc;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  cursor: pointer;
+}
+.hjj-modal .modal .header {
+  margin-bottom: 10px;
+  font-size: 16px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+.hjj-modal .modal .content {
+  min-height: 20px;
+  font-size: 14px;
+}
+.hjj-modal .modal .footer {
+  height: 32px;
+  font-size: 14px;
+  margin-top: 12px;
+  display: flex;
+  flex-flow: nowrap;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+.hjj-modal .modal .footer button {
+  display: flex;
+  margin-left: 8px;
+  height: 32px;
+}
+.hjj-modal .mask {
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
