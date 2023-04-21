@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 export interface UploadFile {
     lastModified: number;
     name: string;

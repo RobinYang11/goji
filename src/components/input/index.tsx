@@ -25,7 +25,7 @@ const Input = (props: IProps) => {
   useEffect(() => {
     if (defaultValue) {
       if (typeof defaultValue === "number") {
-        let defaultValueArrayLength = defaultValue
+        let defaultValueArrayLength = (defaultValue as any)
           ?.toString()
           ?.split("")?.length;
         setInputLength(defaultValueArrayLength);
