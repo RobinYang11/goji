@@ -18,6 +18,7 @@ export interface IUploadProps {
   beforeUpload?(files: FileList): Promise<unknown>;
   customList?(list: Array<unknown>): ReactNode;
   valueFilter?(file: UploadFile): unknown;
+  urlFilter(file: any): string; // get image url from upload response
 }
 
 export default function Upload(props: IUploadProps) {
@@ -27,6 +28,7 @@ export default function Upload(props: IUploadProps) {
     uploadUrl,
     onComplete,
     customList,
+    urlFilter,
     valueFilter,
   } = props;
 
@@ -48,7 +50,6 @@ export default function Upload(props: IUploadProps) {
   };
 
   const doUpload = (files: FileList) => {
-    console.log("#", files);
     const promiese: Array<Promise<unknown>> = [];
 
     for (let i = 0; i < files.length; i++) {
@@ -77,16 +78,13 @@ export default function Upload(props: IUploadProps) {
               },
               res
             );
-
             resolve(uplaodFile);
-            // resolve(valueFilter?.(abc) || resp)
           };
         })
       );
     }
 
     Promise.all(promiese).then((res) => {
-      console.log("##", res);
       _files = _files.concat(res);
       setFiles([..._files]);
       onComplete?.(_files);
@@ -100,7 +98,7 @@ export default function Upload(props: IUploadProps) {
       return (
         <li className={styles.fileItem}>
           {i.type}
-          <img src={i} style={{ width: "100px" }} />
+          <img src={urlFilter(i.response)} style={{ width: "100px" }} />
           <span
             onClick={() => {
               _files?.splice(index, 1);
@@ -120,7 +118,6 @@ export default function Upload(props: IUploadProps) {
       <input
         multiple
         onChange={(e) => {
-          console.log("E", e.target.files);
           if (e.target.files) {
             uploadFile(e.target.files);
           }

@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div>
-      <Upload uploadUrl="http://121.43.189.236:8882/video-service/upload">
+      <Upload urlFilter={(v: any) => v?.url} uploadUrl="/api/upload">
         上传
       </Upload>
       <Table
