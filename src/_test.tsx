@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactDom from "react-dom";
+import Button from "./components/button";
 
 // import * as GOJI from "goji_ui";
 // import Input from "./components/input";
@@ -11,6 +12,15 @@ function App() {
 
   return (
     <div>
+      <Button
+        types="primary"
+        onClick={() => {
+          console.log("ksk");
+        }}
+      >
+        取消
+      </Button>
+
       <Upload urlFilter={(v: any) => v?.url} uploadUrl="/api/upload">
         上传
       </Upload>
