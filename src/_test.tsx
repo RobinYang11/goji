@@ -9,7 +9,7 @@ import Input from "./components/input";
 function App() {
   const [visible, setVisible] = useState(false);
   const [ev, setEv] = useState(false);
-  const [value, setValue] = useState(10);
+  const [value, setValue] = useState<string | number>();
 
   const handleClick = (e: unknown) => {
     setValue(e?.target.value);
@@ -19,7 +19,7 @@ function App() {
   return (
     <div>
       <Input
-        defaultValue={"undefinedssss"}
+        defaultValue={"11111111111111"}
         maxLength={10}
         value={value}
         onChange={handleClick}
