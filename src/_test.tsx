@@ -5,6 +5,7 @@ import Upload from "./components/upload/upload";
 import Tab from "./components/tab/tab";
 import * as GOJI from "goji_ui";
 import Input from "./components/input";
+import Button from "./components/button";
 
 function App() {
   const [visible, setVisible] = useState(false);
@@ -18,6 +19,14 @@ function App() {
 
   return (
     <div>
+      <Button
+        types="primary"
+        onClick={() => {
+          console.log("skdsk");
+        }}
+      >
+        取消fdsfds
+      </Button>
       <Input
         defaultValue={"undefinedssss"}
         maxLength={10}
