@@ -5,13 +5,23 @@ import ReactDom from "react-dom";
 // import Input from "./components/input";
 import Table from "./components/table/table";
 import Upload from "./components/upload/upload";
+import Form, { FormItem } from "./components/form/form";
+import Input from "./components/input";
 
 function App() {
   const [visible, setVisible] = useState(false);
 
   return (
     <div>
-      <Upload urlFilter={(v: any) => v?.url} uploadUrl="/api/upload">
+      <Form>
+        <FormItem name="robin">
+          <input />
+        </FormItem>
+        <FormItem name="test">
+          <input />
+        </FormItem>
+      </Form>
+      {/* <Upload urlFilter={(v: any) => v?.url} uploadUrl="/api/upload">
         上传
       </Upload>
       <Table
@@ -40,7 +50,7 @@ function App() {
             },
           },
         ]}
-      />
+      /> */}
     </div>
   );
 }

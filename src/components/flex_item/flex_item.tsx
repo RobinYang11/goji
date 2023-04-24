@@ -1,31 +1,38 @@
+import React, { ReactNode } from "react";
 
-import React, { ReactNode } from 'react'
-
-interface FlexItemProps {
-	children: ReactNode
-	className?: string
-	style?: any
-	perc?: null
+interface FlexItemProps extends React.HTMLProps<HTMLDivElement> {
+  children: ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  /** flex item   */
+  perc?: null;
+  /** css flex property */
+  flex?: string | number;
 }
 
 export default function FlexItem({
-	children,
-	className,
-	style,
-	perc
+  children,
+  className,
+  style,
+  perc,
+  flex,
 }: FlexItemProps) {
+  const percStyle = perc
+    ? {
+        flexBasis: (perc / 24) * 100,
+      }
+    : {};
 
-	const percStyle = perc ? {
-		flexBasis: (perc / 24) * 100
-	} : {}
-
-	return <div
-		className={className}
-		style={{
-			...percStyle,
-			...style,
-		}}
-	>
-		{children}
-	</div>
+  return (
+    <div
+      className={className}
+      style={{
+        flex,
+        // ...percStyle,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
 }
