@@ -7,20 +7,32 @@ import Table from "./components/table/table";
 import Upload from "./components/upload/upload";
 import Form, { FormItem } from "./components/form/form";
 import Input from "./components/input";
+import Pagination from "./components/pagenation";
 
 function App() {
   const [visible, setVisible] = useState(false);
 
   return (
     <div>
-      <Form>
+      <div>ksks</div>
+      <Pagination
+        // total={50}
+        pageSize={5}
+        dataSource={[
+          1, 2, 3, 4, 1, 2, 3, 1, 21, 3, 2132, 131, 2321, 321, 21, 31, 31, 31,
+          31, 312, 321, 31, 321, 31, 31, 31, 31, 31, 31, 31, 31, 3, 1,
+        ]}
+        defaultCurrent={2}
+        onChange={(current)=>{console.log(current)}}
+      />
+      {/* <Form>
         <FormItem name="robin">
           <input />
         </FormItem>
         <FormItem name="test">
           <input />
         </FormItem>
-      </Form>
+      </Form> */}
       {/* <Upload urlFilter={(v: any) => v?.url} uploadUrl="/api/upload">
         上传
       </Upload>
