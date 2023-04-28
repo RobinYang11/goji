@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-echo "lint start"
-echo "TO DO LINT "
-echo "lint end"

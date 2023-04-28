@@ -8,10 +8,7 @@
     "build": "rollup -c --bundleConfigAsCjs",
     "test": "jest",
     "vue": "cross-env NODE_ENV=development webpack serve --config ./webpack.vue.config.js",
-    "dev": " cross-env NODE_ENV=development webpack serve ",
-    "prepare": "husky install",
-    "lint": "cross-env DEBUG=eslint:cli-engine eslint --cache --ext=ts --fix src",
-    "docs": "typedoc --options ./typedoc.json"
+    "dev": " cross-env NODE_ENV=development webpack serve "
   },
   "keywords": [
     "react",
@@ -55,13 +52,11 @@
     "eslint": "^8.39.0",
     "goji_ui": "^1.0.8",
     "html-webpack-plugin": "^5.5.0",
-    "husky": "^8.0.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "less-loader": "^11.1.0",
     "postcss": "^8.4.21",
-    "prettier": "2.8.8",
     "react": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "rollup": "^3.19.1",
@@ -86,11 +81,5 @@
     "@types/uuid": "^9.0.1",
     "framer-motion": "^8.5.5",
     "uuid": "^9.0.0"
-  },
-  "lint-staged": {
-    "./src/**/*.{ts}": [
-      "prettier --write",
-      "npm run lint"
-    ]
   }
 }

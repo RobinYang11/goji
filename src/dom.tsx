@@ -6,7 +6,7 @@ import { IExtableProps } from "./components/base_props";
 export function Box(props: IExtableProps) {
   const { extSelector, extension, children } = props;
 
-  if (!extension || ! extSelector) return <div>{children}</div>;
+  if (!extension || !extSelector) return <div>{children}</div>;
 
   const rootRef = useRef<HTMLDivElement | null>(null);
   const ext = useExtension<HTMLDivElement | null>(
@@ -23,7 +23,7 @@ export function Box(props: IExtableProps) {
   );
 }
 
-export function Inline(props:IExtableProps) {
+export function Inline(props: IExtableProps) {
   const { extSelector, extension, children } = props;
 
   if (!extension) return <div>{children}</div>;
@@ -42,9 +42,6 @@ export function Inline(props:IExtableProps) {
     </span>
   );
 }
-
-
-
 
 export function Div(props: BaseProps) {
   const { extSelector, extension, children } = props;
