@@ -61,7 +61,7 @@ export function FormItem(props: FormItemProps) {
               return Promise.resolve("hello");
             } 
           }))
-          rs(,()=>{})
+          rs("test",()=>{})
         }
         if(rules) {
           rules?.forEach(i=>{
