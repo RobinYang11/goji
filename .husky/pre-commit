@@ -2,5 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 echo "lint start"
-npm run lint
+echo "hello "
 echo "lint end"

@@ -40,7 +40,13 @@ function App() {
           console.log("##data", data);
         }}
       >
-        <FormItem name="addr">
+        <FormItem 
+        rules={[{
+          type:"num",
+          message:"must be a number"
+        }]} 
+        name="addr"
+        >
           <Input />
         </FormItem>
         <FormItem name="name">
@@ -48,6 +54,10 @@ function App() {
         </FormItem>
         <FormItem name="age" extension={<span>TEST</span>} extSelector="">
           <Input />
+        </FormItem>
+        <FormItem name="salary" extension={<span>TEST</span>} extSelector="">
+          <input />
+          {/* <Input /> */}
         </FormItem>
         <button>test</button>
         <button

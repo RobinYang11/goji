@@ -39,8 +39,12 @@
     "allowSyntheticDefaultImports": true, /* Allow 'import x from y' when a module doesn't have a default export. */
     "emitDeclarationOnly": true, /* Only output d.ts files and not JavaScript files. */
     // "rootDir": "./",                                  /* Specify the root folder within your source files. */
-    // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
-    // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
+    // "baseUrl": "./", /* Specify the base directory to resolve non-relative module names. */
+    // "paths": {
+    //   "@/*": [
+    //     "src/*"
+    //   ]
+    // }, /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
