@@ -1,25 +1,34 @@
-import React, { ReactElement, ReactNode } from "react";
-import { useForm } from "react-hook-form";
-import Flex from "../flex/flex";
-import FlexItem from "../flex_item/flex_item";
+import React, { ReactElement } from "react";
+import { UseFormReturn } from "react-hook-form";
 
-export interface FormProps extends React.HTMLProps<HTMLFormElement> {
+type WithOutFormProps = Omit<React.HTMLProps<HTMLFormElement>, "form">;
+
+export interface FormProps extends WithOutFormProps {
   children: any;
   labelCol?: number;
-  contentCol: number;
+  contentCol?: number;
+  onSubmit: (data: Record<string, any>) => void;
+  form: UseFormReturn;
 }
 
-export default function Form({ children, onSubmit }: FormProps) {
+export default function Form(props: FormProps) {
+  const { form, children, labelCol, contentCol, onSubmit } = props;
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors },
-  } = useForm();
+  } = form;
 
   const res = children?.map((i: ReactElement) => {
+    if (typeof i.type === "string") {
+      if (i.type === "button") return i;
+    }
     return React.cloneElement(i, {
       ...register(i.props.name),
+      control,
+      contentCol,
+      labelCol,
       key: i.props.name,
     });
   });
@@ -32,22 +41,5 @@ export default function Form({ children, onSubmit }: FormProps) {
     >
       {res}
     </form>
-  );
-}
-
-interface FormItemProps {
-  children: ReactElement;
-  name: string;
-  placeholder?: string;
-  style?: React.CSSProperties;
-  rules?: [];
-}
-
-export function FormItem({ children, name, style }: FormItemProps) {
-  return (
-    <Flex style={style}>
-      <FlexItem span={2}>label</FlexItem>
-      <FlexItem>{children}</FlexItem>
-    </Flex>
   );
 }
