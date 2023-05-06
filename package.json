@@ -1,6 +1,6 @@
 {
-  "name": "goji_ui",
-  "version": "1.0.27",
+  "name": "@robin/goji",
+  "version": "0.0.1",
   "description": "component ",
   "main": "dist/cjs/index.js",
   "modue": "dist/esm/index.js",
@@ -12,14 +12,14 @@
   },
   "keywords": [
     "react",
-    "upload",
+    "goji",
     "component"
   ],
   "files": [
     "dist"
   ],
   "types": "dist/index.d.ts",
-  "author": "robin 8d",
+  "author": "robin",
   "license": "ISC",
   "repository": {
     "type": "git",

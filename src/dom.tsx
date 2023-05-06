@@ -15,8 +15,6 @@ export function Box(props: IExtableProps) {
     extension
   );
 
-  console.log("###", className);
-
   return (
     <div className={className} ref={rootRef}>
       {ext}

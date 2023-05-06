@@ -1,9 +1,11 @@
-import { ReactNode } from 'react';
-interface FlexItemProps {
+import React, { ReactNode } from "react";
+interface FlexItemProps extends React.HTMLProps<HTMLDivElement> {
     children: ReactNode;
     className?: string;
-    style?: any;
-    perc?: null;
+    style?: React.CSSProperties;
+    /** flex item   */
+    /** css flex-basis property */
+    flex?: string | number;
 }
-export default function FlexItem({ children, className, style, perc }: FlexItemProps): JSX.Element;
+export default function FlexItem({ children, className, style, flex, }: FlexItemProps): JSX.Element;
 export {};

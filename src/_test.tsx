@@ -114,8 +114,10 @@ function App() {
         </FormItem>
         <button>test</button>
         <Button
+          bgColor="#383da6"
+          color="white"
           onClick={() => {
-            console.log("hell robin")
+            console.log("hell robin");
             // alert("hello robin");
           }}
           type="button"

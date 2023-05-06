@@ -15,6 +15,7 @@ interface IUploadProps {
     beforeUpload?(files: FileList): Promise<unknown>;
     customList?(list: Array<unknown>): ReactNode;
     valueFilter?(file: UploadFile): unknown;
+    urlFilter(file: any): string;
 }
 declare function Upload(props: IUploadProps): JSX.Element;
 
@@ -84,16 +85,20 @@ interface FlexProps extends React.HTMLAttributes<HTMLDivElement> {
     style?: any;
     className?: string;
     itemSpace?: number | string;
+    alignItems?: string;
+    justify?: string;
 }
 declare function Flex(props: FlexProps): JSX.Element;
 
-interface FlexItemProps {
+interface FlexItemProps extends React.HTMLProps<HTMLDivElement> {
     children: ReactNode;
     className?: string;
-    style?: any;
-    perc?: null;
+    style?: React.CSSProperties;
+    /** flex item   */
+    /** css flex-basis property */
+    flex?: string | number;
 }
-declare function FlexItem({ children, className, style, perc }: FlexItemProps): JSX.Element;
+declare function FlexItem({ children, className, style, flex, }: FlexItemProps): JSX.Element;
 
 interface IColProps {
     key: string;
@@ -107,4 +112,12 @@ interface ITableProps {
 }
 declare function Table(props: ITableProps): JSX.Element;
 
-export { BaseProps, Flex, FlexItem, Modal, Tab, Table, Upload };
+interface IButtonProps extends Partial<React.HTMLProps<HTMLButtonElement>> {
+    className?: string;
+    bgColor?: string;
+    color?: string;
+    children: ReactNode;
+}
+declare function Button(props: IButtonProps): JSX.Element;
+
+export { BaseProps, Button, Flex, FlexItem, Button as Input, Modal, Tab, Table, Upload };

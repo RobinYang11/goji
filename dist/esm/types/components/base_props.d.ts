@@ -8,3 +8,9 @@ export interface BaseProps {
     children?: ReactNode;
     onClick?(e: Event): void;
 }
+export interface IExtableProps {
+    extension?: ReactNode;
+    className?: string;
+    extSelector?: string;
+    children: ReactNode;
+}

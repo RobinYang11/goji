@@ -14,5 +14,6 @@ export interface IUploadProps {
     beforeUpload?(files: FileList): Promise<unknown>;
     customList?(list: Array<unknown>): ReactNode;
     valueFilter?(file: UploadFile): unknown;
+    urlFilter(file: any): string;
 }
 export default function Upload(props: IUploadProps): JSX.Element;
