@@ -1,6 +1,6 @@
 {
-  "name": "@robin/goji",
-  "version": "0.0.1",
+  "name": "goji_ui",
+  "version": "2.0.1",
   "description": "component ",
   "main": "dist/cjs/index.js",
   "modue": "dist/esm/index.js",
@@ -19,7 +19,7 @@
     "dist"
   ],
   "types": "dist/index.d.ts",
-  "author": "robin",
+  "author": "robin_ersa",
   "license": "ISC",
   "repository": {
     "type": "git",
@@ -81,5 +81,9 @@
     "@types/uuid": "^9.0.1",
     "framer-motion": "^8.5.5",
     "uuid": "^9.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
