@@ -5,8 +5,7 @@ interface FlexItemProps extends React.HTMLProps<HTMLDivElement> {
   className?: string;
   style?: React.CSSProperties;
   /** flex item   */
-  perc?: null;
-  /** css flex property */
+  /** css flex-basis property */
   flex?: string | number;
 }
 
@@ -14,22 +13,15 @@ export default function FlexItem({
   children,
   className,
   style,
-  perc,
   flex,
 }: FlexItemProps) {
-  const percStyle = perc
-    ? {
-        flexBasis: (perc / 24) * 100,
-      }
-    : {};
-
   return (
     <div
       className={className}
       style={{
-        flex,
-        // ...percStyle,
+        flex: `0 0 ${flex}`,
         ...style,
+        boxSizing: "border-box",
       }}
     >
       {children}

@@ -12,6 +12,7 @@ export interface BaseProps {
 
 export interface IExtableProps {
   extension?: ReactNode;
+  className?: string;
   extSelector?: string;
   children: ReactNode;
 }

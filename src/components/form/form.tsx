@@ -5,14 +5,17 @@ type WithOutFormProps = Omit<React.HTMLProps<HTMLFormElement>, "form">;
 
 export interface FormProps extends WithOutFormProps {
   children: any;
-  labelCol?: number;
-  contentCol?: number;
+  colLayout?: {
+    labelTextAlign?: "left" | "center" | "right";
+    labelCol: any;
+    contentCol: any;
+  };
   onSubmit: (data: Record<string, any>) => void;
   form: UseFormReturn;
 }
 
 export default function Form(props: FormProps) {
-  const { form, children, labelCol, contentCol, onSubmit } = props;
+  const { form, children, colLayout, onSubmit } = props;
   const {
     register,
     handleSubmit,
@@ -20,16 +23,17 @@ export default function Form(props: FormProps) {
     formState: { errors },
   } = form;
 
-  const res = children?.map((i: ReactElement) => {
+  const _copy = children?.map((i: ReactElement) => {
     if (typeof i.type === "string") {
       if (i.type === "button") return i;
     }
     return React.cloneElement(i, {
-      ...register(i.props.name),
+      ...register(i.props.name, i.props.rules),
       control,
-      contentCol,
-      labelCol,
+      colLayout,
       key: i.props.name,
+      form,
+      errors,
     });
   });
 
@@ -39,7 +43,7 @@ export default function Form(props: FormProps) {
         onSubmit?.(data);
       })}
     >
-      {res}
+      {_copy}
     </form>
   );
 }

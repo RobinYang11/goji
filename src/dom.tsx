@@ -4,9 +4,9 @@ import useExtension from "./hooks";
 import { IExtableProps } from "./components/base_props";
 
 export function Box(props: IExtableProps) {
-  const { extSelector, extension, children } = props;
+  const { extSelector, extension, children, className } = props;
 
-  if (!extension || !extSelector) return <div>{children}</div>;
+  if (!extension || !extSelector) return <div className={className}>{children}</div>;
 
   const rootRef = useRef<HTMLDivElement | null>(null);
   const ext = useExtension<HTMLDivElement | null>(
@@ -15,8 +15,10 @@ export function Box(props: IExtableProps) {
     extension
   );
 
+  console.log("###", className);
+
   return (
-    <div ref={rootRef}>
+    <div className={className} ref={rootRef}>
       {ext}
       {children}
     </div>

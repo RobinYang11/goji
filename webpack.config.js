@@ -93,14 +93,14 @@ const config = {
           {
             loader: "less-loader",
             options: {
-              lessOptions: {
-                modifyVars: {
-                  "@primary-color": "#FFC300",
-                  "link-color": "#FFC300",
-                  "border-radius-base": "8px",
-                },
-                javascriptEnabled: true,
-              },
+              // lessOptions: {
+              //   modifyVars: {
+              //     "@primary-color": "#FFC300",
+              //     "link-color": "#FFC300",
+              //     "border-radius-base": "8px",
+              //   },
+              //   javascriptEnabled: true,
+              // },
             },
           },
         ],

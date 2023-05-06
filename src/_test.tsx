@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactDom from "react-dom";
+import ReactDom, { createPortal } from "react-dom";
 
 // import * as GOJI from "goji_ui";
 // import Input from "./components/input";
@@ -8,21 +8,38 @@ import Upload from "./components/upload/upload";
 import Form from "./components/form/form";
 import { Controller, useForm } from "react-hook-form";
 import { FormItem } from "./components/form/form_item/form_item";
+import Input from "./components/input/input";
+import Button from "./components/button/button";
 // import Input from "./components/input";
 
-function Input(props: any) {
+// function Input(props: any) {
+//   return (
+//     <div>
+//       <input
+//         {...props}
+//         value={props?.value || ""}
+//         // ### dev.log1
+//         // Warning: A component is changing an uncontrolled input to be controlled.
+//         // This is likely caused by the value changing from undefined to a defined value,
+//         // which should not happen.
+//         // Decide between using a controlled or uncontrolled input element for the lifetime of the component.
+//         //More info: https://reactjs.org/link/controlled-components
+//       />
+//     </div>
+//   );
+// }
+
+function CustomForm({ value, onChange }: any) {
   return (
     <div>
-      <input
-        {...props}
-        value={props?.value || ""}
-        // ### dev.log1
-        // Warning: A component is changing an uncontrolled input to be controlled.
-        // This is likely caused by the value changing from undefined to a defined value,
-        // which should not happen.
-        // Decide between using a controlled or uncontrolled input element for the lifetime of the component.
-        //More info: https://reactjs.org/link/controlled-components
-      />
+      <span>{value}</span>
+      <button
+        onClick={() => {
+          onChange("test");
+        }}
+      >
+        change
+      </button>
     </div>
   );
 }
@@ -35,31 +52,76 @@ function App() {
   return (
     <div>
       <Form
+        colLayout={{
+          labelCol: "100px",
+          contentCol: 1,
+          labelTextAlign: "right",
+        }}
         form={form}
         onSubmit={(data) => {
           console.log("##data", data);
         }}
       >
-        <FormItem 
-        rules={[{
-          type:"num",
-          message:"must be a number"
-        }]} 
-        name="addr"
+        <FormItem name="cc">
+          <Input
+            suffix={(value: any, onChange: any) => {
+              return (
+                <span
+                  onClick={(e) => {
+                    onChange("test");
+                  }}
+                >
+                  test
+                </span>
+              );
+            }}
+            prefix={(value: any) => {
+              return <span>{value}</span>;
+            }}
+          />
+        </FormItem>
+        <FormItem name="abc">
+          <CustomForm />
+        </FormItem>
+        <FormItem
+          rules={{
+            required: {
+              value: true,
+              message: "must be a number",
+            },
+            maxLength: {
+              value: 5,
+              message: "max 5",
+            },
+          }}
+          name="test"
         >
           <Input />
         </FormItem>
         <FormItem name="name">
-          <Input />
+          <Input
+            prefix={(value: any, onChange) => {
+              return <span>{value?.length || 0} /50</span>;
+            }}
+          />
         </FormItem>
         <FormItem name="age" extension={<span>TEST</span>} extSelector="">
           <Input />
         </FormItem>
         <FormItem name="salary" extension={<span>TEST</span>} extSelector="">
-          <input />
+          <Input />
           {/* <Input /> */}
         </FormItem>
         <button>test</button>
+        <Button
+          onClick={() => {
+            console.log("hell robin")
+            // alert("hello robin");
+          }}
+          type="button"
+        >
+          official button
+        </Button>
         <button
           onClick={() => {
             reset();

@@ -1,87 +1,70 @@
-import React, { useId } from "react";
+import React from "react";
 import { ReactElement } from "react";
 import { Controller } from "react-hook-form";
 import FlexItem from "../../flex_item/flex_item";
 import Flex from "../../flex/flex";
 import { IExtableProps } from "../../base_props";
+import styles from "./form_item.module.less";
 import { Box } from "../../../dom";
-import { compose } from "../../../util";
-// import { compose } from "../../../util";
-
-
-type RuleType ={
-  required:boolean;
-  max:number;  
-  min:number;
-  reg:RegExp;
-  phone:RegExp;
-  email:boolean;
-  validator: ()=>{}
-}
-
-export interface IFormItemRule{
-  type:keyof RuleType;
-  rule?:any;
-  message?:string; 
-}
 
 export interface FormItemProps extends IExtableProps {
   name: string;
   placeholder?: string;
   style?: React.CSSProperties;
-  rules?: Array<IFormItemRule>;
-  onChange?: (value: unknown) => void;
-  onBlur?: (value: unknown) => void;
-  ref?: any;
-  control?: any;
+  rules?: any;
+  form?: any;
+  colLayout?: any;
 }
 
 export function FormItem(props: FormItemProps) {
-  const id = useId();
+  const { children, name, style, extSelector, extension, form, colLayout } =
+    props;
   const {
-    children,
-    name,
-    style,
-    onChange,
-    onBlur,
+    formState: { errors },
     control,
-    extSelector,
-    extension,
-    rules
-  } = props;
-  
+  } = form;
+
   return (
     <Controller
       name={name}
       control={control}
       render={({ field }) => {
-        if(rules){
-          var rs =compose(rules?.map(()=>{
-            return ()=>{
-              return Promise.resolve("hello");
-            } 
-          }))
-          rs("test",()=>{})
-        }
-        if(rules) {
-          rules?.forEach(i=>{
-            if(i.type==="max"){
-              return Promise.reject("")  
-            }
-          })
-          // compose(rules)
-          // compose(rules)
-        } 
         const _copy = React.cloneElement(children as ReactElement, {
           ...field,
         });
         return (
-          <Box extSelector={extSelector} extension={extension}>
-            <Flex style={style}>
-              <FlexItem span={2}>{name}</FlexItem>
-              <FlexItem>{_copy}</FlexItem>
+          <Box
+            className={styles.formItem}
+            extSelector={extSelector}
+            extension={extension}
+          >
+            <Flex alignItems="center" style={style}>
+              <FlexItem
+                style={{
+                  textAlign: colLayout?.labelTextAlign,
+                  padding: "0 6px",
+                }}
+                flex={colLayout?.labelCol || 3}
+              >
+                {name}
+              </FlexItem>
+              <FlexItem flex={colLayout?.contentCol || 16}>{_copy}</FlexItem>
             </Flex>
-            {/* <div>{}</div> */}
+            <Flex>
+              <FlexItem
+                style={{
+                  textAlign: colLayout?.labelTextAlign,
+                }}
+                flex={colLayout?.labelCol || 3}
+              >
+                {null}
+              </FlexItem>
+              <FlexItem flex={colLayout?.contentCol || 16}>
+                <div className={styles.error}>
+                  {errors?.[name] && errors?.[name].message}
+                </div>
+              </FlexItem>
+            </Flex>
           </Box>
         );
       }}
