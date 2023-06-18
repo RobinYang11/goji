@@ -1,0 +1,31 @@
+.content table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.content th,
+.content td {
+  text-align: left;
+  padding: 8px;
+}
+.content th {
+  background-color: #f2f2f2;
+}
+.content tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.content tr:hover {
+  background-color: #ddd;
+}
+.content td:first-child,
+.content th:first-child {
+  border-left: 1px solid #ddd;
+}
+.content td:last-child,
+.content th:last-child {
+  border-right: 1px solid #ddd;
+}
+.content td,
+.content th {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
