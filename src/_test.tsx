@@ -10,6 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 import { FormItem } from "./components/form/form_item/form_item";
 import Input from "./components/input/input";
 import Button from "./components/button/button";
+import DemoTest from "./components/demo/demo";
 // import Input from "./components/input";
 
 // function Input(props: any) {
@@ -51,117 +52,7 @@ function App() {
   const { reset } = form;
   return (
     <div>
-      <Form
-        colLayout={{
-          labelCol: "100px",
-          contentCol: 1,
-          labelTextAlign: "right",
-        }}
-        form={form}
-        onSubmit={(data) => {
-          console.log("##data", data);
-        }}
-      >
-        <FormItem name="cc">
-          <Input
-            suffix={(value: any, onChange: any) => {
-              return (
-                <span
-                  onClick={(e) => {
-                    onChange("test");
-                  }}
-                >
-                  test
-                </span>
-              );
-            }}
-            prefix={(value: any) => {
-              return <span>{value}</span>;
-            }}
-          />
-        </FormItem>
-        <FormItem name="abc">
-          <CustomForm />
-        </FormItem>
-        <FormItem
-          rules={{
-            required: {
-              value: true,
-              message: "must be a number",
-            },
-            maxLength: {
-              value: 5,
-              message: "max 5",
-            },
-          }}
-          name="test"
-        >
-          <Input />
-        </FormItem>
-        <FormItem name="name">
-          <Input
-            prefix={(value: any, onChange) => {
-              return <span>{value?.length || 0} /50</span>;
-            }}
-          />
-        </FormItem>
-        <FormItem name="age" extension={<span>TEST</span>} extSelector="">
-          <Input />
-        </FormItem>
-        <FormItem name="salary" extension={<span>TEST</span>} extSelector="">
-          <Input />
-          {/* <Input /> */}
-        </FormItem>
-        <button>test</button>
-        <Button
-          bgColor="#383da6"
-          color="white"
-          onClick={() => {
-            console.log("hell robin");
-            // alert("hello robin");
-          }}
-          type="button"
-        >
-          official button
-        </Button>
-        <button
-          onClick={() => {
-            reset();
-          }}
-        >
-          reset
-        </button>
-      </Form>
-      {/* <Upload urlFilter={(v: any) => v?.url} uploadUrl="/api/upload">
-        上传
-      </Upload>
-      <Table
-        data={[
-          {
-            id: "k6k2",
-            name: "name",
-            age: 3,
-          },
-        ]}
-        cols={[
-          { key: "name", title: "名称" },
-          { key: "id", title: "ID" },
-          { key: "age", title: "年龄" },
-          {
-            key: "opt",
-            title: "操作",
-            render: (row) => {
-              return (
-                <div>
-                  <button>编辑</button>
-                  <button>删除</button>
-                  <button>发布</button>
-                </div>
-              );
-            },
-          },
-        ]}
-      /> */}
+      <DemoTest />
     </div>
   );
 }
