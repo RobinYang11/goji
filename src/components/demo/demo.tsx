@@ -1,29 +1,48 @@
-import React, { HTMLAttributes } from "react";
+import React, { Children, HTMLAttributes, ReactElement } from "react";
 
-interface DemoProps extends Omit<HTMLAttributes<HTMLFormElement>, ''> {
+interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, ''> {
 
 }
 
-function Demo(props: DemoProps) {
+function Form(props: FormProps) {
   const { style, children } = props;
-  console.log(children)
+  let dom = null;
+  if (Array.isArray(children)) {
+    dom = children?.map((ele) => {
+      const Ele = ele;
+      if (ele.type.name === "FormItem") {
+        const { name, children } = ele.props;
+        const Item = children;
+        if (name) {
+          return null;
+          // return <Ele>
+          //   <Item onChange={(e: any) => { console.log(e) }} />
+          // </Ele>
+        }
+      }
+
+    })
+  }
   return (
     <form>
-      {children}
+      {/* {children} */}
+      {dom}
     </form>
   );
 }
 
-function FormItem(props: any) {
+function FormItem({ children }: { children: ReactElement, name: string }) {
   return (
     <div>
-      {props.children}
+      {children}
     </div>
   );
 }
 
-export default function DemoTest() {
-  return <Demo
+
+
+export default function FormTest() {
+  return <Form
     onReset={() => { }}
     onInput={() => { }}
     className="test"
@@ -31,9 +50,9 @@ export default function DemoTest() {
     onClick={() => { }}
   >
     <div>test</div>
-    <FormItem>
-      formItem
+    <FormItem name="test">
+      <input />
     </FormItem>
-  </Demo>
+  </Form>
 }
 
