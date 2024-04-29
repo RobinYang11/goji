@@ -183,7 +183,7 @@ function FormItem({ children, name }: FormItemProps) {
     // })
 
     return <div>
-      <C value={allFormValues[formName]} />
+      {/* <C value={allFormValues[formName]} /> */}
       {/* {copy} */}
     </div>
   }
