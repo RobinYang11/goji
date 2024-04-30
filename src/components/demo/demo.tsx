@@ -1,6 +1,7 @@
-import React, { HTMLAttributes, HtmlHTMLAttributes, ReactElement, Ref, useContext, useEffect, useId, useRef, useState } from "react";
+import React, { HTMLAttributes, HtmlHTMLAttributes, ReactElement, Ref, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
 
 interface FormContextInterface {
+  name: string,
   forms: Record<string, any>,
   allFormValues: Record<string, any>,
   setFormValues: (name: any[], value: any) => void,
@@ -10,7 +11,9 @@ interface FormContextInterface {
   registerForm: (formId: string) => void
 }
 
-const FormStore = React.createContext<Readonly<FormContextInterface>>({
+
+const FormStore = React.createContext<FormContextInterface>({
+  name: 'test',
   forms: {},
   allFormValues: {},
   setFormValues: (name: any[], value: any) => { },
@@ -55,6 +58,7 @@ function Form(props: FormProps) {
 
 
   const globalFormState: FormContextInterface = {
+    name: "StoreName",
     forms: {},
     allFormValues: {},
     setFormValues(name: any[], value: string) {
@@ -86,6 +90,9 @@ function Form(props: FormProps) {
   }
 
   return <FormStore.Provider value={globalFormState}>
+    <button onClick={() => {
+      globalFormState.name = "changeName"
+    }}>change store</button>
     <InnerForm {...props} />
   </FormStore.Provider>
 }
@@ -93,6 +100,7 @@ function Form(props: FormProps) {
 function InnerForm(props: FormProps) {
 
   const {
+    name,
     forms,
     allFormValues,
     clearFormValues,
@@ -132,23 +140,31 @@ function InnerForm(props: FormProps) {
     onFinish,
   } = props;
 
+  console.log("chilren", children)
+
+
   return (
-    <form
-      onReset={(e) => {
-        e.preventDefault();
-        clearFormValues();
-        // console.log("###", "onReset");
-        // setFormValues('all', {});
-      }}
-      onSubmit={(e) => {
-        // prevent default form submission
-        e.preventDefault();
-        console.log("finished", allFormValues)
-        // onFinish?.(filterValues(values));
-      }}
-    >
-      {children}
-    </form>
+    <div>
+      {/* <p>{name}</p> */}
+
+      <form
+        onReset={(e) => {
+          e.preventDefault();
+          clearFormValues();
+          // console.log("###", "onReset");
+          // setFormValues('all', {});
+        }}
+        onSubmit={(e) => {
+          // prevent default form submission
+          e.preventDefault();
+          console.log("finished", allFormValues)
+          // onFinish?.(filterValues(values));
+        }}
+      >
+        <div>form content</div>
+        {children}
+      </form>
+    </div>
   );
 }
 
@@ -169,44 +185,58 @@ function FormItem({ children, name }: FormItemProps) {
   const formItemId = useId();
   console.log("formItemId", formItemId);
 
+  const [, forceRender] = useState<any>();
+
   const { allFormValues, setFormValues } = useContext(FormStore)
   const formName = `${formItemId}_${name}`;
 
-  if (name) {
-    const C = children;
-    // const copy = React.cloneElement(children, {
-    //   value: allFormValues[formName],
-    //   onChange: (value: any) => {
-    //     console.log("onChange", formName, value)
-    //     setFormValues([formName], value?.target?.value || value);
-    //   }
-    // })
+  useEffect(() => {
+    console.log("value Change", allFormValues[formName]);
+  }, [allFormValues[formName]])
 
-    return <div>
-      {/* <C value={allFormValues[formName]} /> */}
-      {/* {copy} */}
-    </div>
+
+  const ref = useRef<any>();
+  const [v, setV] = useState();
+
+  const change = (value: any) => {
+    // console.log("onChange", formName, value)
+    setFormValues([formName], value?.target?.value || value);
+    setV(value?.target?.value || value);
+    // forceRender(null);
   }
+
+  if (name) {
+    if (!ref.current) {
+      ref.current = React.cloneElement(children, {
+        value: v,
+        onChange: change
+      })
+    } else {
+      // change(allFormValues?.[formName]);
+    }
+  }
+
+
+
+
 
   return (
     <div>
-      {/* {"ctx" + ctx[name]} */}
-      {children}
+      {name ? ref?.current : children}
     </div>
   );
 }
 
 function MyInput({ value, onChange, defaultValue }: any) {
 
+  // console.log("vvv", value)
+  // useEffect(() => {
+  //   onChange?.(defaultValue);
+  // }, [defaultValue])
 
-  console.log("##", value)
-
-  useEffect(() => {
-    onChange?.(defaultValue);
-  }, [defaultValue])
-
-  return (<div>
+  return (<div style={{ border: '1px solid red' }}>
     {value}
+    {/* {defaultValue} */}
     <button
       type="button"
       onClick={() => {
@@ -233,12 +263,12 @@ export default function FormTest() {
     <FormItem
       valueFilter={(value) => "filter" + value}
       className="formItem"
-      name="test"
+      name="t_name"
     >
       <input />
     </FormItem>
     <FormItem name="name">
-      <MyInput defaultValue="test" />
+      <MyInput defaultValue="myInputDefaultValue" />
     </FormItem>
     <button type="reset"> reset</button>
     <button
