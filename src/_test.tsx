@@ -11,6 +11,7 @@ import { FormItem } from "./components/form/form_item/form_item";
 import Input from "./components/input/input";
 import Button from "./components/button/button";
 import DemoTest from "./components/demo/demo";
+import ContextDeomo from "./context_demo";
 // import Input from "./components/input";
 
 // function Input(props: any) {
@@ -52,7 +53,8 @@ function App() {
   const { reset } = form;
   return (
     <div>
-      <DemoTest />
+      {/* <DemoTest /> */}
+      <ContextDeomo />
     </div>
   );
 }
