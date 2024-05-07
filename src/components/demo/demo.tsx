@@ -66,12 +66,10 @@ function Form(props: FormProps) {
         name.forEach((item, index) => {
           globalFormState.allFormValues[item] = value;
         })
-        // console.log("value changed")
-        // globalFormState.allFormValues[name] = value;
       }
     },
     clearFormValues() {
-      // globalFormState.allFormValues
+
       Object.keys(globalFormState.allFormValues).forEach(key => {
         console.log("##", key)
         globalFormState.allFormValues[key] = undefined;
@@ -181,66 +179,50 @@ interface FormItemProps extends HtmlHTMLAttributes<HTMLDivElement> {
 
 function FormItem({ children, name }: FormItemProps) {
 
-
   const formItemId = useId();
-  console.log("formItemId", formItemId);
-
-  const [, forceRender] = useState<any>();
 
   const { allFormValues, setFormValues } = useContext(FormStore)
   const formName = `${formItemId}_${name}`;
 
-  useEffect(() => {
-    console.log("value Change", allFormValues[formName]);
-  }, [allFormValues[formName]])
-
+  const [, forceRender] = useState<any>();
 
   const ref = useRef<any>();
   const [v, setV] = useState();
 
   const change = (value: any) => {
-    // console.log("onChange", formName, value)
     setFormValues([formName], value?.target?.value || value);
     setV(value?.target?.value || value);
-    // forceRender(null);
+
+    // forceRender('');
   }
+
 
   if (name) {
-    if (!ref.current) {
-      ref.current = React.cloneElement(children, {
-        value: v,
-        onChange: change
-      })
-    } else {
-      // change(allFormValues?.[formName]);
-    }
+    ref.current = React.cloneElement(children, {
+      value: allFormValues[formName] || '',
+      onChange: change
+    })
   }
-
-
-
-
 
   return (
     <div>
-      {name ? ref?.current : children}
+      fieldName {formName}: {name ? ref?.current : children}
     </div>
   );
 }
 
 function MyInput({ value, onChange, defaultValue }: any) {
 
-  // console.log("vvv", value)
-  // useEffect(() => {
-  //   onChange?.(defaultValue);
-  // }, [defaultValue])
+  useEffect(() => {
+    onChange?.(defaultValue);
+  }, [defaultValue])
 
   return (<div style={{ border: '1px solid red' }}>
-    {value}
-    {/* {defaultValue} */}
+    {value || ''}
     <button
       type="button"
       onClick={() => {
-        onChange && onChange('change Value')
+        onChange && onChange(Math.random());
       }}
     >
       click To change

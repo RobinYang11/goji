@@ -1,19 +1,18 @@
 import React, { useContext, useState } from "react"
 
-
-
-
-
-
 const Ctx = React.createContext<any>({});
 
 function Son() {
 
   const { state, setState } = useContext(Ctx);
   return <div>{state?.name}
-    <button onClick={() => {
-      setState({ name: "robin changed!" })
-    }}>change name</button>
+    <button
+      onClick={() => {
+        setState({ name: "robin changed!" })
+      }}
+    >
+      change name
+    </button>
   </div>
 }
 

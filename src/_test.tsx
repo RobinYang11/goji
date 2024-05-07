@@ -53,8 +53,8 @@ function App() {
   const { reset } = form;
   return (
     <div>
-      {/* <DemoTest /> */}
-      <ContextDeomo />
+      <DemoTest />
+      {/* <ContextDeomo /> */}
     </div>
   );
 }
