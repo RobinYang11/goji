@@ -2,7 +2,6 @@ import React, { HTMLAttributes, HtmlHTMLAttributes, ReactElement, Ref, useContex
 
 interface FormContextInterface {
 
-  name: string,
   forms: Record<string, any>,
   allFormValues: Record<string, any>,
   setFormValues: (name: any[], value: any) => void,
@@ -12,15 +11,17 @@ interface FormContextInterface {
   registerForm: (formId: string) => void
 }
 
-const FormStore = React.createContext<FormContextInterface>({
-  name: 'test',
+
+interface IFormStore {
+  forms: Record<string, FormInstance | undefined>,
+  registerForm: (formName: string, form: FormInstance) => void,
+  uninstallForm: (formName: string) => void
+}
+
+const FormStore = React.createContext<IFormStore>({
   forms: {},
-  allFormValues: {},
-  setFormValues: (name: any[], value: any) => { },
-  clearFormValues: () => { },
-  removeFromValues: (name: string) => { },
-  update: (formId: string, value: any) => { },
-  registerForm: (formId: string) => { }
+  registerForm: (fromName: string, form: FormInstance) => { },
+  uninstallForm: (formName: string) => { }
 });
 
 interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, ''> {
@@ -32,65 +33,82 @@ interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, ''> {
 
 type FormValues = Record<string, any>;
 
-interface FormApi {
-  getFieldsValue: () => FormValues,
-  reset: () => void;
+abstract class IForm {
+
+  values: FormValues = {}
+
+  rules: Record<string, any> = {}
+
+  errors: Record<string, any> = {}
+
+  reset(): void { }
+
+  submit(): void { }
+
+  validate(): void { }
+
+  reRender(): void { }
+
+
 }
 
-class FormInstance implements FormApi {
-  registerApi = (v: any, setV: any) => {
-    this.getFieldsValue = () => v;
-    this.reset = () => {
-      setV({});
-    }
-    this.setFieldsValue = () => {
-      setV({ name: "robin" });
-    }
-  };
-  setFieldsValue = () => { }
-  getFieldsValue = () => { return {} };
-  reset = () => { }
+class FormInstance implements IForm {
+  values: FormValues = {}
+  errors: Record<string, any> = {};
+  rules: Record<string, Function | string | RegExp> = {}
+  valueFilters: Record<string, Function> = {};
+
+  constructor() {
+
+  }
+
+  filterValues(values: Record<string, any>) {
+    const newValues = { ...values };
+    Object.keys(newValues).forEach((key) => {
+      if (this.valueFilters[key]) {
+        newValues[key] = this.valueFilters[key](newValues[key]);
+      }
+    });
+    return newValues;
+  }
+
+  reset(): void {
+    throw new Error("Method not implemented.");
+  }
+  submit(): void {
+    throw new Error("Method not implemented.");
+  }
+  validate(): void {
+    throw new Error("Method not implemented.");
+  }
+  reRender(): void {
+    throw new Error("Method not implemented.");
+  }
+
 }
 
 function Form(props: FormProps) {
 
-  // const [data, setData] = useState({})
 
+  const [forms, setForms] = useState<Record<string, FormInstance | undefined>>({});
 
-  const globalFormState: FormContextInterface = {
-    name: "StoreName",
-    forms: {},
-    allFormValues: {},
-    setFormValues(name: any[], value: string) {
-      if (name?.length) {
-        name.forEach((item, index) => {
-          globalFormState.allFormValues[item] = value;
-        })
-      }
-    },
-    clearFormValues() {
+  const registerForm = (formName: string, form: FormInstance) => {
+    console.log("registerForm", formName, form)
+    setForms({
+      ...forms,
+      [formName]: form
+    })
+  };
 
-      Object.keys(globalFormState.allFormValues).forEach(key => {
-        console.log("##", key)
-        globalFormState.allFormValues[key] = undefined;
-      })
-
-    },
-    removeFromValues(name: string) {
-      delete this.allFormValues[name];
-    },
-    update(formId: string, value: any) {
-      this.forms[formId] = value;
-    },
-    registerForm(formId: string) {
-      this.forms[formId] = {};
-    }
+  const uninstallForm = (formName: string) => {
+    setForms({
+      ...forms,
+      [formName]: undefined
+    })
   }
 
-  return <FormStore.Provider value={globalFormState}>
-    <button onClick={() => {
-      globalFormState.name = "changeName"
-    }}>change store</button>
+
+  return <FormStore.Provider value={{ forms: forms, registerForm, uninstallForm }}>
     <InnerForm {...props} />
   </FormStore.Provider>
 }
@@ -98,68 +116,39 @@ function Form(props: FormProps) {
 function InnerForm(props: FormProps) {
 
   const {
-    name,
-    forms,
-    allFormValues,
-    clearFormValues,
     registerForm,
-    setFormValues,
-    update
+    uninstallForm
   } = useContext(FormStore);
 
-  const { form } = props;
+  // const { form } = props;
   // unique form id;
   const formId = useId();
 
-  // current form values 
-  const [values, setValues] = useState<Record<string, any>>({});
-
-  // register form to store
-  // registerForm(formId);
-
-  // console.log("##", ctx);
-  // form?.registerApi(values, setValues);
-
-  const valueFilters: Record<string, Function> = {};
-
-  const filterValues = (values: Record<string, any>) => {
-    const newValues = { ...values };
-    Object.keys(newValues).forEach((key) => {
-      if (valueFilters[key]) {
-        newValues[key] = valueFilters[key](newValues[key]);
-      }
-    });
-    return newValues;
-  }
 
   const {
     children,
-    onValuesChange,
-    onFinish,
   } = props;
 
-  console.log("chilren", children)
-
+  useEffect(() => {
+    const formInstance = new FormInstance();
+    registerForm(formId, formInstance);
+    return () => { uninstallForm(formId); }
+  }, [])
 
   return (
     <div>
-      {/* <p>{name}</p> */}
-
       <form
+        id={formId}
         onReset={(e) => {
+          // prevent default reset
           e.preventDefault();
-          clearFormValues();
-          // console.log("###", "onReset");
-          // setFormValues('all', {});
+
         }}
         onSubmit={(e) => {
           // prevent default form submission
           e.preventDefault();
-          console.log("finished", allFormValues)
-          // onFinish?.(filterValues(values));
         }}
       >
-        <div>form content</div>
         {children}
       </form>
     </div>
@@ -179,34 +168,42 @@ interface FormItemProps extends HtmlHTMLAttributes<HTMLDivElement> {
 
 function FormItem({ children, name }: FormItemProps) {
 
-  const formItemId = useId();
+  const {
+    forms
+  } = useContext(FormStore);
 
-  const { allFormValues, setFormValues } = useContext(FormStore)
-  const formName = `${formItemId}_${name}`;
 
-  const [, forceRender] = useState<any>();
+  const [, forceRender] = useState();
 
   const ref = useRef<any>();
-  const [v, setV] = useState();
+  const formRef = useRef<any>();
+
 
   const change = (value: any) => {
-    setFormValues([formName], value?.target?.value || value);
-    setV(value?.target?.value || value);
-
-    // forceRender('');
+    // setFormValues([formName], value?.target?.value || value);
+    forceRender(value?.target?.value || value);
   }
 
 
   if (name) {
     ref.current = React.cloneElement(children, {
-      value: allFormValues[formName] || '',
+      // value: allFormValues[formName] || '',
       onChange: change
     })
   }
 
+  useEffect(() => {
+    if (!ref.current || !name) return;
+    const formId = ref.current?.parentElement?.id;
+    formRef.current = forms[formId];
+    console.log("## form instance ##", formId,forms)
+  }, [])
+
+
+
   return (
-    <div>
-      fieldName {formName}: {name ? ref?.current : children}
+    <div ref={ref}>
+      {name ? ref?.current : children}
     </div>
   );
 }
@@ -254,11 +251,7 @@ export default function FormTest() {
     </FormItem>
     <button type="reset"> reset</button>
     <button
-      onClick={() => {
-        // const v = form.getFieldsValue();
-        form.setFieldsValue();
-        // console.log("##v", v);
-      }}
+      onClick={() => {}}
     >
       get Form instance
     </button>
