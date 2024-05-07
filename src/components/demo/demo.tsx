@@ -129,9 +129,15 @@ function InnerForm(props: FormProps) {
     children,
   } = props;
 
+  const formRef = useRef<any>();
   useEffect(() => {
-    const formInstance = new FormInstance();
-    registerForm(formId, formInstance);
+    if (!formRef.current) {
+      const formInstance = new FormInstance();
+      registerForm(formId, formInstance);
+      formRef.current = formInstance;
+    }
+
+
     return () => { uninstallForm(formId); }
   }, [])
 
@@ -172,13 +178,17 @@ function FormItem({ children, name }: FormItemProps) {
     forms
   } = useContext(FormStore);
 
-
   const [, forceRender] = useState();
-
   const ref = useRef<any>();
   const formRef = useRef<any>();
+  const parentRef = useRef<any>();
+  const formId = parentRef.current?.parentElement?.id;
 
-
+  if (formId && !formRef.current) {
+    formRef.current = forms[formId];
+    console.log("fromRef", formRef.current);
+  }
+  
   const change = (value: any) => {
     // setFormValues([formName], value?.target?.value || value);
     forceRender(value?.target?.value || value);
@@ -192,17 +202,9 @@ function FormItem({ children, name }: FormItemProps) {
     })
   }
 
-  useEffect(() => {
-    if (!ref.current || !name) return;
-    const formId = ref.current?.parentElement?.id;
-    formRef.current = forms[formId];
-    console.log("## form instance ##", formId,forms)
-  }, [])
-
-
 
   return (
-    <div ref={ref}>
+    <div ref={parentRef}>
       {name ? ref?.current : children}
     </div>
   );
@@ -251,7 +253,7 @@ export default function FormTest() {
     </FormItem>
     <button type="reset"> reset</button>
     <button
-      onClick={() => {}}
+      onClick={() => { }}
     >
       get Form instance
     </button>
