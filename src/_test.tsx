@@ -10,7 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 import { FormItem } from "./components/form/form_item/form_item";
 import Input from "./components/input/input";
 import Button from "./components/button/button";
-import DemoTest from "./components/demo/demo";
+import DemoTest from "./components/form/form";
 import ContextDeomo from "./context_demo";
 // import Input from "./components/input";
 

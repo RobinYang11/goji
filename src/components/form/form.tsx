@@ -1,49 +1,290 @@
-import React, { ReactElement } from "react";
-import { UseFormReturn } from "react-hook-form";
+import React, { HTMLAttributes, HtmlHTMLAttributes, LegacyRef, ReactElement, Ref, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
 
-type WithOutFormProps = Omit<React.HTMLProps<HTMLFormElement>, "form">;
-
-export interface FormProps extends WithOutFormProps {
-  children: any;
-  colLayout?: {
-    labelTextAlign?: "left" | "center" | "right";
-    labelCol: any;
-    contentCol: any;
-  };
-  onSubmit: (data: Record<string, any>) => void;
-  form: UseFormReturn;
+export interface IFormStore {
+  forms: Record<string, FormInstance | undefined>,
+  registerForm: (formName: string, form: FormInstance) => void,
+  uninstallForm: (formName: string) => void
+  updateForm: (formName: string, form: FormInstance) => void
 }
 
-export default function Form(props: FormProps) {
-  const { form, children, colLayout, onSubmit } = props;
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = form;
+export interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, ''> {
+  onValuesChange?: (values: Record<string, any>) => any;
+  onFinish?: (values: Record<string, any>) => void;
+  form?: FormInstance
+}
 
-  const _copy = children?.map((i: ReactElement) => {
-    if (typeof i.type === "string") {
-      if (i.type === "button") return i;
-    }
-    return React.cloneElement(i, {
-      ...register(i.props.name, i.props.rules),
-      control,
-      colLayout,
-      key: i.props.name,
-      form,
-      errors,
+
+export type FormValues = Record<string, any>;
+
+export abstract class IForm {
+
+  values: FormValues = {}
+
+  rules: Record<string, any> = {}
+
+  errors: Record<string, any> = {}
+
+  reset(): void { }
+
+  submit(): void { }
+
+  validate(): void { }
+
+  reRender(): void { }
+
+
+}
+
+class FormInstance implements IForm {
+  values: FormValues = {}
+  errors: Record<string, any> = {};
+  rules: Record<string, Function | string | RegExp> = {}
+  valueFilters: Record<string, Function> = {};
+
+  constructor() {
+
+  }
+
+  filterValues(values: Record<string, any>) {
+    const newValues = { ...values };
+    Object.keys(newValues).forEach((key) => {
+      if (this.valueFilters[key]) {
+        newValues[key] = this.valueFilters[key](newValues[key]);
+      }
     });
-  });
+    return newValues;
+  }
+
+  reset(): void {
+    throw new Error("Method not implemented.");
+  }
+  submit(): void {
+    throw new Error("Method not implemented.");
+  }
+  validate(): void {
+    throw new Error("Method not implemented.");
+  }
+  reRender(): void {
+    throw new Error("Method not implemented.");
+  }
+
+}
+
+
+const FormStore = React.createContext<IFormStore>({
+  forms: {},
+  registerForm: (fromName: string, form: FormInstance) => { },
+  uninstallForm: (formName: string) => { },
+  updateForm: (formName: string, form: FormInstance) => { }
+});
+
+
+function Form(props: FormProps) {
+
+
+  const [forms, setForms] = useState<Record<string, FormInstance | undefined>>({});
+
+  const registerForm = (formName: string, form: FormInstance) => {
+    setForms({
+      ...forms,
+      [formName]: form
+    })
+  };
+
+  const uninstallForm = (formName: string) => {
+    setForms({
+      ...forms,
+      [formName]: undefined
+    })
+  }
+
+  const updateForm = (formName: string, form: FormInstance) => {
+    forms[formName] = form;
+    setForms({
+      ...forms,
+    })
+  }
+
+
+  return <FormStore.Provider value={{ forms: forms, registerForm, uninstallForm, updateForm }}>
+    <InnerForm {...props} />
+  </FormStore.Provider>
+}
+
+function InnerForm(props: FormProps) {
+
+  const {
+    registerForm,
+    uninstallForm,
+    updateForm
+  } = useContext(FormStore);
+
+  const {
+    onFinish,
+  } = props;
+  // unique form id;
+  const formId = useId();
+
+
+  const {
+    children,
+  } = props;
+
+  const formRef = useRef<any>();
+  useEffect(() => {
+    if (!formRef.current) {
+      const formInstance = new FormInstance();
+      registerForm(formId, formInstance);
+      formRef.current = formInstance;
+    }
+
+    return () => { uninstallForm(formId); }
+  }, [])
+
 
   return (
-    <form
-      onSubmit={handleSubmit((data: any) => {
-        onSubmit?.(data);
-      })}
-    >
-      {_copy}
-    </form>
+    <div>
+      <form
+        id={formId}
+        onReset={(e) => {
+          formRef.current.values = {};
+          updateForm(formId, formRef.current)
+        }}
+        onSubmit={(e) => {
+          // prevent default form submission
+          e.preventDefault();
+          onFinish?.(formRef.current.values);
+        }}
+      >
+        {children}
+      </form>
+    </div>
   );
 }
+
+
+Form.create = () => {
+  return new FormInstance();
+}
+
+interface FormItemProps extends HtmlHTMLAttributes<HTMLDivElement> {
+  name: string
+  valueFilter?: (value: any) => any
+  children: ReactElement
+}
+
+function FormItem({ children, name }: FormItemProps) {
+
+  const {
+    forms
+  } = useContext(FormStore);
+
+  const [, forceRender] = useState();
+
+  const copyRef = useRef<ReactElement>();
+  const formRef = useRef<FormInstance>();
+  const parentRef = useRef<any>();
+  const formId = parentRef.current?.parentElement?.id;
+
+  if (formId && !formRef.current) {
+    formRef.current = forms[formId];
+  }
+
+
+  const change = (value: any) => {
+    if (formRef.current) {
+      const form: FormInstance = formRef.current;
+      form.values[name] = value?.target?.value || value;
+      forceRender(value?.target?.value || value);
+    }
+  }
+
+
+  if (name && formRef.current) {
+    const form = formRef.current;
+    copyRef.current = React.cloneElement(children, {
+      value: form.values?.[name] || '',
+      onChange: change
+    })
+  }
+
+
+  return (
+    <div ref={parentRef}>
+      {name}: {name ? copyRef?.current : children}
+    </div>
+  );
+}
+
+function MyInput({ value, onChange, defaultValue }: any) {
+
+  useEffect(() => {
+    onChange?.(defaultValue);
+  }, [defaultValue])
+
+  return (<div style={{ border: '1px solid red' }}>
+    {value || ''}
+    <button
+      type="button"
+      onClick={() => {
+        onChange && onChange(Math.random());
+      }}
+    >
+      click To change
+    </button>
+  </div>)
+}
+
+export default function FormTest() {
+  const form = Form.create();
+  return <Form
+    form={form}
+    onFinish={v => {
+      console.log("finishValues", v)
+    }}
+    onValuesChange={v => {
+      console.log("onValuesChange", v);
+    }}
+  >
+    <div>test</div>
+    {
+      Array(10000).fill(0).map((_, index) => {
+        return <FormItem
+          key={index}
+          className="formItem"
+          name={"name" + index}
+        >
+          <input />
+        </FormItem>
+      })
+    }
+    <FormItem
+      valueFilter={(value) => "filter" + value}
+      className="formItem"
+      name="t_name"
+    >
+      <input />
+    </FormItem>
+    <FormItem
+      className="formItem"
+      name="sex"
+    >
+      <select>
+        <option value="male">male</option>
+        <option value="female">female</option>
+        <option value="other">other</option>
+      </select>
+    </FormItem>
+    <FormItem name="name">
+      <MyInput defaultValue="myInputDefaultValue" />
+    </FormItem>
+    <button type="reset"> reset</button>
+    <button
+      onClick={() => { }}
+    >
+      get Form instance
+    </button>
+    <button type="submit">submit</button>
+  </Form>
+}
+
