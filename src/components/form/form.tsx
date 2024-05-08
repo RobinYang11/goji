@@ -30,6 +30,13 @@ export abstract class IForm {
 
   validate(): void { }
 
+  validateField(fieldName: string): string {
+
+
+
+    return 'error'
+  }
+
   reRender(): void { }
 
 
@@ -38,7 +45,7 @@ export abstract class IForm {
 class FormInstance implements IForm {
   values: FormValues = {}
   errors: Record<string, any> = {};
-  rules: Record<string, Function | string | RegExp> = {}
+  rules: Record<string, ItemRule[]> = {}
   valueFilters: Record<string, Function> = {};
 
   constructor() {
@@ -55,6 +62,15 @@ class FormInstance implements IForm {
     return newValues;
   }
 
+  validateField(fieldName: string): string {
+    const rules = this.rules[fieldName]
+    const value = this.values[fieldName];
+    rules.map(rule => {
+      // rule.type = 
+    })
+    return "error"
+  }
+
   reset(): void {
     throw new Error("Method not implemented.");
   }
@@ -62,7 +78,8 @@ class FormInstance implements IForm {
     throw new Error("Method not implemented.");
   }
   validate(): void {
-    throw new Error("Method not implemented.");
+    this.rules.map
+    // throw new Error("Method not implemented.");
   }
   reRender(): void {
     throw new Error("Method not implemented.");
@@ -167,16 +184,38 @@ Form.create = () => {
   return new FormInstance();
 }
 
+// TODO: define rule map for rule ,every 'type' corresponding to
+// a Function  which hanlde the validation
+type BaseRuleType = 'email'
+  | 'phone' //  phone number
+  | 'minlength' // minimum length
+  | 'maxlength' // maximum length
+  | 'RegExp' // regular expression
+  | 'letterAndNumber' // contains letters and numbers
+  | 'atLeastOneUppercase' // contains at least one uppercase letter
+  | 'noSpecialCharacters' // contains no special characters
+  | 'password'
+  | 'website'; // a valid web url
+
+export interface ItemRule {
+  message?: string,
+  type?: BaseRuleType,
+  ruleValue?: string | number | RegExp,
+  validator?: (value: any) => void
+}
+
+
 interface FormItemProps extends HtmlHTMLAttributes<HTMLDivElement> {
   name: string
   valueFilter?: (value: any) => any
-  children: ReactElement
+  children: ReactElement,
+  rules?: ItemRule[]
 }
 
-function FormItem({ children, name }: FormItemProps) {
+function FormItem({ children, name, rules }: FormItemProps) {
 
   const {
-    forms
+    forms,
   } = useContext(FormStore);
 
   const [, forceRender] = useState();
@@ -190,7 +229,6 @@ function FormItem({ children, name }: FormItemProps) {
     formRef.current = forms[formId];
   }
 
-
   const change = (value: any) => {
     if (formRef.current) {
       const form: FormInstance = formRef.current;
@@ -198,7 +236,6 @@ function FormItem({ children, name }: FormItemProps) {
       forceRender(value?.target?.value || value);
     }
   }
-
 
   if (name && formRef.current) {
     const form = formRef.current;
@@ -208,10 +245,19 @@ function FormItem({ children, name }: FormItemProps) {
     })
   }
 
+  useEffect(() => {
+    if (formRef.current) {
+      const form = formRef.current;
+      if (rules) {
+        form.rules[formId] = rules;
+      }
+    }
+  }, [])
 
   return (
     <div ref={parentRef}>
       {name}: {name ? copyRef?.current : children}
+      <p>errors:{ }</p>
     </div>
   );
 }
@@ -248,7 +294,7 @@ export default function FormTest() {
   >
     <div>test</div>
     {
-      Array(10000).fill(0).map((_, index) => {
+      Array(2).fill(0).map((_, index) => {
         return <FormItem
           key={index}
           className="formItem"
@@ -275,7 +321,15 @@ export default function FormTest() {
         <option value="other">other</option>
       </select>
     </FormItem>
-    <FormItem name="name">
+    <FormItem
+      rules={[
+        {
+          type: 'email',
+          message: 'please input a valid email',
+        }
+      ]}
+      name="name"
+    >
       <MyInput defaultValue="myInputDefaultValue" />
     </FormItem>
     <button type="reset"> reset</button>
