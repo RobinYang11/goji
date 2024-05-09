@@ -80,6 +80,7 @@
   "dependencies": {
     "@types/uuid": "^9.0.1",
     "framer-motion": "^8.5.5",
+    "is-async-function": "^2.0.0",
     "uuid": "^9.0.0"
   },
   "publishConfig": {
@@ -87,4 +88,3 @@
     "registry": "https://registry.npmjs.org/"
   }
 }
-
