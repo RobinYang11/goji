@@ -1,4 +1,4 @@
-import React, { HtmlHTMLAttributes, ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { HtmlHTMLAttributes, JSXElementConstructor, ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FormStore } from "./context";
 import { FormInstance } from "./form";
 import { getNearestForm } from "./util";
@@ -33,13 +33,18 @@ export interface ItemRule {
 }
 
 
-export interface FormItemProps extends HtmlHTMLAttributes<HTMLDivElement> {
-  name: string
-  valueFilter?: (value: any) => any
-  children: ReactElement,
-  rules?: ItemRule[]
+interface IFormItemChildProps{
+  value: any,
+  onChange: (value: any) => void,
+  defaultValue: any,
 }
 
+export interface FormItemProps  {
+  name: string
+  valueFilter?: (value: any) => any
+  children: ReactElement
+  rules?: ItemRule[]
+}
 
 
 export default function FormItem({ children, name, rules }: FormItemProps) {
@@ -54,12 +59,7 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
 
   useEffect(() => {
     const formId = getNearestForm(parentRef.current)
-
     if (formId) {
-      console.log("##formId", formId)
-      console.log("Forms", forms);
-      console.log("dd", forms[formId])
-      forceRender(formId)
       formRef.current = forms[formId];
     }
   }, [])

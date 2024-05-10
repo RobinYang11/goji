@@ -10,7 +10,8 @@ import { Controller, useForm } from "react-hook-form";
 import Input from "./components/input/input";
 import Button from "./components/button/button";
 import ContextDeomo from "./context_demo";
-import FormTest from "./components/form/_test";
+// import FormTest from "./components/form/_test";
+import TestMyRender from "./components/form/_test";
 // import Input from "./components/input";
 
 // function Input(props: any) {
@@ -52,7 +53,8 @@ function App() {
   const { reset } = form;
   return (
     <div>
-      <FormTest /> 
+      <TestMyRender />
+      {/* <FormTest />  */}
       {/* <ContextDeomo /> */}
     </div>
   );
