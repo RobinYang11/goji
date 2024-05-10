@@ -49,12 +49,43 @@ const c = async () => {
   });
 }
 
+const run = (value, arr, errorCallback) => {
+  // await a();
+  // await b();
 
-const arr = [a,a1,a2,a3,b,c]
+  // this code can't act synchronously
+  // arr.forEach(async (fn) => {
+  //   await fn(v)
+  // })
 
-const run = (arr)=>{
-  // for()
+  let index = 0;
+  go(arr[index])
+
+  async function go(fn) {
+    try {
+      if (isAsyncFunction(fn)) {
+        await fn()
+      }
+      else { fn() }
+      index++;
+      if (arr[index] !== undefined) {
+        go(arr[index])
+      }
+    } catch (err) {
+      errorCallback(err);
+      return err;
+    }
+  }
 }
+
+const res = run('', [a, a1, a2, a3, b, c], (err) => {
+  console.log("throw err: " + err)
+});
+
+
+
+
+
 
 
 
