@@ -41,7 +41,7 @@ const config = {
     host: "127.0.0.1",
     hot: true, //热更新
     open: true,
-    compress: true, // 静态资源 开启gzip 压缩
+    // compress: true, // 静态资源 开启gzip 压缩
     port: 3004, // devserver 启动端口
     proxy: {
       "/api": {

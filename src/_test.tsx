@@ -7,11 +7,10 @@ import Table from "./components/table/table";
 import Upload from "./components/upload/upload";
 import Form from "./components/form/form";
 import { Controller, useForm } from "react-hook-form";
-import { FormItem } from "./components/form/form_item/form_item";
 import Input from "./components/input/input";
 import Button from "./components/button/button";
-import DemoTest from "./components/form/form";
 import ContextDeomo from "./context_demo";
+import FormTest from "./components/form/_test";
 // import Input from "./components/input";
 
 // function Input(props: any) {
@@ -53,7 +52,7 @@ function App() {
   const { reset } = form;
   return (
     <div>
-      <DemoTest />
+      <FormTest /> 
       {/* <ContextDeomo /> */}
     </div>
   );
