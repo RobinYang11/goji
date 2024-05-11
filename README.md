@@ -1,13 +1,15 @@
 
+
 # e9u extendable ui
 
+# 《Philosophy in React , frustrating Vue & Angular》
+
 ## Why e9u?
+
 - All UI library components hard to extend.
 
 ```tsx
   <Button icon={ <IconUser /> } type="primary">click me</Button>
 ```
 
-
-![alt ant-design Button](https://github.com/RobinYang11/goji/blob/main/assets/image.png?raw=true)
-
+![alt text](assets/image.png)

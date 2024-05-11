@@ -1,7 +1,8 @@
-import React, { ReactElement, ReactHTMLElement, useEffect, useRef } from "react";
+import React, { ReactElement, ReactHTMLElement, useEffect, useRef, useState } from "react";
 import FormItem from "./FormItem";
 import Form from "./form";
 import Button from "../button/button";
+import { recursiveRender } from "./util";
 
 function MyInput({ value, onChange, defaultValue }: any) {
 
@@ -97,28 +98,25 @@ function FormTest() {
 }
 
 
- function TestMyRender({ children }: any) {
-  const a= () => {
-    const abc = (ele: ReactElement) => {
-      if (!ele) return;
-      if(Array.isArray(ele)){
-        ele.forEach(item => {
-          abc(item)
-        })
-        return;
-      }
-
-      console.log(ele.type)
-      abc(ele.props?.children)
-    }
-    abc(children)
-  }
+function TestMyRender({ children }: any) {
+  // const e = <div>test</div>
   const start = Date.now();
-  a();
   const end = Date.now()
-  console.log(end-start)
+  console.log(end - start)
+  const [v, setV] = useState("myName")
   return <div>
-    {children}
+    <input value={v} onChange={(e) => {
+      setV(e.target.value);
+    }} />
+    {recursiveRender(children, (ele: any, props) => {
+      // console.log(ele?.props, props)
+      // console.log("##",ele)
+      if (ele.type === 'input') {
+        props = { value: v, onChange: (e: any) => { setV(e.target.value) } }
+      }
+      // props = { one: 1, two: 2, three: 3, four: 4, five: 5 }
+      return props;
+    })}
   </div>
 }
 
@@ -126,16 +124,21 @@ export default function T() {
 
   return <TestMyRender>
     <div>
-      <div>test</div>
-      <div>
+      <div abc="dd">HELLO <span>ROBIN</span></div>
+      <div ddd="ab">
         <div>
           <div>
             <div>
               <div>
                 <div>
-                  <div><span>
-                    <MyInput />
-                  </span></div>
+                  <div>
+                    <span>
+                      <MyInput />
+                    </span>
+                    <div>
+                      testName: <input />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -145,3 +148,4 @@ export default function T() {
     </div>
   </TestMyRender>
 }
+
