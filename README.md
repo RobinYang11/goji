@@ -8,6 +8,4 @@
   <Button icon={ <IconUser /> } type="primary">click me</Button>
 ```
 
-
-![alt ant-design Button](https://github.com/RobinYang11/goji/blob/main/assets/image.png?raw=true)
-
+![alt text](assets/image.png)

@@ -17,12 +17,12 @@ type BaseRuleType = 'email'
   | 'password'
   | 'website'; // a valid web url
 
-const validateMap: Record<BaseRuleType, (value: any) => void> = {
-  'phone': async (value) => {
-    const phoneReg = /^[a-zA-Z0-9]/
 
-  },
-}
+// const validateMap: Record<BaseRuleType, (value: any) => void> = {
+//   'phone': async (value) => {
+//     const phoneReg = /^[a-zA-Z0-9]/
+//   },
+// }
 
 
 export interface ItemRule {

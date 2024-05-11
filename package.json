@@ -1,7 +1,7 @@
 {
-  "name": "goji_ui",
-  "version": "2.0.1",
-  "description": "component ",
+  "name": "e9u",
+  "version": "0.1.0",
+  "description": "e9u react react component",
   "main": "dist/cjs/index.js",
   "modue": "dist/esm/index.js",
   "scripts": {
@@ -12,14 +12,14 @@
   },
   "keywords": [
     "react",
-    "goji",
+    "extendable ui ",
     "component"
   ],
   "files": [
     "dist"
   ],
   "types": "dist/index.d.ts",
-  "author": "robin_ersa",
+  "author": "robin",
   "license": "ISC",
   "repository": {
     "type": "git",

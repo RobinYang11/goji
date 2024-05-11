@@ -5,7 +5,7 @@ import { FormInstance } from "./form";
 
 export const FORM_PREFIX = "__E9U_FORM_PREFIX__";
 export function useForm(): {
-  form: FormInstance
+  form: FormInstance | undefined
 } {
   // unique form id;
   const name = FORM_PREFIX + useId();
