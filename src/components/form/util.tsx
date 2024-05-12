@@ -24,24 +24,32 @@ export const getNearestForm = (current: HTMLElement): any => {
  * @param addPropsCallback
  */
 export const recursiveRender = (rootElement: ReactElement,
-  addPropsCallback: (copyingElement: ReactNode, props: {}) => Record<string, any>) => {
+  addPropsCallback: (copyingElement: ReactNode) => Record<string, any>) => {
 
   return React.Children.map(rootElement, child => {
 
     let childProps: any = {};
 
     if (React.isValidElement(child)) {
-      const newProps = addPropsCallback(child, childProps);
-      childProps = newProps;
+      // const newProps = addPropsCallback(child);
+      // childProps = newProps;
     }
 
     // String has no Props
-    if (child?.props) {
-      if (child.props.children) {
-        childProps.children = recursiveRender(child?.props?.children, addPropsCallback);
-        return React.cloneElement(child, childProps);
-      }
+    if(!child.props) {
+      return child;
     }
+
+    // if(!child.props.children) {
+      // return React.cloneElement(child, childProps);
+    // }
+
+    if (child?.props) {
+      const p =recursiveRender(child?.props?.children, addPropsCallback);
+      childProps.children =  p;
+      return React.cloneElement(child, childProps);
+    }
+
 
     return child;
 

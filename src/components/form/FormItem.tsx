@@ -1,7 +1,7 @@
 import React, { HtmlHTMLAttributes, JSXElementConstructor, ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FormStore } from "./context";
 import { FormInstance } from "./form";
-import { getNearestForm } from "./util";
+import { getNearestForm, recursiveRender } from "./util";
 
 
 // TODO: define rule map for rule ,every 'type' corresponding to
@@ -33,13 +33,13 @@ export interface ItemRule {
 }
 
 
-interface IFormItemChildProps{
+interface IFormItemChildProps {
   value: any,
   onChange: (value: any) => void,
   defaultValue: any,
 }
 
-export interface FormItemProps  {
+export interface FormItemProps {
   name: string
   valueFilter?: (value: any) => any
   children: ReactElement
@@ -72,29 +72,33 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
     }
   }
 
-  const c = (() => {
-    if (!name) return children;
+  // const c = (() => {
+  //   if (!name) return children;
+  //   if (!formRef.current) return null;
+  //   const form = formRef.current;
+  //   return React.cloneElement(children, {
+  //     value: form.values?.[name] || '',
+  //     onChange: change
+  //   })
+  // })
+
+  const child = recursiveRender(children, (ele: any) => {
+    let newProps = {}
+    if (!name) return ele.props;
+
     if (!formRef.current) return null;
     const form = formRef.current;
-    return React.cloneElement(children, {
-      value: form.values?.[name] || '',
-      onChange: change
-    })
+    if (ele.type === 'input') {
+      newProps = { ...ele.props, value: form.values?.[name] || '', onChange: change }
+    }
+    return newProps;
   })
 
-  // useEffect(() => {
-  //   if (formRef.current) {
-  //     const form = formRef.current;
-  //     if (rules) {
-  //       form.rules[formId] = rules;
-  //     }
-  //   }
-  // }, [])
 
 
   return (
     <div ref={parentRef}>
-      {name}: {c()}
+      {name}: {child}
       <p>errors:{ }</p>
     </div>
   );

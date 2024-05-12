@@ -24,7 +24,7 @@ function MyInput({ value, onChange, defaultValue }: any) {
 }
 
 
-function FormTest() {
+export function FormTest() {
   const form = Form.create();
   return <Form
     form={form}
@@ -36,7 +36,7 @@ function FormTest() {
     }}
   >
     <div>test</div>
-    {
+    {/* {
       Array(2).fill(0).map((_, index) => {
         return <FormItem
           key={index}
@@ -52,7 +52,7 @@ function FormTest() {
           </span>
         </FormItem>
       })
-    }
+    } */}
     <FormItem
       valueFilter={(value) => "filter" + value}
       // className="formItem"
@@ -108,9 +108,8 @@ function TestMyRender({ children }: any) {
     <input value={v} onChange={(e) => {
       setV(e.target.value);
     }} />
-    {recursiveRender(children, (ele: any, props) => {
-      // console.log(ele?.props, props)
-      // console.log("##",ele)
+    {recursiveRender(children, (ele: any) => {
+      let props ={}
       if (ele.type === 'input') {
         props = { value: v, onChange: (e: any) => { setV(e.target.value) } }
       }
