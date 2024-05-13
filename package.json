@@ -1,7 +1,7 @@
 {
-  "name": "e9u",
+  "name": "e9ui",
   "version": "0.1.0",
-  "description": "e9u react react component",
+  "description": "e9ui react react component",
   "main": "dist/cjs/index.js",
   "modue": "dist/esm/index.js",
   "scripts": {
