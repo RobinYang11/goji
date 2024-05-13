@@ -1,7 +1,7 @@
 import React, { HtmlHTMLAttributes, JSXElementConstructor, ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FormStore } from "./context";
 import { FormInstance } from "./form";
-import { getNearestForm } from "./util";
+import { getNearestForm, recursiveRender } from "./util";
 
 
 // TODO: define rule map for rule ,every 'type' corresponding to
@@ -33,13 +33,13 @@ export interface ItemRule {
 }
 
 
-interface IFormItemChildProps{
+interface IFormItemChildProps {
   value: any,
   onChange: (value: any) => void,
   defaultValue: any,
 }
 
-export interface FormItemProps  {
+export interface FormItemProps {
   name: string
   valueFilter?: (value: any) => any
   children: ReactElement
@@ -61,10 +61,12 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
     const formId = getNearestForm(parentRef.current)
     if (formId) {
       formRef.current = forms[formId];
+      forceRender(formId);
     }
-  }, [])
+  }, [parentRef.current])
 
   const change = (value: any) => {
+    console.log("###",value.target.value);
     if (formRef.current) {
       const form: FormInstance = formRef.current;
       form.values[name] = value?.target?.value || value;
@@ -72,24 +74,20 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
     }
   }
 
-  const c = (() => {
-    if (!name) return children;
+  const c = () => {
     if (!formRef.current) return null;
     const form = formRef.current;
-    return React.cloneElement(children, {
-      value: form.values?.[name] || '',
-      onChange: change
+    return recursiveRender(children, (ele: any) => {
+      // console.log("##",ele.type)
+      if (ele.type === 'input' || ele.type === 'select' || ele.type === 'textarea') {
+        return {
+          value: form.values?.[name] || '',
+          onChange: change
+        }
+      }
+      return {}
     })
-  })
-
-  // useEffect(() => {
-  //   if (formRef.current) {
-  //     const form = formRef.current;
-  //     if (rules) {
-  //       form.rules[formId] = rules;
-  //     }
-  //   }
-  // }, [])
+  }
 
 
   return (

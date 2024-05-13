@@ -24,7 +24,7 @@ function MyInput({ value, onChange, defaultValue }: any) {
 }
 
 
-function FormTest() {
+export function FormTest() {
   const form = Form.create();
   return <Form
     form={form}
