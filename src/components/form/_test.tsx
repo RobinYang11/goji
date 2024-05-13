@@ -124,8 +124,8 @@ export default function T() {
 
   return <TestMyRender>
     <div>
-      <div abc="dd">HELLO <span>ROBIN</span></div>
-      <div ddd="ab">
+      <div>HELLO <span>ROBIN</span></div>
+      <div>
         <div>
           <div>
             <div>

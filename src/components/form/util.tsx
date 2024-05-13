@@ -23,7 +23,7 @@ export const getNearestForm = (current: HTMLElement): any => {
  * @param rootElement 
  * @param addPropsCallback
  */
-export const recursiveRender = (rootElement: ReactElement,
+export const recursiveRender = (rootElement: ReactNode,
   addPropsCallback: (copyingElement: ReactNode, props: {}) => Record<string, any>) => {
 
   return React.Children.map(rootElement, child => {
@@ -37,7 +37,7 @@ export const recursiveRender = (rootElement: ReactElement,
 
     // String has no Props
     if (child?.props) {
-      if (child.props.children) {
+      if (child.props.children !== undefined) {
         childProps.children = recursiveRender(child?.props?.children, addPropsCallback);
         return React.cloneElement(child, childProps);
       }
