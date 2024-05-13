@@ -66,7 +66,6 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
   }, [parentRef.current])
 
   const change = (value: any) => {
-    console.log("###",value.target.value);
     if (formRef.current) {
       const form: FormInstance = formRef.current;
       form.values[name] = value?.target?.value || value;
@@ -78,17 +77,15 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
     if (!formRef.current) return null;
     const form = formRef.current;
     return recursiveRender(children, (ele: any) => {
-      // console.log("##",ele.type)
-      if (ele.type === 'input' || ele.type === 'select' || ele.type === 'textarea') {
+      if (ele.type === 'input' || ele.type === 'select' || ele.type === 'textarea' || typeof ele.type === 'function') {
         return {
-          value: form.values?.[name] || '',
+          value: form?.values?.[name] || '',
           onChange: change
         }
       }
       return {}
     })
   }
-
 
   return (
     <div ref={parentRef}>

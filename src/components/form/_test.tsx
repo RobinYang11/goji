@@ -37,7 +37,7 @@ export function FormTest() {
   >
     <div>test</div>
     {
-      Array(2).fill(0).map((_, index) => {
+      Array(10000).fill(0).map((_, index) => {
         return <FormItem
           key={index}
           // className="formItem"
@@ -59,6 +59,13 @@ export function FormTest() {
       name="t_name"
     >
       <input />
+    </FormItem>
+    <FormItem
+      valueFilter={(value) => "filter" + value}
+      // className="formItem"
+      name="text-area"
+    >
+      <textarea placeholder="input some text" />
     </FormItem>
     <div>
       <FormItem

@@ -1,6 +1,6 @@
 
 
-# e9u extendable ui
+# e9ui extendable ui
 
 # 《Philosophy in React , frustrating Vue & Angular》
 
