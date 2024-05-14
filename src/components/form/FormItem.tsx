@@ -70,7 +70,6 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
   const change = (value: any) => {
     if (formRef.current) {
       const form: FormInstance = formRef.current;
-      // console.log(form.rules[name]);
       form.values[name] = value?.target?.value || value;
       form.validateField(name)
       forceRender(value?.target?.value || value);
@@ -89,7 +88,10 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
   return (
     <div ref={parentRef}>
       {name}: {child}
-      <p>errors:{ formRef.current?.errors[name] }</p>
+      {
+        formRef.current?.errors[name] ?
+          <div style={{ color: "red" }}>errors:{formRef.current?.errors[name]}</div> : null
+      }
     </div>
   );
 }
