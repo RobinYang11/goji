@@ -38,9 +38,13 @@ export class FormInstance {
   validateField(fieldName: string): string {
     const rules = this.rules[fieldName]
     const value = this.values[fieldName];
-    rules.map(rule => {
-      // rule.type = 
-    })
+    
+
+    if (Math.random() * 10 > 5) {
+      this.errors[fieldName] = `${fieldName} error`
+    } else {
+      this.errors[fieldName] = null
+    }
     return "error"
   }
 

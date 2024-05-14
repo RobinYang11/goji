@@ -2,7 +2,6 @@ import React, { ReactElement, ReactHTMLElement, useEffect, useRef, useState } fr
 import FormItem from "./FormItem";
 import Form from "./form";
 import Button from "../button/button";
-import { recursiveRender } from "./util";
 
 function MyInput({ value, onChange, defaultValue }: any) {
 
@@ -60,6 +59,13 @@ export function FormTest() {
     >
       <input />
     </FormItem>
+    <FormItem
+      valueFilter={(value) => "filter" + value}
+      // className="formItem"
+      name="text-area"
+    >
+      <textarea placeholder="input some text" />
+    </FormItem>
     <div>
       <FormItem
         // className="formItem"
@@ -79,8 +85,12 @@ export function FormTest() {
     <FormItem
       rules={[
         {
-          type: 'email',
-          message: 'please input a valid email',
+          type: 'RegExp',
+          message: 'custom rule',
+        },
+        {
+          type:"email",
+          message:"please input a valid email",
         }
       ]}
       name="name"
@@ -96,55 +106,3 @@ export function FormTest() {
     <button type="submit">submit</button>
   </Form>
 }
-
-
-function TestMyRender({ children }: any) {
-  // const e = <div>test</div>
-  const start = Date.now();
-  const end = Date.now()
-  console.log(end - start)
-  const [v, setV] = useState("myName")
-  return <div>
-    <input value={v} onChange={(e) => {
-      setV(e.target.value);
-    }} />
-    {recursiveRender(children, (ele: any) => {
-      let props ={}
-      if (ele.type === 'input') {
-        props = { value: v, onChange: (e: any) => { setV(e.target.value) } }
-      }
-      // props = { one: 1, two: 2, three: 3, four: 4, five: 5 }
-      return props;
-    })}
-  </div>
-}
-
-export default function T() {
-
-  return <TestMyRender>
-    <div>
-      <div abc="dd">HELLO <span>ROBIN</span></div>
-      <div ddd="ab">
-        <div>
-          <div>
-            <div>
-              <div>
-                <div>
-                  <div>
-                    <span>
-                      <MyInput />
-                    </span>
-                    <div>
-                      testName: <input />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </TestMyRender>
-}
-

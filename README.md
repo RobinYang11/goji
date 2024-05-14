@@ -1,10 +1,10 @@
 
 
-# e9u extendable ui
+# e9ui extendable ui
 
-# 《Philosophy in React , frustrating Vue & Angular》
+### 《Philosophy in React , frustrating Vue & Angular》
 
-## Why e9u?
+## Why e9ui?
 
 - All UI library components hard to extend.
 

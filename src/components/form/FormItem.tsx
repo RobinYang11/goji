@@ -1,4 +1,4 @@
-import React, { HtmlHTMLAttributes, JSXElementConstructor, ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FormStore } from "./context";
 import { FormInstance } from "./form";
 import { getNearestForm, recursiveRender } from "./util";
@@ -6,7 +6,8 @@ import { getNearestForm, recursiveRender } from "./util";
 
 // TODO: define rule map for rule ,every 'type' corresponding to
 // a Function  which hanlde the validation
-type BaseRuleType = 'email'
+type BaseRuleType =
+  | 'email'
   | 'phone' //  phone number
   | 'minlength' // minimum length
   | 'maxlength' // maximum length
@@ -24,19 +25,10 @@ type BaseRuleType = 'email'
 //   },
 // }
 
-
 export interface ItemRule {
-  message?: string,
-  type?: BaseRuleType,
-  ruleValue?: string | number | RegExp,
-  validator?: (value: any) => void
-}
-
-
-interface IFormItemChildProps {
-  value: any,
-  onChange: (value: any) => void,
-  defaultValue: any,
+  message?: string;
+  type?: BaseRuleType;
+  validator?: (value: any) => void;
 }
 
 export interface FormItemProps {
@@ -46,8 +38,11 @@ export interface FormItemProps {
   rules?: ItemRule[]
 }
 
-
 export default function FormItem({ children, name, rules }: FormItemProps) {
+
+  if (!name) {
+    return <div>{children}</div>
+  }
 
   const {
     forms,
@@ -58,48 +53,45 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
   const parentRef = useRef<any>();
 
   useEffect(() => {
+
     const formId = getNearestForm(parentRef.current)
-    if (formId) {
-      formRef.current = forms[formId];
+    const form = forms[formId]
+    if (!form) return;
+    formRef.current = form
+
+    // if name and rules are specified, then register rules;
+    if (rules && name) {
+      form.rules[name] = rules;
+      forceRender(formId);
     }
-  }, [])
+
+  }, [parentRef.current])
 
   const change = (value: any) => {
     if (formRef.current) {
       const form: FormInstance = formRef.current;
       form.values[name] = value?.target?.value || value;
+      form.validateField(name)
       forceRender(value?.target?.value || value);
     }
   }
 
-  // const c = (() => {
-  //   if (!name) return children;
-  //   if (!formRef.current) return null;
-  //   const form = formRef.current;
-  //   return React.cloneElement(children, {
-  //     value: form.values?.[name] || '',
-  //     onChange: change
-  //   })
-  // })
-
-  const child = recursiveRender(children, (ele: any) => {
-    let newProps = {}
-    if (!name) return ele.props;
-
-    if (!formRef.current) return null;
+  const child = useMemo(() => {
+    if (!name) return children;
     const form = formRef.current;
-    if (ele.type === 'input') {
-      newProps = { ...ele.props, value: form.values?.[name] || '', onChange: change }
-    }
-    return newProps;
-  })
-
-
+    return React.cloneElement(children, {
+      value: form?.values?.[name] || '',
+      onChange: change
+    })
+  }, [formRef.current, formRef.current?.values[name]])
 
   return (
     <div ref={parentRef}>
       {name}: {child}
-      <p>errors:{ }</p>
+      {
+        formRef.current?.errors[name] ?
+          <div style={{ color: "red" }}>errors:{formRef.current?.errors[name]}</div> : null
+      }
     </div>
   );
 }
