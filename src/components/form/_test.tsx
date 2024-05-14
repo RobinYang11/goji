@@ -85,8 +85,12 @@ export function FormTest() {
     <FormItem
       rules={[
         {
-          type: 'email',
-          message: 'please input a valid email',
+          type: 'RegExp',
+          message: 'custom rule',
+        },
+        {
+          type:"email",
+          message:"please input a valid email",
         }
       ]}
       name="name"

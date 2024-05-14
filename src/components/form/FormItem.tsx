@@ -25,7 +25,6 @@ type BaseRuleType =
 //   },
 // }
 
-
 export interface ItemRule {
   message?: string;
   type?: BaseRuleType;
@@ -54,17 +53,26 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
   const parentRef = useRef<any>();
 
   useEffect(() => {
+
     const formId = getNearestForm(parentRef.current)
-    if (formId) {
-      formRef.current = forms[formId];
+    const form = forms[formId]
+    if (!form) return;
+    formRef.current = form
+
+    // if name and rules are specified, then register rules;
+    if (rules && name) {
+      form.rules[name] = rules;
       forceRender(formId);
     }
+
   }, [parentRef.current])
 
   const change = (value: any) => {
     if (formRef.current) {
       const form: FormInstance = formRef.current;
+      // console.log(form.rules[name]);
       form.values[name] = value?.target?.value || value;
+      form.validateField(name)
       forceRender(value?.target?.value || value);
     }
   }
@@ -81,7 +89,7 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
   return (
     <div ref={parentRef}>
       {name}: {child}
-      <p>errors:{ }</p>
+      <p>errors:{ formRef.current?.errors[name] }</p>
     </div>
   );
 }
