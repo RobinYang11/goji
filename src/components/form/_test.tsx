@@ -2,7 +2,6 @@ import React, { ReactElement, ReactHTMLElement, useEffect, useRef, useState } fr
 import FormItem from "./FormItem";
 import Form from "./form";
 import Button from "../button/button";
-import { recursiveRender } from "./util";
 
 function MyInput({ value, onChange, defaultValue }: any) {
 
@@ -37,7 +36,7 @@ export function FormTest() {
   >
     <div>test</div>
     {
-      Array(10000).fill(0).map((_, index) => {
+      Array(2).fill(0).map((_, index) => {
         return <FormItem
           key={index}
           // className="formItem"
@@ -103,56 +102,3 @@ export function FormTest() {
     <button type="submit">submit</button>
   </Form>
 }
-
-
-function TestMyRender({ children }: any) {
-  // const e = <div>test</div>
-  const start = Date.now();
-  const end = Date.now()
-  console.log(end - start)
-  const [v, setV] = useState("myName")
-  return <div>
-    <input value={v} onChange={(e) => {
-      setV(e.target.value);
-    }} />
-    {recursiveRender(children, (ele: any, props) => {
-      // console.log(ele?.props, props)
-      // console.log("##",ele)
-      if (ele.type === 'input') {
-        props = { value: v, onChange: (e: any) => { setV(e.target.value) } }
-      }
-      // props = { one: 1, two: 2, three: 3, four: 4, five: 5 }
-      return props;
-    })}
-  </div>
-}
-
-export default function T() {
-
-  return <TestMyRender>
-    <div>
-      <div>HELLO <span>ROBIN</span></div>
-      <div>
-        <div>
-          <div>
-            <div>
-              <div>
-                <div>
-                  <div>
-                    <span>
-                      <MyInput />
-                    </span>
-                    <div>
-                      testName: <input />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </TestMyRender>
-}
-

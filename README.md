@@ -2,7 +2,7 @@
 
 # e9ui extendable ui
 
-# 《Philosophy in React , frustrating Vue & Angular》
+### 《Philosophy in React , frustrating Vue & Angular》
 
 ## Why e9ui?
 

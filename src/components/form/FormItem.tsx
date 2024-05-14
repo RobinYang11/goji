@@ -1,12 +1,13 @@
-import React, { HtmlHTMLAttributes, JSXElementConstructor, ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FormStore } from "./context";
 import { FormInstance } from "./form";
-import { getNearestForm, recursiveRender } from "./util";
+import { getNearestForm } from "./util";
 
 
 // TODO: define rule map for rule ,every 'type' corresponding to
 // a Function  which hanlde the validation
-type BaseRuleType = 'email'
+type BaseRuleType =
+  | 'email'
   | 'phone' //  phone number
   | 'minlength' // minimum length
   | 'maxlength' // maximum length
@@ -26,17 +27,9 @@ type BaseRuleType = 'email'
 
 
 export interface ItemRule {
-  message?: string,
-  type?: BaseRuleType,
-  ruleValue?: string | number | RegExp,
-  validator?: (value: any) => void
-}
-
-
-interface IFormItemChildProps {
-  value: any,
-  onChange: (value: any) => void,
-  defaultValue: any,
+  message?: string;
+  type?: BaseRuleType;
+  validator?: (value: any) => void;
 }
 
 export interface FormItemProps {
@@ -46,8 +39,11 @@ export interface FormItemProps {
   rules?: ItemRule[]
 }
 
-
 export default function FormItem({ children, name, rules }: FormItemProps) {
+
+  if (!name) {
+    return <div>{children}</div>
+  }
 
   const {
     forms,
@@ -73,23 +69,18 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
     }
   }
 
-  const c = () => {
-    if (!formRef.current) return null;
+  const child = useMemo(() => {
+    if (!name) return children;
     const form = formRef.current;
-    return recursiveRender(children, (ele: any) => {
-      if (ele.type === 'input' || ele.type === 'select' || ele.type === 'textarea' || typeof ele.type === 'function') {
-        return {
-          value: form?.values?.[name] || '',
-          onChange: change
-        }
-      }
-      return {}
+    return React.cloneElement(children, {
+      value: form?.values?.[name] || '',
+      onChange: change
     })
-  }
+  }, [formRef.current, formRef.current?.values[name]])
 
   return (
     <div ref={parentRef}>
-      {name}: {c()}
+      {name}: {child}
       <p>errors:{ }</p>
     </div>
   );
