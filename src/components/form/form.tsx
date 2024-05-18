@@ -39,7 +39,6 @@ export class FormInstance {
     const rules = this.rules[fieldName]
     const value = this.values[fieldName];
     
-
     if (Math.random() * 10 > 5) {
       this.errors[fieldName] = `${fieldName} error`
     } else {
