@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FormStore } from "./context";
 import { FormInstance } from "./form";
-import { getNearestForm } from "./util";
+import { getNearestForm, recursiveRender } from "./util";
 
 
 // TODO: define rule map for rule ,every 'type' corresponding to

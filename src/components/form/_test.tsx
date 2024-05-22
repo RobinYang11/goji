@@ -37,7 +37,7 @@ export function FormTest() {
     }}
   >
     <div>test</div>
-    {
+    {/* {
       Array(2).fill(0).map((_, index) => {
         return <FormItem
           key={index}
@@ -53,7 +53,7 @@ export function FormTest() {
           </span>
         </FormItem>
       })
-    }
+    } */}
     <FormItem
       valueFilter={(value) => "filter" + value}
       // className="formItem"
