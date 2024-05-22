@@ -78,6 +78,7 @@
     "webpack-dev-server": "^4.12.0"
   },
   "dependencies": {
+    "@types/is-async-function": "^2.0.3",
     "@types/uuid": "^9.0.1",
     "framer-motion": "^8.5.5",
     "is-async-function": "^2.0.0",

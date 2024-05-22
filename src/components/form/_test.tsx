@@ -4,7 +4,7 @@ import Form from "./form";
 import Button from "../button/button";
 
 function MyInput({ value, onChange, defaultValue }: any) {
-
+ 
   useEffect(() => {
     onChange?.(defaultValue);
   }, [defaultValue])
@@ -25,6 +25,8 @@ function MyInput({ value, onChange, defaultValue }: any) {
 
 export function FormTest() {
   const form = Form.create();
+  const pForm = new ProxyForm(() => { })
+
   return <Form
     form={form}
     onFinish={v => {
@@ -89,8 +91,8 @@ export function FormTest() {
           message: 'custom rule',
         },
         {
-          type:"email",
-          message:"please input a valid email",
+          type: "email",
+          message: "please input a valid email",
         }
       ]}
       name="name"
