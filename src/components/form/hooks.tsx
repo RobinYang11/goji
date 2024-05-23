@@ -1,6 +1,6 @@
 import { useContext, useEffect, useId, useRef } from "react";
 import { FormStore } from "./context";
-import { FormInstance } from "./form";
+import { FormInstance } from "./form_instance";
 
 
 export const FORM_PREFIX = "__E9U_FORM_PREFIX__";

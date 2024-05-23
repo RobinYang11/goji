@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FormStore } from "./context";
-import { FormInstance } from "./form";
-import { getNearestForm, recursiveRender } from "./util";
+import { getNearestForm } from "./util";
+import { FormInstance } from "./form_instance";
 
 
 // TODO: define rule map for rule ,every 'type' corresponding to
@@ -19,16 +19,16 @@ type BaseRuleType =
   | 'website'; // a valid web url
 
 
-// const validateMap: Record<BaseRuleType, (value: any) => void> = {
-//   'phone': async (value) => {
-//     const phoneReg = /^[a-zA-Z0-9]/
-//   },
-// }
+const validateMap: Record<BaseRuleType, (value: any) => void> = {
+  'phone': async (value) => {
+    const phoneReg = /^[a-zA-Z0-9]/
+  },
+}
 
 export interface ItemRule {
   message?: string;
   type?: BaseRuleType;
-  validator?: (value: any) => void;
+  validator?: (value:any) => Promise<any>
 }
 
 export interface FormItemProps {
@@ -70,9 +70,8 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
   const change = (value: any) => {
     if (formRef.current) {
       const form: FormInstance = formRef.current;
-      form.values[name] = value?.target?.value || value;
-      form.validateField(name)
-      forceRender(value?.target?.value || value);
+      form.setValue(name, value?.target?.value || value)
+      // forceRender(value?.target?.value || value);
     }
   }
 
@@ -83,7 +82,7 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
       value: form?.values?.[name] || '',
       onChange: change
     })
-  }, [formRef.current, formRef.current?.values[name]])
+  }, [formRef.current, formRef.current?.values[name], formRef.current?.errors[name]])
 
   return (
     <div ref={parentRef}>

@@ -5,7 +5,7 @@ import ReactDom, { createPortal } from "react-dom";
 // import Input from "./components/input";
 import Table from "./components/table/table";
 import Upload from "./components/upload/upload";
-import Form from "./components/form/form";
+import Form from "./components/form/Form";
 import { Controller, useForm } from "react-hook-form";
 import Input from "./components/input/input";
 import Button from "./components/button/button";

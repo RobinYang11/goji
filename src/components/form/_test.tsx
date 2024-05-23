@@ -1,10 +1,10 @@
 import React, { ReactElement, ReactHTMLElement, useEffect, useRef, useState } from "react";
 import FormItem from "./FormItem";
-import Form from "./form";
+import Form from "./Form";
 import Button from "../button/button";
 
 function MyInput({ value, onChange, defaultValue }: any) {
- 
+
   useEffect(() => {
     onChange?.(defaultValue);
   }, [defaultValue])
@@ -25,7 +25,6 @@ function MyInput({ value, onChange, defaultValue }: any) {
 
 export function FormTest() {
   const form = Form.create();
-  const pForm = new ProxyForm(() => { })
 
   return <Form
     form={form}
@@ -82,17 +81,33 @@ export function FormTest() {
     </div>
     <FormItem name="test">
       <div>test</div>
-      {/* <span></span>  */}
     </FormItem>
     <FormItem
       rules={[
         {
           type: 'RegExp',
           message: 'custom rule',
+          validator: (value) => {
+            // throw new Error("not a valid RegExp");
+          }
         },
         {
           type: "email",
           message: "please input a valid email",
+          validator: (value) => {
+            // throw new Error("not a valid email");
+          }
+        },
+        {
+          type: "atLeastOneUppercase",
+          message: "async validation",
+          validator: (value) => {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                reject("fuck error")
+              }, 1000);
+            })
+          }
         }
       ]}
       name="name"

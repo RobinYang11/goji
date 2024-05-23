@@ -1,6 +1,5 @@
 import React from "react";
-import { FormInstance } from "./form";
-
+import { FormInstance } from "./form_instance";
 
 export interface IFormStore {
   forms: Record<string, FormInstance | undefined>,
