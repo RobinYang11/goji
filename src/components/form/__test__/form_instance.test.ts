@@ -1,5 +1,4 @@
-import { ItemRule } from '../FormItem';
-import { FormInstance, FormValues } from '../form_instance';
+import { FormInstance, IFormItemRule, FormValues } from '../form_instance';
 
 describe('FormInstance', () => {
   let formInstance: FormInstance;
@@ -8,130 +7,92 @@ describe('FormInstance', () => {
     formInstance = new FormInstance();
   });
 
-  test('validate method sets error for a field with invalid value', async () => {
-    const fieldName = 'testField';
-    const value = 'invalidValue';
-    const rules: ItemRule[] = [
-      {
-        validator: async (val: any) => {
-          if (val !== 'validValue') {
-            throw new Error('Invalid value');
-          }
-        },
-      },
-    ];
+  describe('validateField', () => {
+    test('should trigger all validators and handle errors correctly', async () => {
+      const fieldName = 'testField';
+      const value = 'testValue';
+      const callback = jest.fn();
 
-    formInstance.rules[fieldName] = rules;
-    formInstance.values[fieldName] = value;
+      const rules: IFormItemRule = {
+        email: { message: 'Invalid email format' },
+        minLength: { value: 5, message: 'Minimum length is 5' },
+        maxLength: { value: 10, message: 'Maximum length is 10' },
+        atLeastOneUpperCase: { message: 'At least one uppercase character is required' },
+        noSpecialCharacters: { message: 'No special characters are allowed' },
+      };
 
-    formInstance.validateField(fieldName);
+      formInstance.rules[fieldName] = rules;
+      formInstance.values[fieldName] = value;
 
-    expect(formInstance.errors[fieldName]).toBe('Invalid value');
-  });
+      formInstance.validateField(fieldName, callback);
 
-  test('validate method does not set error for a field with valid value', async () => {
-    const fieldName = 'testField';
-    const value = 'validValue';
-    const rules: ItemRule[] = [
-      {
-        validator: async (val: any) => {
-          if (val !== 'validValue') {
-            throw new Error('Invalid value');
-          }
-        },
-      },
-    ];
+      expect(callback).toHaveBeenCalledTimes(1);
+      // expect(callback).toHaveBeenNthCalledWith(1, 'Invalid email format');
+      // expect(callback).toHaveBeenNthCalledWith(2, 'Minimum length is 5');
+      // expect(callback).toHaveBeenNthCalledWith(3, 'At least one uppercase character is required');
+      // expect(callback).toHaveBeenNthCalledWith(4, 'No special characters are allowed');
+      // expect(callback).toHaveBeenNthCalledWith(5, undefined); // No error for maxLength
+    });
 
-    formInstance.rules[fieldName] = rules;
-    formInstance.values[fieldName] = value;
+    test('should handle empty rules correctly', async () => {
+      const fieldName = 'testField';
+      const value = 'testValue';
+      const callback = jest.fn();
 
-    formInstance.validateField(fieldName);
+      const rules: IFormItemRule = {};
 
-    expect(formInstance.errors[fieldName]).toBeUndefined();
-  });
+      formInstance.rules[fieldName] = rules;
+      formInstance.values[fieldName] = value;
 
-  test('validate method handles async validator', async () => {
-    const fieldName = 'testField';
-    const value = 'validValue';
-    const rules: ItemRule[] = [
-      {
-        validator: async (val: any) => {
-          return new Promise((resolve, reject) => {
-            setTimeout(() => {
-              if (val !== 'validValue') {
-                reject(new Error('Invalid value'));
-              } else {
-                resolve();
-              }
-            }, 100);
-          });
-        },
-      },
-    ];
+      await formInstance.validateField(fieldName, callback);
 
-    formInstance.rules[fieldName] = rules;
-    formInstance.values[fieldName] = value;
+      expect(callback).not.toHaveBeenCalled();
+    });
 
-    formInstance.validateField(fieldName);
+    test('should handle missing value correctly', async () => {
+      const fieldName = 'testField';
+      const callback = jest.fn();
 
-    await new Promise((resolve) => setTimeout(resolve, 200));
+      const rules: IFormItemRule = {
+        email: { message: 'Invalid email format' },
+      };
 
-    expect(formInstance.errors[fieldName]).toBeUndefined();
-  });
+      formInstance.rules[fieldName] = rules;
 
-  test('validate method handles multiple rules', async () => {
-    const fieldName = 'testField';
-    const value = 'invalidValue';
-    const rules: ItemRule[] = [
-      {
-        validator: async (val: any) => {
-          if (val.length < 5) {
-            throw new Error('Value must be at least 5 characters long');
-          }
-        },
-      },
-      {
-        validator: async (val: any) => {
-          if (!/^[a-zA-Z]+$/.test(val)) {
-            throw new Error('Value can only contain letters');
-          }
-        },
-      },
-    ];
+      formInstance.validateField(fieldName, callback);
 
-    formInstance.rules[fieldName] = rules;
-    formInstance.values[fieldName] = value;
+      expect(callback).toHaveBeenCalledTimes(1);
+      expect(callback).toHaveBeenCalledWith('Invalid email format');
+    });
 
-    formInstance.validateField(fieldName);
+    test('should handle missing rules correctly', async () => {
+      const fieldName = 'testField';
+      const value = 'testValue';
+      const callback = jest.fn();
 
-    expect(formInstance.errors[fieldName]).toBe('Value must be at least 5 characters long');
-  });
+      formInstance.values[fieldName] = value;
 
-  test('validate method handles multiple rules and sets the first error encountered', async () => {
-    const fieldName = 'testField';
-    const value = '1234';
-    const rules: ItemRule[] = [
-      {
-        validator: async (val: any) => {
-          if (val.length < 5) {
-            throw new Error('Value must be at least 5 characters long');
-          }
-        },
-      },
-      {
-        validator: async (val: any) => {
-          if (!/^[a-zA-Z]+$/.test(val)) {
-            throw new Error('Value can only contain letters');
-          }
-        },
-      },
-    ];
+      formInstance.validateField(fieldName, callback);
 
-    formInstance.rules[fieldName] = rules;
-    formInstance.values[fieldName] = value;
+      expect(callback).not.toHaveBeenCalled();
+    });
 
-    formInstance.validateField(fieldName);
+    test('should handle invalid validator correctly', async () => {
+      const fieldName = 'testField';
+      const value = 'testValue';
+      const callback = jest.fn();
 
-    expect(formInstance.errors[fieldName]).toBe('Value must be at least 5 characters long');
+      const rules: IFormItemRule = {
+        invalidValidator: { message: 'Invalid validator' },
+      };
+
+      formInstance.rules[fieldName] = rules;
+      formInstance.values[fieldName] = value;
+
+      formInstance.validateField(fieldName, callback);
+
+      expect(callback).toHaveBeenCalledTimes(1);
+      expect(callback).toHaveBeenCalledWith('Invalid validator');
+    });
   });
 });

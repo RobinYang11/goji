@@ -1,7 +1,6 @@
-import React, { ReactElement, ReactHTMLElement, useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import FormItem from "./FormItem";
 import Form from "./Form";
-import Button from "../button/button";
 
 function MyInput({ value, onChange, defaultValue }: any) {
 
@@ -14,7 +13,7 @@ function MyInput({ value, onChange, defaultValue }: any) {
     <button
       type="button"
       onClick={() => {
-        onChange && onChange(Math.random());
+        onChange && onChange(Math.random() + "");
       }}
     >
       click To change
@@ -62,14 +61,12 @@ export function FormTest() {
     </FormItem>
     <FormItem
       valueFilter={(value) => "filter" + value}
-      // className="formItem"
       name="text-area"
     >
       <textarea placeholder="input some text" />
     </FormItem>
     <div>
       <FormItem
-        // className="formItem"
         name="sex"
       >
         <select>
@@ -83,33 +80,22 @@ export function FormTest() {
       <div>test</div>
     </FormItem>
     <FormItem
-      rules={[
-        {
-          type: 'RegExp',
-          message: 'custom rule',
-          validator: (value) => {
-            // throw new Error("not a valid RegExp");
+      rule={{
+        minLength: {
+          value: 100,
+          message: "最aa"
+        },
+        maxLength: {
+          value: 11
+        },
+        other: {
+          message: "custom validation rule",
+          validator: (value: any, rule) => {
+            console.log(value, rule)
+            return Promise.reject("custom validation rule");
           }
         },
-        {
-          type: "email",
-          message: "please input a valid email",
-          validator: (value) => {
-            // throw new Error("not a valid email");
-          }
-        },
-        {
-          type: "atLeastOneUppercase",
-          message: "async validation",
-          validator: (value) => {
-            return new Promise((resolve, reject) => {
-              setTimeout(() => {
-                reject("fuck error")
-              }, 1000);
-            })
-          }
-        }
-      ]}
+      }}
       name="name"
     >
       <MyInput defaultValue="myInputDefaultValue" />

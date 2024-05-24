@@ -1,44 +1,18 @@
 import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FormStore } from "./context";
 import { getNearestForm } from "./util";
-import { FormInstance } from "./form_instance";
-
-
-// TODO: define rule map for rule ,every 'type' corresponding to
-// a Function  which hanlde the validation
-type BaseRuleType =
-  | 'email'
-  | 'phone' //  phone number
-  | 'minlength' // minimum length
-  | 'maxlength' // maximum length
-  | 'RegExp' // regular expression
-  | 'letterAndNumber' // contains letters and numbers
-  | 'atLeastOneUppercase' // contains at least one uppercase letter
-  | 'noSpecialCharacters' // contains no special characters
-  | 'password'
-  | 'website'; // a valid web url
-
-
-const validateMap: Record<BaseRuleType, (value: any) => void> = {
-  'phone': async (value) => {
-    const phoneReg = /^[a-zA-Z0-9]/
-  },
-}
-
-export interface ItemRule {
-  message?: string;
-  type?: BaseRuleType;
-  validator?: (value:any) => Promise<any>
-}
+import { FormInstance, IFormItemRule } from "./form_instance";
 
 export interface FormItemProps {
   name: string
   valueFilter?: (value: any) => any
   children: ReactElement
-  rules?: ItemRule[]
+  rule?: IFormItemRule
 }
 
-export default function FormItem({ children, name, rules }: FormItemProps) {
+export default function FormItem({ children, name, rule }: FormItemProps) {
+
+  console.log("reRender")
 
   if (!name) {
     return <div>{children}</div>
@@ -60,8 +34,8 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
     formRef.current = form
 
     // if name and rules are specified, then register rules;
-    if (rules && name) {
-      form.rules[name] = rules;
+    if (rule && name) {
+      form.rules[name] = rule;
       forceRender(formId);
     }
 
@@ -70,8 +44,10 @@ export default function FormItem({ children, name, rules }: FormItemProps) {
   const change = (value: any) => {
     if (formRef.current) {
       const form: FormInstance = formRef.current;
-      form.setValue(name, value?.target?.value || value)
-      // forceRender(value?.target?.value || value);
+      forceRender(value?.target?.value || value);
+      form.setValue(name, value?.target?.value || value, (v) => {
+        forceRender(v);
+      })
     }
   }
 
