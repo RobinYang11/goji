@@ -70,7 +70,7 @@ const baseValidators: BaseRuleKey<PromiseFunction<any>> = {
     if (regex.test(value)) {
       return Promise.resolve("ok");
     }
-    return Promise.reject(rule?.message || "At least one uppercase character is required");
+    return Promise.reject(rule?.message || "At least one uppercase character");
   },
   noSpecialCharacters: (value: any, rule: BaseRuleInfo) => {
     const regex = /^[a-zA-Z0-9\s]*$/;
@@ -110,7 +110,7 @@ export class FormInstance {
     this.validateField(fieldName, callback);
   };
 
-  validateField(fieldName: string, callback: (value: any) => void): void {
+  private validateField(fieldName: string, callback: (value: any) => void): void {
     let rules: any = this.rules[fieldName]
     if (!rules) return;
     const value = this.values[fieldName];

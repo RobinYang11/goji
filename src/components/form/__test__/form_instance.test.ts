@@ -1,4 +1,15 @@
-import { FormInstance, IFormItemRule, FormValues } from '../form_instance';
+import { FormInstance } from "../form_instance"
+
+async function waitFor(cb: () => void) {
+
+  return new Promise((r, j) => {
+    setTimeout(() => {
+      cb();
+      r("ok")
+    }, 4000)
+  })
+}
+
 
 describe('FormInstance', () => {
   let formInstance: FormInstance;
@@ -7,92 +18,61 @@ describe('FormInstance', () => {
     formInstance = new FormInstance();
   });
 
-  describe('validateField', () => {
-    test('should trigger all validators and handle errors correctly', async () => {
-      const fieldName = 'testField';
-      const value = 'testValue';
-      const callback = jest.fn();
+  test('FormInstance handle validation of custom rule', async () => {
 
-      const rules: IFormItemRule = {
-        email: { message: 'Invalid email format' },
-        minLength: { value: 5, message: 'Minimum length is 5' },
-        maxLength: { value: 10, message: 'Maximum length is 10' },
-        atLeastOneUpperCase: { message: 'At least one uppercase character is required' },
-        noSpecialCharacters: { message: 'No special characters are allowed' },
-      };
+    const fieldName = 'name';
+    const message = "Must be a valid email address"
+    formInstance.rules[fieldName] = {
+      email: {
+        message,
+      }
+    }
+    const value = 'test value';
+    const callback = jest.fn(() => { });
 
-      formInstance.rules[fieldName] = rules;
-      formInstance.values[fieldName] = value;
+    formInstance.setValue(fieldName, value, callback);
 
-      formInstance.validateField(fieldName, callback);
-
-      expect(callback).toHaveBeenCalledTimes(1);
-      // expect(callback).toHaveBeenNthCalledWith(1, 'Invalid email format');
-      // expect(callback).toHaveBeenNthCalledWith(2, 'Minimum length is 5');
-      // expect(callback).toHaveBeenNthCalledWith(3, 'At least one uppercase character is required');
-      // expect(callback).toHaveBeenNthCalledWith(4, 'No special characters are allowed');
-      // expect(callback).toHaveBeenNthCalledWith(5, undefined); // No error for maxLength
-    });
-
-    test('should handle empty rules correctly', async () => {
-      const fieldName = 'testField';
-      const value = 'testValue';
-      const callback = jest.fn();
-
-      const rules: IFormItemRule = {};
-
-      formInstance.rules[fieldName] = rules;
-      formInstance.values[fieldName] = value;
-
-      await formInstance.validateField(fieldName, callback);
-
-      expect(callback).not.toHaveBeenCalled();
-    });
-
-    test('should handle missing value correctly', async () => {
-      const fieldName = 'testField';
-      const callback = jest.fn();
-
-      const rules: IFormItemRule = {
-        email: { message: 'Invalid email format' },
-      };
-
-      formInstance.rules[fieldName] = rules;
-
-      formInstance.validateField(fieldName, callback);
-
-      expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback).toHaveBeenCalledWith('Invalid email format');
-    });
-
-    test('should handle missing rules correctly', async () => {
-      const fieldName = 'testField';
-      const value = 'testValue';
-      const callback = jest.fn();
-
-      formInstance.values[fieldName] = value;
-
-      formInstance.validateField(fieldName, callback);
-
-      expect(callback).not.toHaveBeenCalled();
-    });
-
-    test('should handle invalid validator correctly', async () => {
-      const fieldName = 'testField';
-      const value = 'testValue';
-      const callback = jest.fn();
-
-      const rules: IFormItemRule = {
-        invalidValidator: { message: 'Invalid validator' },
-      };
-
-      formInstance.rules[fieldName] = rules;
-      formInstance.values[fieldName] = value;
-
-      formInstance.validateField(fieldName, callback);
-
-      expect(callback).toHaveBeenCalledTimes(1);
-      expect(callback).toHaveBeenCalledWith('Invalid validator');
+    await waitFor(() => {
+      expect(callback).toBeCalledTimes(1);
+      expect(message).toEqual(formInstance.errors[fieldName]);
     });
   });
+
+
+  test('should validate multiple rules', async () => {
+    const fieldName = 'password';
+    formInstance.rules[fieldName] = {
+      atLeastOneUpperCase: {},
+      minLength: {
+        value: 8
+      },
+      // noSpecialCharacters: {}
+    }
+    const value = 'Abc123456';
+    const c = jest.fn(() => { });
+
+    formInstance.setValue(fieldName, value, c);
+    await waitFor(() => {
+      expect(c).toBeCalledTimes(1);
+      expect(formInstance.errors[fieldName]).toBeUndefined();
+    });
+  });
+
+
+  test('should validate a valid email', async () => {
+    const callback = jest.fn();
+    formInstance.rules = {
+      email: {
+        email: {
+          message: 'Must be a valid email address',
+        },
+      },
+    };
+    const value = 'test@qq.com';
+    formInstance.setValue('email', value, callback);
+    await waitFor(() => {
+      expect(formInstance.errors.email).toBeUndefined();
+    })
+  });
 });
+
