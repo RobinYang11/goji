@@ -82,11 +82,11 @@ export function FormTest() {
     <FormItem
       rule={{
         minLength: {
-          value: 100,
+          value: 10,
           message: "最aa"
         },
         maxLength: {
-          value: 11
+          value: 100
         },
         other: {
           message: "custom validation rule",

@@ -18,6 +18,7 @@
   "files": [
     "dist"
   ],
+  "type":"module",
   "types": "dist/index.d.ts",
   "author": "robin",
   "license": "ISC",
