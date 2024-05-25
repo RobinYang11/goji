@@ -1,12 +1,12 @@
 import { FormInstance } from "../form_instance"
 
-async function waitFor(cb: () => void) {
+export async function waitFor(cb: () => void) {
 
   return new Promise((r, j) => {
     setTimeout(() => {
       cb();
       r("ok")
-    }, 2000)
+    }, 1000)
   })
 }
 

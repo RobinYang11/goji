@@ -64,7 +64,7 @@ function InnerForm(props: FormProps) {
       <form
         data-name={form?.name}
         onReset={(e) => {
-          form.values = {};
+          form.reset();
           updateForm(form.name, form)
         }}
         onSubmit={(e) => {
@@ -72,6 +72,7 @@ function InnerForm(props: FormProps) {
           e.preventDefault();
           onFinish?.(form.values);
         }}
+        {...props}
       >
         {children}
       </form>

@@ -1,18 +1,17 @@
-import React, { ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { HtmlHTMLAttributes, ReactElement, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FormStore } from "./context";
 import { getNearestForm } from "./util";
 import { FormInstance, IFormItemRule } from "./form_instance";
 
-export interface FormItemProps {
-  name: string
+export interface FormItemProps extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'name'> {
+  name?: string
   valueFilter?: (value: any) => any
   children: ReactElement
   rule?: IFormItemRule
 }
 
-export default function FormItem({ children, name, rule }: FormItemProps) {
-
-  console.log("reRender")
+export default function FormItem(props: FormItemProps) {
+  const { children, name, rule } = props;
 
   if (!name) {
     return <div>{children}</div>
@@ -61,7 +60,10 @@ export default function FormItem({ children, name, rule }: FormItemProps) {
   }, [formRef.current, formRef.current?.values[name], formRef.current?.errors[name]])
 
   return (
-    <div ref={parentRef}>
+    <div
+      {...props}
+      ref={parentRef}
+    >
       {name}: {child}
       {
         formRef.current?.errors[name] ?

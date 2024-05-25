@@ -76,7 +76,7 @@ export function FormTest() {
         </select>
       </FormItem>
     </div>
-    <FormItem name="test">
+    <FormItem id="robin" name="test">
       <div>test</div>
     </FormItem>
     <FormItem

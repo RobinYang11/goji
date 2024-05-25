@@ -104,6 +104,10 @@ export class FormInstance {
     return newValues;
   }
 
+  public reset(): void {
+    this.values = {};
+    this.errors = {};
+  }
 
   public setValue(fieldName: string, value: any, callback: (value: any) => void): void {
     this.values[fieldName] = value;
