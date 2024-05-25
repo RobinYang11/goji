@@ -14,7 +14,7 @@ export default function FormItem(props: FormItemProps) {
   const { children, name, rule } = props;
 
   if (!name) {
-    return <div>{children}</div>
+    return <div {...props}>{children}</div>
   }
 
   const {
@@ -29,7 +29,10 @@ export default function FormItem(props: FormItemProps) {
 
     const formId = getNearestForm(parentRef.current)
     const form = forms[formId]
-    if (!form) return;
+    if (!form) {
+      console.warn("FormItem with 'name' attribute must placed in Form")
+      return ;
+    }
     formRef.current = form
 
     // if name and rules are specified, then register rules;

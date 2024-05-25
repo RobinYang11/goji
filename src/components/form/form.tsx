@@ -57,8 +57,6 @@ function InnerForm(props: FormProps) {
   const { form } = useForm()
 
   if (!form) return null;
-  console.log("formName", form.name)
-
   return (
     <div>
       <form
