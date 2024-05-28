@@ -81,9 +81,22 @@ const baseValidators: BaseRuleKey<PromiseFunction<any>> = {
   },
 }
 
+export interface FormFieldInfo {
+  name?: string;
+  deps?: [string];
+  value?: any;
+  rule?: IFormItemRule;
+  filter?: (value: any) => any;
+  onChange?: (value: any) => void;
+  error?: string;
+}
+
 export class FormInstance {
-  name: string = ''
-  values: FormValues = {}
+  updateCount: number = 0;
+  name: string = '';
+  fields: Record<string, FormFieldInfo> = {};
+  values: FormValues = {};
+  triggers: Record<string, any> = {};
   errors: Record<string, any> = {};
   rules: Record<string, IFormItemRule> = {}
   valueFilters: Record<string, Function> = {};
@@ -92,6 +105,11 @@ export class FormInstance {
     if (name) {
       this.name = name;
     }
+    this.triggers = {}
+  }
+
+  public addField(name: string, info: FormFieldInfo): void {
+    this.fields[name] = info;
   }
 
   filterValues(values: Record<string, any>) {
@@ -109,12 +127,14 @@ export class FormInstance {
     this.errors = {};
   }
 
-  public setValue(fieldName: string, value: any, callback: (value: any) => void): void {
+  public setValue(fieldName: string, value: any): void {
     this.values[fieldName] = value;
-    this.validateField(fieldName, callback);
+    this.updateCount++;
+    this.validateField(fieldName);
+    this.fields[fieldName].value = value;
   };
 
-  private validateField(fieldName: string, callback: (value: any) => void): void {
+  private validateField(fieldName: string): void {
     let rules: any = this.rules[fieldName]
     if (!rules) return;
     const value = this.values[fieldName];
@@ -128,8 +148,6 @@ export class FormInstance {
       }
       return rules[key];
     })
-
-
 
     const doValidate = async (next: any) => {
       try {
@@ -146,7 +164,8 @@ export class FormInstance {
         } else {
           this.errors[fieldName] = (err as Error)?.message;
         }
-        callback(this.errors[fieldName]);
+        // callback(this.errors[fieldName]);
+        this.triggers[fieldName]?.(this.errors[fieldName]);
       }
     }
 

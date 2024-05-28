@@ -80,6 +80,7 @@ export function FormTest() {
       <div>test</div>
     </FormItem>
     <FormItem
+      deps={['sex']}
       rule={{
         minLength: {
           value: 10,
