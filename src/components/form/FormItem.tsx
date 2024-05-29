@@ -37,14 +37,15 @@ export default function FormItem(props: FormItemProps) {
     formRef.current = form
 
     // if name and rules are specified, then register rules;
-    if (rule && name) {
+    if (name) {
       // form.rules[name] = rule;
       form.addField(name, {
         rule,
         // value: value?.target?.value || value,
+        value: null,
         deps: deps,
         filter,
-        onChange: change
+        onChange: forceRender
       })
       forceRender(formId);
     }
@@ -54,9 +55,9 @@ export default function FormItem(props: FormItemProps) {
   const change = (value: any) => {
     if (formRef.current) {
       const form: FormInstance = formRef.current;
-      forceRender(value?.target?.value || value);
+      // forceRender(value?.target?.value || value);
       form.setValue(name, value?.target?.value || value);
-      console.log(form.fields[name])
+      // console.log(form.fields[name])
     }
   }
 
@@ -68,13 +69,13 @@ export default function FormItem(props: FormItemProps) {
       formRef.current!.triggers[name] = onchange
     }
     return React.cloneElement(children, {
-      value: form?.values?.[name] || '',
+      value: form?.fields?.[name].value || '',
       onChange: change
     })
   }, [
     formRef.current,
-    formRef.current?.values[name],
-    formRef.current?.errors[name],
+    formRef.current?.fields[name]?.value,
+    formRef.current?.fields[name]?.error,
   ])
 
   return (
@@ -85,8 +86,8 @@ export default function FormItem(props: FormItemProps) {
       <div>count:{formRef.current?.updateCount}</div>
       {name}: {child}
       {
-        formRef.current?.errors[name] ?
-          <div style={{ color: "red" }}>errors:{formRef.current?.errors[name]}</div> : null
+        formRef.current?.fields[name].error ?
+          <div style={{ color: "red" }}>errors:{formRef.current?.fields[name]?.error}</div> : null
       }
     </div>
   );

@@ -13,7 +13,6 @@ export interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, ''> {
 
 export default function Form(props: FormProps) {
 
-
   const [forms, setForms] = useState<Record<string, FormInstance | undefined>>({});
 
   const registerForm = (formName: string, form: FormInstance) => {
@@ -66,9 +65,10 @@ function InnerForm(props: FormProps) {
           updateForm(form.name, form)
         }}
         onSubmit={(e) => {
+          console.log("##",form)
+          onFinish?.(form.fields);
           // prevent default form submission
           e.preventDefault();
-          onFinish?.(form.values);
         }}
         {...props}
       >

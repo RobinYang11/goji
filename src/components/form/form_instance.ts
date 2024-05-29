@@ -95,17 +95,10 @@ export class FormInstance {
   updateCount: number = 0;
   name: string = '';
   fields: Record<string, FormFieldInfo> = {};
-  values: FormValues = {};
-  triggers: Record<string, any> = {};
-  errors: Record<string, any> = {};
-  rules: Record<string, IFormItemRule> = {}
-  valueFilters: Record<string, Function> = {};
-
   constructor(name?: string) {
     if (name) {
       this.name = name;
     }
-    this.triggers = {}
   }
 
   public addField(name: string, info: FormFieldInfo): void {
@@ -114,30 +107,25 @@ export class FormInstance {
 
   filterValues(values: Record<string, any>) {
     const newValues = { ...values };
-    Object.keys(newValues).forEach((key) => {
-      if (this.valueFilters[key]) {
-        newValues[key] = this.valueFilters[key](newValues[key]);
-      }
-    });
     return newValues;
   }
 
   public reset(): void {
-    this.values = {};
-    this.errors = {};
+    this.fields= {}
   }
 
   public setValue(fieldName: string, value: any): void {
-    this.values[fieldName] = value;
+    // this.values[fieldName] = value;
     this.updateCount++;
     this.validateField(fieldName);
     this.fields[fieldName].value = value;
+    this.fields[fieldName]?.onChange?.(value);
   };
 
   private validateField(fieldName: string): void {
-    let rules: any = this.rules[fieldName]
+    let rules: any = this.fields[fieldName].rule
     if (!rules) return;
-    const value = this.values[fieldName];
+    const value = this.fields[fieldName]!.value;
     rules = Object.keys(rules).map((key: string) => {
       // inject the validator into the rule when not provided
       if (!rules[key].validator) {
@@ -160,12 +148,10 @@ export class FormInstance {
         doValidate(rules[index].validator);
       } catch (err) {
         if (typeof err === 'string') {
-          this.errors[fieldName] = err;
+          this.fields[fieldName].error = err;
         } else {
-          this.errors[fieldName] = (err as Error)?.message;
+          this.fields[fieldName].error = (err as Error)?.message;
         }
-        // callback(this.errors[fieldName]);
-        this.triggers[fieldName]?.(this.errors[fieldName]);
       }
     }
 

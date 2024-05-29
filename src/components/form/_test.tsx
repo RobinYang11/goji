@@ -76,9 +76,9 @@ export function FormTest() {
         </select>
       </FormItem>
     </div>
-    <FormItem id="robin" name="test">
+    {/* <FormItem id="robin" name="test">
       <div>test</div>
-    </FormItem>
+    </FormItem> */}
     <FormItem
       deps={['sex']}
       rule={{
