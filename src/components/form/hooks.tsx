@@ -1,14 +1,18 @@
 import { useContext, useEffect, useId, useRef } from "react";
 import { FormStore } from "./context";
 import { FormInstance } from "./form_instance";
+import { v4 as uuidv4 } from 'uuid';
 
 
 export const FORM_PREFIX = "__E9U_FORM_PREFIX__";
-export function useForm(): {
+export const createForm = () => {
+  const name = FORM_PREFIX + uuidv4();
+  return new FormInstance(name);
+}
+export function useForm(props: { form?: FormInstance }): {
   form: FormInstance | undefined
 } {
-  // unique form id;
-  const name = FORM_PREFIX + useId();
+  console.log("###",props);
   const {
     registerForm,
     uninstallForm
@@ -18,12 +22,13 @@ export function useForm(): {
   const formRef = useRef<FormInstance>();
 
   useEffect(() => {
+    let formInstance = null;
     if (!formRef.current) {
-      const formInstance = new FormInstance(name);
+      formInstance = props?.form || createForm();
       formRef.current = formInstance
-      registerForm(name, formInstance);
+      registerForm(formInstance.name, formInstance);
     }
-    return () => { uninstallForm(name); }
+    return () => { uninstallForm(''); }
   }, [])
 
   return {

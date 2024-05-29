@@ -1,6 +1,6 @@
 import React, { HTMLAttributes, useContext, useState } from "react";
 import { FormStore } from "./context";
-import { useForm } from "./hooks";
+import { createForm, useForm } from "./hooks";
 import { FormInstance } from "./form_instance";
 
 
@@ -47,15 +47,17 @@ function InnerForm(props: FormProps) {
   const {
     children,
     onFinish,
+    // form
   } = props;
 
   const {
     updateForm
   } = useContext(FormStore);
 
-  const { form } = useForm()
+  const { form } = useForm({})
 
   if (!form) return null;
+
   return (
     <div>
       <form
@@ -65,7 +67,7 @@ function InnerForm(props: FormProps) {
           updateForm(form.name, form)
         }}
         onSubmit={(e) => {
-          console.log("##",form)
+          console.log("##", form)
           onFinish?.(form.fields);
           // prevent default form submission
           e.preventDefault();
@@ -74,15 +76,11 @@ function InnerForm(props: FormProps) {
       >
         {children}
       </form>
-    </div>
+    </div>k
   );
 }
 
 
-Form.create = () => {
-  return new FormInstance();
-}
-
-
+Form.create = createForm;
 
 

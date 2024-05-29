@@ -87,7 +87,7 @@ export interface FormFieldInfo {
   value?: any;
   rule?: IFormItemRule;
   filter?: (value: any) => any;
-  onChange?: (value: any) => void;
+  onChange: (value: any) => void;
   error?: string;
 }
 
@@ -111,16 +111,29 @@ export class FormInstance {
   }
 
   public reset(): void {
-    this.fields= {}
+    Object.keys(this.fields).forEach(i=>{
+      this.fields[i].value = undefined;
+      this.fields[i].error = undefined;
+    })
   }
 
   public setValue(fieldName: string, value: any): void {
-    // this.values[fieldName] = value;
+    
     this.updateCount++;
     this.validateField(fieldName);
     this.fields[fieldName].value = value;
     this.fields[fieldName]?.onChange?.(value);
+
+    // update the value of the fields that depends on this field
+    Object.keys(this.fields).forEach(key => {
+      if (!this.fields[key].deps) return;
+      if (this.fields[key]?.deps!.indexOf(fieldName) >= 0) {
+        this.fields[key].onChange(value);
+      }
+    })
+
   };
+
 
   private validateField(fieldName: string): void {
     let rules: any = this.fields[fieldName].rule

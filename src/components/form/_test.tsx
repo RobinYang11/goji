@@ -35,32 +35,23 @@ export function FormTest() {
     }}
   >
     <div>test</div>
-    {/* {
-      Array(2).fill(0).map((_, index) => {
+    {
+      Array(10).fill(0).map((_, index) => {
         return <FormItem
           key={index}
-          // className="formItem"
           name={"name" + index}
         >
-          <span>
-            <div>
-              <p>
-                <input />
-              </p>
-            </div>
-          </span>
+          <input />
         </FormItem>
       })
-    } */}
+    }
     <FormItem
-      valueFilter={(value) => "filter" + value}
       // className="formItem"
       name="t_name"
     >
       <input />
     </FormItem>
     <FormItem
-      valueFilter={(value) => "filter" + value}
       name="text-area"
     >
       <textarea placeholder="input some text" />
@@ -76,9 +67,7 @@ export function FormTest() {
         </select>
       </FormItem>
     </div>
-    {/* <FormItem id="robin" name="test">
-      <div>test</div>
-    </FormItem> */}
+
     <FormItem
       deps={['sex']}
       rule={{
@@ -100,6 +89,27 @@ export function FormTest() {
       name="name"
     >
       <MyInput defaultValue="myInputDefaultValue" />
+    </FormItem>
+    <FormItem
+      rule={{
+        myRule:{
+          validator:()=>{
+            return Promise.reject("custom validation rule");
+          }
+        }
+      }}
+      name="abc"
+      renderChilden={(props) => {
+        const { children } = props
+        // console.log(props)
+        const field =  form.fields["abc"];
+        console.log(field)
+        return <div>
+          <span>自定义渲染:</span>
+          {children}
+        </div>
+      }}>
+      <input />
     </FormItem>
     <button type="reset"> reset</button>
     <button
