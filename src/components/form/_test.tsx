@@ -1,6 +1,9 @@
+import { Form } from "e9ui";
 import React, { useEffect } from "react";
-import FormItem from "./FormItem";
-import Form from "./form";
+// import FormItem from "./FormItem";
+// import Form from "./form";
+
+const FormItem = Form.Item;
 
 function MyInput({ value, onChange, defaultValue }: any) {
 

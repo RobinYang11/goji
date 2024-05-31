@@ -1,6 +1,6 @@
 {
   "name": "e9ui",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "e9ui react react component",
   "main": "dist/cjs/index.js",
   "modue": "dist/esm/index.js",
@@ -80,6 +80,7 @@
   "dependencies": {
     "@types/is-async-function": "^2.0.3",
     "@types/uuid": "^9.0.1",
+    "e9ui": "^0.1.2",
     "framer-motion": "^8.5.5",
     "is-async-function": "^2.0.0",
     "uuid": "^9.0.1"
