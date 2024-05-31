@@ -4,7 +4,7 @@
 
 ## Releases Notes 
 ### May 2024 (version 0.1.1)
-- Rewrite the Form Component .  [@YangRobin] 
+- Rewrite the Form Component. Powered by [RobinYang](https://github.com/RobinYang11).
 
 <!-- 
 ### 《Philosophy in React , frustrating Vue & Angular》
