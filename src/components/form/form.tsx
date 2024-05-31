@@ -2,16 +2,17 @@ import React, { HTMLAttributes, useContext, useState } from "react";
 import { FormStore } from "./context";
 import { createForm, useForm } from "./hooks";
 import { FormInstance } from "./form_instance";
+import FormItem from "./FormItem";
 
 
 export interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, ''> {
-  onValuesChange?: (values: Record<string, any>) => any;
+  onValuesChange?: (values: any) => any;
   onFinish?: (values: Record<string, any>) => void;
   form?: FormInstance
 }
 
 
-export default function Form(props: FormProps) {
+function Form(props: FormProps) {
 
   const [forms, setForms] = useState<Record<string, FormInstance | undefined>>({});
 
@@ -36,7 +37,6 @@ export default function Form(props: FormProps) {
     })
   }
 
-
   return <FormStore.Provider value={{ forms: forms, registerForm, uninstallForm, updateForm }}>
     <InnerForm {...props} />
   </FormStore.Provider>
@@ -47,32 +47,40 @@ function InnerForm(props: FormProps) {
   const {
     children,
     onFinish,
-    // form
+    form,
+    onValuesChange
   } = props;
 
   const {
     updateForm
   } = useContext(FormStore);
 
-  const { form } = useForm({})
+  const formHooks = useForm(form)
+  const formInstance = formHooks.form;
 
-  if (!form) return null;
+  if (!formInstance) return null;
+
+  if (onValuesChange) {
+    formInstance.onValuesChange = onValuesChange;
+  }
+  // console.log("DDD",formInstance.onValuesChange);
+
 
   return (
     <div>
       <form
-        data-name={form?.name}
+        data-name={formInstance?.name}
+        id={formInstance?.name}
         onReset={(e) => {
-          form.reset();
-          updateForm(form.name, form)
+          formInstance?.reset();
+          updateForm(formInstance?.name, formInstance)
         }}
         onSubmit={(e) => {
-          console.log("##", form)
-          onFinish?.(form.fields);
+          onFinish?.(formInstance?.fields);
           // prevent default form submission
           e.preventDefault();
         }}
-        {...props}
+      // {...props}
       >
         {children}
       </form>
@@ -80,7 +88,7 @@ function InnerForm(props: FormProps) {
   );
 }
 
-
+Form.Item = FormItem;
 Form.create = createForm;
-
+export default Form;
 

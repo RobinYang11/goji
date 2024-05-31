@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement, CSSProperties } from 'react';
+import React, { ReactNode, ReactElement, CSSProperties, HtmlHTMLAttributes, HTMLAttributes } from 'react';
 
 interface UploadFile {
     lastModified: number;
@@ -120,4 +120,66 @@ interface IButtonProps extends Partial<React.HTMLProps<HTMLButtonElement>> {
 }
 declare function Button(props: IButtonProps): JSX.Element;
 
-export { BaseProps, Button, Flex, FlexItem, Button as Input, Modal, Tab, Table, Upload };
+type PromiseFunction<T> = (value: any, rule: BaseRuleInfo) => Promise<T>;
+interface BaseRuleInfo {
+    message?: string;
+    value?: any;
+    validator?: PromiseFunction<any>;
+}
+type BaseRuleKey<T> = {
+    [key: string]: T;
+    email: T;
+    phone: T;
+    minLength: T;
+    maxLength: T;
+    atLeastOneUpperCase: T;
+    noSpecialCharacters: T;
+};
+type IFormItemRule = Partial<BaseRuleKey<BaseRuleInfo>>;
+interface FormFieldInfo {
+    name?: string;
+    deps?: string[];
+    value?: any;
+    rule?: IFormItemRule;
+    filter?: (value: any) => any;
+    onChange: (value: any) => void;
+    error?: string;
+}
+declare class FormInstance {
+    updateCount: number;
+    name: string;
+    fields: Record<string, FormFieldInfo>;
+    onValuesChange: any;
+    constructor(name?: string);
+    addField(name: string, info: FormFieldInfo): void;
+    filterValues(values: Record<string, any>): {
+        [x: string]: any;
+    };
+    reset(): void;
+    setValue(fieldName: string, value: any): void;
+    private validateField;
+}
+
+interface FormItemProps extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'name'> {
+    name?: string;
+    filter?: (value: any) => any;
+    children: ReactElement;
+    rule?: IFormItemRule;
+    deps?: string[];
+    label?: string;
+    renderChilden?: (props: any) => any;
+}
+declare function FormItem(props: FormItemProps): any;
+
+interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, ''> {
+    onValuesChange?: (values: any) => any;
+    onFinish?: (values: Record<string, any>) => void;
+    form?: FormInstance;
+}
+declare function Form(props: FormProps): JSX.Element;
+declare namespace Form {
+    var Item: typeof FormItem;
+    var create: () => FormInstance;
+}
+
+export { BaseProps, Button, Flex, FlexItem, Form, Button as Input, Modal, Tab, Table, Upload };

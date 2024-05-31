@@ -5,14 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 export const FORM_PREFIX = "__E9U_FORM_PREFIX__";
+
 export const createForm = () => {
   const name = FORM_PREFIX + uuidv4();
   return new FormInstance(name);
 }
-export function useForm(props: { form?: FormInstance }): {
-  form: FormInstance | undefined
-} {
-  console.log("###",props);
+
+export function useForm(form?: FormInstance): { form?: FormInstance } {
   const {
     registerForm,
     uninstallForm
@@ -24,14 +23,14 @@ export function useForm(props: { form?: FormInstance }): {
   useEffect(() => {
     let formInstance = null;
     if (!formRef.current) {
-      formInstance = props?.form || createForm();
+      formInstance = form || createForm();
       formRef.current = formInstance
       registerForm(formInstance.name, formInstance);
     }
     return () => { uninstallForm(''); }
-  }, [])
+  }, [form])
 
   return {
-    form: formRef?.current
+    form: formRef.current
   }
 }

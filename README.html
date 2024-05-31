@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>e9ui extendable ui</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="e9ui-extendable-ui">e9ui extendable ui</h1>
+<h3 id="philosophy-in-react--frustrating-vue--angular">《Philosophy in React , frustrating Vue &amp; Angular》</h3>
+<h2 id="why-e9ui">Why e9ui?</h2>
+<ul>
+<li>All UI library components hard to extend.</li>
+</ul>
+<pre><code class="language-tsx">  &lt;<span class="hljs-title class_">Button</span> icon={ <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">IconUser</span> /&gt;</span></span> } type=<span class="hljs-string">&quot;primary&quot;</span>&gt;click me&lt;/<span class="hljs-title class_">Button</span>&gt;
+</code></pre>
+<p><img src="file:////Users/wepay/Desktop/workdir/goji/assets/image.png" alt="alt text"></p>
+<!-- ## How to describe UI elements ? -->
+<h2 id="form-component">Form Component</h2>
+<h3 id="form-prop-instructions">Form prop instructions</h3>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>value</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>form</td>
+<td>FormInstance | null</td>
+<td>use  <code>Form.create() </code> or <code> Form.useForm()</code> to create FormInstance</td>
+</tr>
+<tr>
+<td>onFinish</td>
+<td><code>(value)=&gt; void | null</code></td>
+<td>Will excute  when form submit.</td>
+</tr>
+<tr>
+<td>onValuesChange</td>
+<td><code>(field,value,allFeild)=&gt; void | null</code></td>
+<td>Will excute  when any controlled field value changed.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="formitem-props">Form.Item props</h3>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>value</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>string?</td>
+<td>if  FormItem has 'name' props , The form will automatically inject the 'value' and ' onChange' to the children element.</td>
+</tr>
+<tr>
+<td>label</td>
+<td>string?</td>
+<td>display name of the field</td>
+</tr>
+<tr>
+<td>rule</td>
+<td>FormItemRule?</td>
+<td>field rule</td>
+</tr>
+<tr>
+<td>renderChildren</td>
+<td>({children})=&gt; ReactElement</td>
+<td>you can render the children by renderChildren</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-tsx">interface <span class="hljs-title class_">BaseRuleInfo</span> {
+  message?: string;
+  value?: any
+  validator?: <span class="hljs-title class_">PromiseFunction</span>&lt;any&gt;
+}
+
+type <span class="hljs-title class_">BaseRuleKey</span>&lt;T&gt; = {
+  [<span class="hljs-attr">key</span>: string]: T;
+  <span class="hljs-attr">email</span>: T;
+  <span class="hljs-attr">phone</span>: T;
+  <span class="hljs-attr">minLength</span>: T;
+  <span class="hljs-attr">maxLength</span>: T;
+  <span class="hljs-attr">atLeastOneUpperCase</span>: T;
+  <span class="hljs-attr">noSpecialCharacters</span>: T;
+}
+
+<span class="hljs-keyword">export</span> type <span class="hljs-title class_">IFormItemRule</span> = <span class="hljs-title class_">Partial</span>&lt;<span class="hljs-title class_">BaseRuleKey</span>&lt;<span class="hljs-title class_">BaseRuleInfo</span>&gt;&gt;
+</code></pre>
+<h3 id="example-code">Example code</h3>
+<pre><code class="language-typescript">
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">React</span>, { useEffect } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">FormItem</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./FormItem&quot;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-title class_">Form</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./form&quot;</span>;
+
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">MyInput</span>(<span class="hljs-params">{ value, onChange, defaultValue }: <span class="hljs-built_in">any</span></span>) {
+
+  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> {
+    onChange?.(defaultValue);
+  }, [defaultValue])
+
+  <span class="hljs-keyword">return</span> (<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">border:</span> &#x27;<span class="hljs-attr">1px</span> <span class="hljs-attr">solid</span> <span class="hljs-attr">red</span>&#x27; }}&gt;</span>
+    {value || &#x27;&#x27;}
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;button&quot;</span>
+      <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> {
+        onChange &amp;&amp; onChange(Math.random() + &quot;&quot;);
+      }}
+    &gt;
+      click To change
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>)
+}
+
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">FormTest</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> form = <span class="hljs-title class_">Form</span>.<span class="hljs-title function_">create</span>();
+  <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Form</span>
+    <span class="hljs-attr">form</span>=<span class="hljs-string">{form}</span>
+    <span class="hljs-attr">onFinish</span>=<span class="hljs-string">{v</span> =&gt;</span> {
+      console.log(&quot;finishValues&quot;, v)
+    }}
+    onValuesChange={v =&gt; {
+      console.log(&quot;onValuesChange&quot;, v);
+    }}
+  &gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    {
+      Array(10).fill(0).map((_, index) =&gt; {
+        return <span class="hljs-tag">&lt;<span class="hljs-name">FormItem</span>
+          <span class="hljs-attr">key</span>=<span class="hljs-string">{index}</span>
+          <span class="hljs-attr">label</span>=<span class="hljs-string">{</span>&#x27;<span class="hljs-attr">name</span>&#x27; + <span class="hljs-attr">index</span>}
+          <span class="hljs-attr">name</span>=<span class="hljs-string">{</span>&quot;<span class="hljs-attr">name</span>&quot; + <span class="hljs-attr">index</span>}
+        &gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">input</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">FormItem</span>&gt;</span>
+      })
+    }
+    <span class="hljs-tag">&lt;<span class="hljs-name">FormItem</span>
+      <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;测试原生input&quot;</span>
+      <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;t_name&quot;</span>
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">FormItem</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">FormItem</span>
+      <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;text-area&quot;</span>
+      <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;测试 textarea&quot;</span>
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">textarea</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;input some text&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">FormItem</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">FormItem</span>
+        <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;sex&quot;</span>
+        <span class="hljs-attr">label</span>=<span class="hljs-string">&quot;性别&quot;</span>
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">select</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;male&quot;</span>&gt;</span>male<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;female&quot;</span>&gt;</span>female<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">option</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;other&quot;</span>&gt;</span>other<span class="hljs-tag">&lt;/<span class="hljs-name">option</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">FormItem</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">FormItem</span>
+      <span class="hljs-attr">deps</span>=<span class="hljs-string">{[</span>&#x27;<span class="hljs-attr">sex</span>&#x27;]}
+      <span class="hljs-attr">rule</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">minLength:</span> {
+          <span class="hljs-attr">value:</span> <span class="hljs-attr">10</span>,
+          <span class="hljs-attr">message:</span> &quot;最<span class="hljs-attr">aa</span>&quot;
+        },
+        <span class="hljs-attr">maxLength:</span> {
+          <span class="hljs-attr">value:</span> <span class="hljs-attr">100</span>
+        },
+        <span class="hljs-attr">other:</span> {
+          <span class="hljs-attr">message:</span> &quot;<span class="hljs-attr">custom</span> <span class="hljs-attr">validation</span> <span class="hljs-attr">rule</span>&quot;,
+          <span class="hljs-attr">validator:</span> (<span class="hljs-attr">value:</span> <span class="hljs-attr">any</span>, <span class="hljs-attr">rule</span>) =&gt;</span> {
+            console.log(value, rule)
+            return Promise.reject(&quot;custom validation rule&quot;);
+          }
+        },
+      }}
+      name=&quot;name&quot;
+      label=&quot;测试自定义input&quot;
+    &gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">MyInput</span> <span class="hljs-attr">defaultValue</span>=<span class="hljs-string">&quot;myInputDefaultValue&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">FormItem</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">FormItem</span>
+      <span class="hljs-attr">rule</span>=<span class="hljs-string">{{</span>
+        <span class="hljs-attr">myRule:</span> {
+          <span class="hljs-attr">validator:</span> () =&gt;</span> {
+            return Promise.reject(&quot;custom validation rule&quot;);
+          }
+        }
+      }}
+      name=&quot;abc&quot;
+      deps={[&#x27;sex&#x27;, &#x27;t_name&#x27;]}
+      renderChilden={(props) =&gt; {
+        const { children } = props
+        console.log(&quot;deps on [sex] field&quot;, form.fields[&#x27;sex&#x27;]?.value)
+        console.log(&quot;deps on [t_name] field&quot;, form.fields[&#x27;t_name&#x27;]?.value)
+        return <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>自定义渲染:<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+          {children}
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      }}&gt;
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">FormItem</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;reset&quot;</span>&gt;</span> reset<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+      <span class="hljs-attr">onClick</span>=<span class="hljs-string">{()</span> =&gt;</span> { }}
+    &gt;
+      get Form instance
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Form</span>&gt;</span></span>
+}
+
+    
+</code></pre>
+
+            
+            
+        </body>
+        </html>

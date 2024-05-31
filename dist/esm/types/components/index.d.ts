@@ -6,4 +6,5 @@ export { default as FlexItem } from "./flex_item/flex_item";
 export { default as Table } from "./table/table";
 export { default as Button } from "./button/button";
 export { default as Input } from "./button/button";
+export { default as Form } from "./form/form";
 export { BaseProps } from "./base_props";

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import FormItem from "./FormItem";
-import Form from "./Form";
+import Form from "./form";
 
 function MyInput({ value, onChange, defaultValue }: any) {
 
@@ -24,13 +24,12 @@ function MyInput({ value, onChange, defaultValue }: any) {
 
 export function FormTest() {
   const form = Form.create();
-
   return <Form
     form={form}
     onFinish={v => {
       console.log("finishValues", v)
     }}
-    onValuesChange={v => {
+    onValuesChange={(v) => {
       console.log("onValuesChange", v);
     }}
   >
@@ -39,6 +38,7 @@ export function FormTest() {
       Array(10).fill(0).map((_, index) => {
         return <FormItem
           key={index}
+          label={'name' + index}
           name={"name" + index}
         >
           <input />
@@ -47,18 +47,21 @@ export function FormTest() {
     }
     <FormItem
       // className="formItem"
+      label="测试原生input"
       name="t_name"
     >
       <input />
     </FormItem>
     <FormItem
       name="text-area"
+      label="测试 textarea"
     >
       <textarea placeholder="input some text" />
     </FormItem>
     <div>
       <FormItem
         name="sex"
+        label="性别"
       >
         <select>
           <option value="male">male</option>
@@ -87,23 +90,24 @@ export function FormTest() {
         },
       }}
       name="name"
+      label="测试自定义input"
     >
       <MyInput defaultValue="myInputDefaultValue" />
     </FormItem>
     <FormItem
       rule={{
-        myRule:{
-          validator:()=>{
+        myRule: {
+          validator: () => {
             return Promise.reject("custom validation rule");
           }
         }
       }}
       name="abc"
+      deps={['sex', 't_name']}
       renderChilden={(props) => {
         const { children } = props
-        // console.log(props)
-        const field =  form.fields["abc"];
-        console.log(field)
+        console.log("deps on [sex] field", form.fields['sex']?.value)
+        console.log("deps on [t_name] field", form.fields['t_name']?.value)
         return <div>
           <span>自定义渲染:</span>
           {children}

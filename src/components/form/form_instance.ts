@@ -83,7 +83,7 @@ const baseValidators: BaseRuleKey<PromiseFunction<any>> = {
 
 export interface FormFieldInfo {
   name?: string;
-  deps?: [string];
+  deps?: string[];
   value?: any;
   rule?: IFormItemRule;
   filter?: (value: any) => any;
@@ -95,6 +95,7 @@ export class FormInstance {
   updateCount: number = 0;
   name: string = '';
   fields: Record<string, FormFieldInfo> = {};
+  onValuesChange: any = undefined;
   constructor(name?: string) {
     if (name) {
       this.name = name;
@@ -111,18 +112,22 @@ export class FormInstance {
   }
 
   public reset(): void {
-    Object.keys(this.fields).forEach(i=>{
+    Object.keys(this.fields).forEach(i => {
       this.fields[i].value = undefined;
       this.fields[i].error = undefined;
     })
   }
 
   public setValue(fieldName: string, value: any): void {
-    
+
     this.updateCount++;
     this.validateField(fieldName);
     this.fields[fieldName].value = value;
     this.fields[fieldName]?.onChange?.(value);
+
+    if (this.onValuesChange) {
+      this.onValuesChange(fieldName, value, this.fields)
+    }
 
     // update the value of the fields that depends on this field
     Object.keys(this.fields).forEach(key => {
