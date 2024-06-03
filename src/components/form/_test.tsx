@@ -1,7 +1,9 @@
-import { Form } from "e9ui";
+// import { Form } from "e9ui";
 import React, { useEffect } from "react";
 // import FormItem from "./FormItem";
-// import Form from "./form";
+import Form from "./form";
+import Upload from "../upload/upload";
+import CheckBox from "../checkbox/CheckBox";
 
 const FormItem = Form.Item;
 
@@ -32,8 +34,8 @@ export function FormTest() {
     onFinish={v => {
       console.log("finishValues", v)
     }}
-    onValuesChange={(v) => {
-      console.log("onValuesChange", v);
+    onValuesChange={(k, v) => {
+      console.log("onValuesChange", k, v);
     }}
   >
     <div>test</div>
@@ -54,6 +56,29 @@ export function FormTest() {
       name="t_name"
     >
       <input />
+    </FormItem>
+    <FormItem
+      label="测试原生上传文件"
+      name="upload"
+    >
+      <input type="file" />
+    </FormItem>
+    <FormItem
+      label="测试自定义上传文件"
+      name="upload"
+    >
+      <Upload uploadUrl="">点击上传</Upload>
+    </FormItem>
+
+    <FormItem
+      label="测试原生radios"
+      name="radio"
+    >
+      <CheckBox.Group >
+        <CheckBox value="male" label="male" />
+        <CheckBox value="female" label="female" />
+        <CheckBox value="other" label="other" />
+      </CheckBox.Group>
     </FormItem>
     <FormItem
       name="text-area"

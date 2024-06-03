@@ -18,7 +18,7 @@ export interface IUploadProps {
   beforeUpload?(files: FileList): Promise<unknown>;
   customList?(list: Array<unknown>): ReactNode;
   valueFilter?(file: UploadFile): unknown;
-  urlFilter(file: any): string; // get image url from upload response
+  urlFilter?(file: any): string; // get image url from upload response
 }
 
 export default function Upload(props: IUploadProps) {
@@ -72,6 +72,7 @@ export default function Upload(props: IUploadProps) {
             }
 
             const res = file2uploadFile(files[i]);
+
             const uplaodFile = Object.assign(
               {
                 response: resp,
@@ -98,7 +99,7 @@ export default function Upload(props: IUploadProps) {
       return (
         <li className={styles.fileItem}>
           {i.type}
-          <img src={urlFilter(i.response)} style={{ width: "100px" }} />
+          <img src={urlFilter?.(i.response)} style={{ width: "100px" }} />
           <span
             onClick={() => {
               _files?.splice(index, 1);

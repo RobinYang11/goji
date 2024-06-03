@@ -6,7 +6,7 @@ import FormItem from "./FormItem";
 
 
 export interface FormProps extends Omit<HTMLAttributes<HTMLFormElement>, ''> {
-  onValuesChange?: (values: any) => any;
+  onValuesChange?: (key:any,values: any) => any;
   onFinish?: (values: Record<string, any>) => void;
   form?: FormInstance
 }
@@ -63,8 +63,6 @@ function InnerForm(props: FormProps) {
   if (onValuesChange) {
     formInstance.onValuesChange = onValuesChange;
   }
-  // console.log("DDD",formInstance.onValuesChange);
-
 
   return (
     <div>

@@ -119,7 +119,6 @@ export class FormInstance {
   }
 
   public setValue(fieldName: string, value: any): void {
-
     this.updateCount++;
     this.validateField(fieldName);
     this.fields[fieldName].value = value;

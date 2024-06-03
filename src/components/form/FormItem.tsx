@@ -58,7 +58,7 @@ export default function FormItem(props: FormItemProps) {
   const change = (value: any) => {
     if (formRef.current) {
       const form: FormInstance = formRef.current;
-      form.setValue(name, value?.target?.value || value);
+      form.setValue(name, value?.target ? value.target.value : value);
     }
   }
 
