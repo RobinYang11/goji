@@ -9,3 +9,8 @@
 # Build output
 /dist/
 dist/
+
+.DS_Store
+
+
+

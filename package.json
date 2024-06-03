@@ -75,12 +75,12 @@
     "vue-template-compiler": "^2.7.14",
     "webpack": "^5.76.2",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.12.0"
+    "webpack-dev-server": "^4.12.0",
+    "e9ui": "^0.1.2"
   },
   "dependencies": {
     "@types/is-async-function": "^2.0.3",
     "@types/uuid": "^9.0.1",
-    "e9ui": "^0.1.2",
     "framer-motion": "^8.5.5",
     "is-async-function": "^2.0.0",
     "uuid": "^9.0.1"
